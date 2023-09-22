@@ -16,7 +16,12 @@
               @getBrainRegionInfo="getBrainRegionInfo"
             />
           </div>
-          <p v-if="!hasSvg" class="no-svg-tip">No image display for selected atlas</p>
+          <p
+            v-if="!hasSvg"
+            class="no-svg-tip"
+          >
+            No image display for selected atlas
+          </p>
         </el-main>
         <el-aside width="auto">
           <ImageList

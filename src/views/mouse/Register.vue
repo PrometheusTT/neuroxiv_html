@@ -1,14 +1,28 @@
 <template>
   <PageWithHeaderFooter header-title="Sange The Master">
-    <MailRegisterForm v-if="!registerSuccess" @registerSuccess="registerSuccess = true" />
+    <MailRegisterForm
+      v-if="!registerSuccess"
+      @registerSuccess="registerSuccess = true"
+    />
     <OperationResultTips
       v-else
       type="success"
       tips-title="Congrats! Register success!"
-      tips-content="An activation link has been sent to your email, please follow the instruction to activate your account.">
+      tips-content="An activation link has been sent to your email, please follow the instruction to activate your account."
+    >
       <div slot="operations">
-        <el-button type="primary" @click="loginNowHandler">login now</el-button>
-        <el-button type="primary" @click="$router.push('/')">home</el-button>
+        <el-button
+          type="primary"
+          @click="loginNowHandler"
+        >
+          login now
+        </el-button>
+        <el-button
+          type="primary"
+          @click="$router.push('/')"
+        >
+          home
+        </el-button>
       </div>
     </OperationResultTips>
   </PageWithHeaderFooter>

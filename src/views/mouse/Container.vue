@@ -62,6 +62,7 @@
         >Confirm</el-button>
       </span>
     </el-dialog>
+    <!-- AI搜索对话框 -->
     <el-dialog
       title="Neuron GPT"
       :visible.sync="LLMDialogVisible"
@@ -136,9 +137,7 @@ export default class Container extends Vue {
   }
 
   /**
-     * 更新当前显示的 neuron info 信息
-     * @param neuronDetail neuron detail
-     * @private
+     * 更新AI模型返回答案
      */
   private async getAIAdvice (neuronDetail: any) {
     this.neuronDetail.selectedTab = 'neuronInfo'
@@ -164,21 +163,6 @@ export default class Container extends Vue {
         // @ts-ignore
       })).value
       await this.updateCurrentNeuronInfo({ id })
-    } catch (e) {}
-  }
-
-  /**
-     * 使用LLM智能搜索
-   */
-  private async searchByLLMHandler () {
-    try {
-      const question = (await this.$prompt('Please input your question', {
-        confirmButtonText: 'Confirm',
-        cancelButtonText: 'Cancel',
-        closeOnClickModal: false
-        // @ts-ignore
-      })).value
-      await this.getAIAdvice({ question })
     } catch (e) {}
   }
 
