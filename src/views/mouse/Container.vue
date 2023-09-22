@@ -1,0 +1,472 @@
+<template>
+  <div class="home">
+    <SmallScreenAlert />
+    <el-container class="app-container">
+      <el-header height="auto">
+        <header-bar
+          ref="headBar"
+          @clickSearchButton="searchDialogVisible = true"
+          @clickSearchByIDButton="searchByIDHandler"
+          @clickSearchByLLMButton="LLMDialogVisible = true"
+          @clickUploadNeuron="uploadNeuronHandler"
+          @switchAtlas="switchAtlas($event)"
+        />
+      </el-header>
+      <el-container>
+        <el-main>
+          <div class="main-content">
+            <NeuronDetail
+              v-if="reFresh"
+              ref="neuronDetail"
+              :load-first-neuron="loadFirstNeuron"
+              @checkConnectedNeurons="updateNeuronAnalysis($event, true)"
+              @searchSimilarNeurons="searchSimilarNeurons($event)"
+              @searchROINeurons="searchROINeurons($event)"
+              @neuronView="updateCurrentNeuronInfo"
+              @viewNeurons="viewNeurons"
+            />
+          </div>
+        </el-main>
+        <el-aside width="auto">
+          <NeuronList
+            ref="neuronList"
+            @neuronView="updateCurrentNeuronInfo"
+            @neuronAnalysis="updateNeuronAnalysis"
+            @checkNeuron="checkNeuron"
+            @viewNeurons="viewNeurons"
+          />
+        </el-aside>
+      </el-container>
+    </el-container>
+    <!-- 神经元搜索对话框 -->
+    <el-dialog
+      title="Neuron Search"
+      :visible.sync="searchDialogVisible"
+      width="90%"
+      top="10vh"
+      :close-on-click-modal="false"
+    >
+      <NeuronSearch ref="neuronSearch" />
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="searchDialogVisible = false">Cancel</el-button>
+        <el-button
+          type="primary"
+          @click="Reset"
+        >Reset</el-button>
+        <el-button
+          type="primary"
+          @click="searchNeurons()"
+        >Confirm</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="Neuron GPT"
+      :visible.sync="LLMDialogVisible"
+      width="90%"
+      top="10vh"
+      :close-on-click-modal="false"
+    >
+      <NeuronLLM ref="neuronLLM" />
+      <span
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button @click="LLMDialogVisible = false">Cancel</el-button>
+        <el-button
+          type="primary"
+          @click="Reset"
+        >Clear</el-button>
+        <el-button
+          type="primary"
+          @click="AISearch()"
+        >Confirm</el-button>
+      </span>
+    </el-dialog>>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Ref } from 'vue-property-decorator'
+import HeaderBar from '@/components/mouse/HeaderBar.vue'
+import NeuronList from '@/components/mouse/NeuronList.vue'
+import NeuronDetail from '@/components/mouse/NeuronDetail.vue'
+import NeuronSearch from '@/components/mouse/NeuronSearch.vue'
+import { getNeuronInfo, searchNeurons, searchSimilarNeuron, uploadNeuron, searchROINeuron, AISearch } from '@/request/apis/mouse/Neuron'
+import SmallScreenAlert from '@/components/common/SmallScreenAlert.vue'
+import NeuronLLM from '@/components/mouse/NeuronLLM.vue'
+
+@Component({
+  components: {
+    NeuronLLM,
+    SmallScreenAlert,
+    NeuronSearch,
+    NeuronDetail,
+    NeuronList,
+    HeaderBar
+  }
+})
+export default class Container extends Vue {
+  @Ref('neuronDetail') readonly neuronDetail!: NeuronDetail
+  @Ref('neuronSearch') readonly neuronSearch!: NeuronSearch
+  @Ref('neuronList') readonly neuronList!: NeuronList
+  @Ref('neuronLLM') readonly neuronLLM!: NeuronLLM
+  @Ref('headBar') readonly headBar!: HeaderBar
+  private searchDialogVisible: boolean = false
+  private LLMDialogVisible: boolean = false
+  private reFresh: boolean = true
+
+  /**
+   * 更新当前显示的 neuron info 信息
+   * @param neuronDetail neuron detail
+   * @private
+   */
+  private async updateCurrentNeuronInfo (neuronDetail: any) {
+    this.neuronDetail.selectedTab = 'neuronInfo'
+    await this.$nextTick()
+    this.neuronDetail.neuronInfo.clearReconstruction()
+    await this.$nextTick()
+    const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
+    const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
+    this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
+    this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
+    await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
+  }
+
+  /**
+     * 更新当前显示的 neuron info 信息
+     * @param neuronDetail neuron detail
+     * @private
+     */
+  private async getAIAdvice (neuronDetail: any) {
+    this.neuronDetail.selectedTab = 'neuronInfo'
+    await this.$nextTick()
+    // this.neuronDetail.neuronInfo.clearReconstruction()
+    // await this.$nextTick()
+    // const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
+    const AIAdvice = await AISearch(document.body, neuronDetail.question).start()
+    // this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
+    // this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
+    // await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
+  }
+
+  /**
+   * 根据神经元 ID 搜索
+   */
+  private async searchByIDHandler () {
+    try {
+      const id = (await this.$prompt('Please input a neuron id', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        closeOnClickModal: false
+        // @ts-ignore
+      })).value
+      await this.updateCurrentNeuronInfo({ id })
+    } catch (e) {}
+  }
+
+  /**
+     * 使用LLM智能搜索
+   */
+  private async searchByLLMHandler () {
+    try {
+      const question = (await this.$prompt('Please input your question', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
+        closeOnClickModal: false
+        // @ts-ignore
+      })).value
+      await this.getAIAdvice({ question })
+    } catch (e) {}
+  }
+
+  /**
+   * 根据选择的 neuron id 更新统计信息
+   * @param neuronIds 选择的 neuron id
+   * @param updateNeuronList 是否更新右侧神经元列表
+   * @private
+   */
+  private async updateNeuronAnalysis (neuronIds: string[], updateNeuronList: boolean = false) {
+    try {
+      // eslint-disable-next-line camelcase
+      const { basic_info, morpho_info, plot, proj_info, neurons } = await searchNeurons(document.body, { id_list: neuronIds }).start()
+      this.neuronDetail.selectedTab = 'neuronStates'
+      this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+      await this.$nextTick()
+      this.neuronDetail.neuronStates.featurePlot.renderChart()
+      this.neuronDetail.neuronStates.histogramBars.renderChart()
+      if (updateNeuronList) {
+        this.neuronList.setListData(neurons)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  /**
+   * 搜索神经元
+   * @param criteria 搜索条件
+   * @param ids 神经元 ID 列表
+   * @param func 回调函数
+   * @private
+   */
+  private async searchNeurons (criteria: any = undefined, ids: string[] | undefined = undefined, func: any = () => {}) {
+    if (!criteria) {
+      criteria = this.neuronSearch.getSearchCriteria()
+    }
+    criteria['brain_atlas'] = [this.$store.state.atlas]
+    const condition = ids ? { id_list: ids } : { criteria: criteria }
+    try {
+      // eslint-disable-next-line camelcase
+      const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
+      this.neuronList.setListData(neurons)
+      this.neuronDetail.selectedTab = 'neuronStates'
+      this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+      await this.$nextTick()
+      this.neuronDetail.neuronStates.featurePlot.renderChart()
+      this.neuronDetail.neuronStates.histogramBars.renderChart()
+      this.searchDialogVisible = false
+      func()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  private async AISearch (func: any = () => {}) {
+    const question = this.neuronLLM.getQuestion()
+    try {
+      // eslint-disable-next-line camelcase
+      await AISearch(document.body, question).start()
+      // this.neuronList.setListData(neurons)
+      // this.neuronDetail.selectedTab = 'neuronStates'
+      // this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+      // await this.$nextTick()
+      // this.neuronDetail.neuronStates.featurePlot.renderChart()
+      // this.neuronDetail.neuronStates.histogramBars.renderChart()
+      // this.searchDialogVisible = false
+      func()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  /**
+   * 上传神经元并计算神经元特征
+   * @param param 通过该参数获得要上传的文件
+   */
+  private async uploadNeuronHandler (param: any) {
+    try {
+      this.neuronDetail.selectedTab = 'neuronInfo'
+      await this.$nextTick()
+      const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
+      const form = new FormData()
+      form.append('file', param.file)
+      const neuronInfo = await uploadNeuron(document.body, form).start()
+      this.neuronDetail.neuronInfo.clearReconstruction()
+      await this.$nextTick()
+      this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
+      this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
+      await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  /**
+   * 清空搜索条件
+   * @constructor
+   * @private
+   */
+  private Reset () {
+    this.neuronSearch.selectedConditions = []
+  }
+
+  /**
+   * 搜索相似神经元，返回搜索条件
+   * @param neuronInfo 神经元的信息
+   * @private
+   */
+  private async searchSimilarNeurons (neuronInfo: any) {
+    try {
+      this.searchDialogVisible = true
+      await this.$nextTick()
+      neuronInfo['brain_atlas'] = this.$store.state.atlas
+      this.neuronSearch.selectedConditions = await searchSimilarNeuron(document.body, neuronInfo).start()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  /**
+   * 搜索ROI神经元
+   * @param roiParameter ROI的位置与半径，用字符串表示，x_y_z_r
+   * @private
+   */
+  private async searchROINeurons (roiParameter: string) {
+    try {
+      // eslint-disable-next-line camelcase
+      const { neurons, basic_info, morpho_info, plot, proj_info } = await searchROINeuron(document.body, roiParameter, this.$store.state.atlas).start()
+      this.neuronList.setListData(neurons)
+      this.neuronDetail.selectedTab = 'neuronStates'
+      this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+      await this.$nextTick()
+      this.neuronDetail.neuronStates.featurePlot.renderChart()
+      this.neuronDetail.neuronStates.histogramBars.renderChart()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  /**
+   * 选中或取消右方神经元列表中的神经元的神经元的回调函数，用于在3D viewer里展示
+   * @param neuronDetail 神经元的具体信息，包括是否有dendrite、axon，id以及是否选中
+   * @param switchTab 是否要主动切换到3D viewer栏
+   */
+  public async checkNeuron (neuronDetail: any, switchTab: boolean = false) {
+    if (switchTab && this.neuronDetail.selectedTab !== 'multiNeuronsViewer') {
+      this.neuronDetail.selectedTab = 'multiNeuronsViewer'
+      await this.$nextTick()
+    }
+    await this.$nextTick()
+    if (this.neuronDetail.selectedTab === 'multiNeuronsViewer') {
+      let dendriteData = {
+        id: neuronDetail.id + '_den',
+        name: neuronDetail.id + '_den',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [0, 0, 255],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
+        }
+
+      }
+      let axonData = {
+        id: neuronDetail.id + '_axon',
+        name: neuronDetail.id + '_axon',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [255, 0, 0],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
+        }
+      }
+      if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(dendriteData) ||
+        this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) ||
+        !neuronDetail.selected) {
+        if (neuronDetail['has_dendrite']) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, neuronDetail.selected)
+        }
+        if (neuronDetail['has_axon']) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(axonData, neuronDetail.selected)
+        }
+      } else {
+        const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
+        dendriteData.src = neuronInfo.viewer_info[0].children[0].src
+        axonData.src = neuronInfo.viewer_info[0].children[1].src
+        if (neuronDetail['has_dendrite']) {
+          await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(dendriteData)
+        }
+        if (neuronDetail['has_axon']) {
+          await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(axonData)
+        }
+      }
+    }
+  }
+
+  /**
+   * 将神经元列表中勾选的的神经元进行展示
+   */
+  public async viewNeurons () {
+    let neuronsDetail = this.neuronList.getSelectedItems()
+    this.neuronDetail.multiNeuronsViewer.neuronScene.setAllNeuronsVisible(false)
+    neuronsDetail.forEach((neuronDetail: any) => {
+      this.checkNeuron(neuronDetail, true)
+    })
+  }
+
+  /**
+   * 加载神经元列表第一个神经元
+   */
+  public async loadFirstNeuron () {
+    await this.updateCurrentNeuronInfo(this.neuronList.getFirstItem())
+  }
+
+  /**
+   * 切换当前atlas
+   * @param atlas
+   */
+  public async switchAtlas (atlas: string) {
+    // location.reload()
+    console.log('atlas', atlas)
+    this.headBar.setAtlas(atlas)
+    this.$store.commit('updateAtlas', atlas)
+    this.reFresh = false
+    this.$nextTick(() => {
+      this.reFresh = true
+      let criteria = {
+        brain_atlas: [this.$store.state.atlas]
+      }
+      this.searchNeurons(criteria, undefined, () => {
+        this.neuronDetail.selectedTab = 'multiNeuronsViewer'
+      })
+    })
+  }
+
+  mounted () {
+    setTimeout(() => {
+      console.log('----------route----------', this.$route.query)
+      if (this.$route.query.hasOwnProperty('brainRegion') && this.$route.query.hasOwnProperty('atlasName')) {
+        // @ts-ignore
+        // this.switchAtlas(this.$route.query['atlasName'])
+        this.headBar.setAtlas(this.$route.query['atlasName'])
+        // @ts-ignore
+        this.$store.commit('updateAtlas', this.$route.query['atlasName'])
+        this.$nextTick(() => {
+          let criteria = {
+            brain_atlas: [this.$store.state.atlas],
+            celltype: [this.$route.query['brainRegion']]
+          }
+          this.searchNeurons(criteria)
+        })
+      } else {
+        console.log('mounted atlas', this.$store.state.atlas)
+        let criteria = {
+          brain_atlas: [this.$store.state.atlas]
+        }
+        this.searchNeurons(criteria, undefined, () => {
+          this.neuronDetail.selectedTab = 'multiNeuronsViewer'
+        })
+      }
+    }, 2000, {})
+  }
+}
+</script>
+
+<style lang="less" scoped>
+.home {
+  overflow: auto;
+  height: 100%;
+}
+.app-container {
+  min-width: 1300px;
+  height: 100%;
+  .el-header {
+    padding: 0;
+  }
+  .el-main {
+    height: 100%;
+    .main-content {
+      height: 100%;
+    }
+  }
+  .el-aside {
+    height: 100%;
+    overflow: visible;
+    box-shadow: 3px 3px 8px 2px var(--shadow-color);
+  }
+}
+</style>
