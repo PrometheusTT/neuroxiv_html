@@ -100,10 +100,10 @@ import SliceSection from '@/components/mouse/SliceSection.vue'
 import ROI from '@/components/mouse/ROI.vue'
 import { showLoading, increaseLoadingCount, decreaseLoadingCount, LoadingZero } from '@/request/RequestWrapper'
 
-const neuronViewerBaseData = require('./surf_tree.json')
-const rootId = neuronViewerBaseData[0].id
+import neuronViewerBaseData from './surf_tree.json'
 
-const neuronViewerBaseDataFMost = require('./surf_tree_fmost.json')
+import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
+const rootId = neuronViewerBaseData[0].id
 const rootIdFMost = neuronViewerBaseDataFMost[0].id
 
 @Component<NeuronInfo>({

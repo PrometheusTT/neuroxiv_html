@@ -227,12 +227,12 @@ export default class NeuronScene extends Vue {
         (obj: any) => {
           this.neuronData.push(data)
           // let material = new LineMaterial()
-          // material.linewidth = 3
+          // material.line-width = 3
           // if (data.name.indexOf('axon') !== -1) {
-          //   obj.children[0].material.linewidth = 1
+          //   obj.children[0].material.line-width = 1
           //   obj.children[0].material.color.set(0xff0000)
           // } else if (data.name.indexOf('den') !== -1) {
-          //   obj.children[0].material.linewidth = 10
+          //   obj.children[0].material.line-width = 10
           //   obj.children[0].material.color.set(0x0000ff)
           // }
           if (data.hasOwnProperty('rgb_triplet')) {
