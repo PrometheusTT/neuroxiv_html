@@ -78,6 +78,59 @@
           Info
         </el-button>
       </li>
+      <li
+        v-for="(item, i) in currentPageData"
+        :key="i"
+        class="neuron-item"
+      >
+        <el-checkbox
+          v-model="item.selected"
+          @change="checkNeuronCallback(item)"
+        />
+        <img
+          :src="item.img_src"
+          :title="item.id"
+          alt="neuron thumb"
+          class="neuron-thumb"
+        >
+        <div class="neuron-tags">
+          <el-tag
+            class="neuron-tag-item-cell-type"
+            :color="getTagColor(item.celltype)"
+            effect="dark"
+            size="mini"
+            @click="jumpAtlasWeb(item)"
+          >
+            {{ item.celltype }}
+          </el-tag>
+          <el-tag
+            class="neuron-tag-item"
+            :color="getTagColor(item.brain_atlas)"
+            effect="dark"
+            size="mini"
+          >
+            {{ item.brain_atlas }}
+          </el-tag>
+          <el-tag
+            v-for="(prop, j) in ['axon', 'bouton', 'dendrite', 'soma']"
+            :key="j"
+            class="neuron-tag-item"
+            :class="{ disabled: !item[`has_${prop}`] }"
+            :color="getTagColor(prop)"
+            effect="dark"
+            size="mini"
+          >
+            {{ prop }}
+          </el-tag>
+        </div>
+        <el-button
+          type="primary"
+          size="small"
+          @click="neuronViewHandler(item)"
+        >
+          Info
+        </el-button>
+      </li>
     </ul>
     <el-pagination
       class="pager"
@@ -109,6 +162,7 @@ export default class NeuronList extends Vue {
 
   // 当前这一页选中的 item
   get currentPageSelectedItem () {
+    console.log(this.data)
     return this.currentPageData.filter((item: any) => item.selected === true)
   }
 

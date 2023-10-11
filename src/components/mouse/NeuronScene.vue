@@ -92,6 +92,8 @@ export default class NeuronScene extends Vue {
     '--left': 0
   }
   private neuronInfoMap!: Map<any, any>
+  private mapPos: number[][] = [[1, 1, 1], [1, 2, 1], [1, 3, 1], [1, 1, 2], [1, 1, 3], [2, 1, 1], [3, 1, 1]]
+  private mapBalls: any[] = []
 
   /**
    * 检查数据是脑区还是神经元
@@ -670,6 +672,24 @@ export default class NeuronScene extends Vue {
     this.roiBall.position = new THREE.Vector3()
     this.scene.add(this.roiBall)
   }
+  /**
+   * 加载代表ROI的小球
+   * @param mapPos
+   * @param r ROI的半径
+   */
+  public loadMapBall (mapPos: number[][], r: number) {
+    for (const m of mapPos) {
+      let index = 0
+      const geometry = new THREE.SphereGeometry(r / 25, 32, 16)
+      const material = new THREE.MeshBasicMaterial({ color: 0xff00ff })
+      material.transparent = true
+      material.opacity = 0.3
+      this.mapBalls[index] = new THREE.Mesh(geometry, material)
+      this.mapBalls[index].position = new THREE.Vector3()
+      this.scene.add(this.mapBalls[index])
+      index += 1
+    }
+  }
 
   /**
    * 卸载代表ROI的小球
@@ -687,7 +707,18 @@ export default class NeuronScene extends Vue {
       this.roiBall.visible = flag
     }
   }
-
+  /**
+     * 显示map中的小球
+     */
+  public showMap (r: number) {
+    if (this.roiBall) {
+      this.setROIBallVisible(true)
+      return null
+    } else {
+      this.loadMapBall(this.mapPos, r)
+      return this.mapPos
+    }
+  }
   /**
    * 显示代表ROI的小球
    */

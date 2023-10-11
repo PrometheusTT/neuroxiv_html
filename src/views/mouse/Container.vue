@@ -24,6 +24,7 @@
               @searchROINeurons="searchROINeurons($event)"
               @neuronView="updateCurrentNeuronInfo"
               @viewNeurons="viewNeurons"
+              @showNeuronMap="showNeuronMap"
             />
           </div>
         </el-main>
@@ -135,6 +136,15 @@ export default class Container extends Vue {
     this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
     await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
   }
+  /**
+     * 更新当前显示的 neuron info 信息
+     * @param neuronDetail neuron detail
+     * @private
+     */
+  private async showNeuronMap (neuronDetail: any) {
+    this.neuronDetail.selectedTab = 'neuronFeatureMap'
+    await this.$nextTick()
+  }
 
   /**
      * 更新AI模型返回答案
@@ -202,9 +212,11 @@ export default class Container extends Vue {
     }
     criteria['brain_atlas'] = [this.$store.state.atlas]
     const condition = ids ? { id_list: ids } : { criteria: criteria }
+    console.log(condition)
     try {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
+      console.log(neurons)
       this.neuronList.setListData(neurons)
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }

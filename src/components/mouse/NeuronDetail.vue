@@ -59,7 +59,7 @@ import NeuronFeatureMap from '@/components/mouse/NeuronFeatureMap.vue'
   components: { NeuronFeatureMap, NeuronInfo, NeuronStates, MultiNeuronsViewer }
 })
 export default class NeuronDetail extends Vue {
-  // @Ref('neuronFeatureMap') readonly neuronFeatureMap!: NeuronFeatureMap
+  @Ref('neuronFeatureMap') readonly neuronFeatureMap!: NeuronFeatureMap
   @Ref('neuronStates') readonly neuronStates!: NeuronStates
   @Ref('neuronInfo') readonly neuronInfo!: NeuronInfo
   @Ref('multiNeuronsViewer') readonly multiNeuronsViewer!: MultiNeuronsViewer
@@ -82,6 +82,8 @@ export default class NeuronDetail extends Vue {
       }
     } else if (tab.name === 'multiNeuronsViewer') {
       this.$emit('viewNeurons')
+    } else if (tab.name === 'neuronFeatureMap') {
+      // this.$emit()
     }
   }
 }

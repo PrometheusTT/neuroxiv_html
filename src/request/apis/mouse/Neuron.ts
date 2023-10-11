@@ -13,11 +13,13 @@ const REQUEST_NAME_SPACE = ''
 // eslint-disable-next-line camelcase
 function searchNeurons (loadingTarget: HTMLElement | null, { id_list, criteria }: any, requestOptions: RequestOptions = {}) {
   const url = `${REQUEST_NAME_SPACE}search`
+  console.log(arguments[1])
   const options: RequestInit = {
     body: JSON.stringify(arguments[1])
   }
   requestOptions.errorMsg = requestOptions.errorMsg || 'search error'
   const params = { url, loadingTarget, options, ...requestOptions }
+  console.log(params)
   let r = request(params)
   let originR = r.start.bind(r)
   r.start = () => originR().then((data: any) => {

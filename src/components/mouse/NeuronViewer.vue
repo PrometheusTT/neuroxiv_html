@@ -85,7 +85,7 @@ import { Component, Vue, Watch, Ref } from 'vue-property-decorator'
 import NeuronScene from '@/components/mouse/NeuronScene.vue'
 import SliceSection from '@/components/mouse/SliceSection.vue'
 
-const neuronViewerBaseData = require('./surf_tree.json')
+import neuronViewerBaseData from './surf_tree.json'
 const rootId = neuronViewerBaseData[0].id
 
 @Component<NeuronViewer>({
