@@ -1,7 +1,7 @@
 /** 全局 filters */
 
 import Vue from 'vue'
-import { addEllipsisToText, addThousandDelimiter } from "@/utils/util"
+import { addEllipsisToText, addThousandDelimiter } from '@/utils/util'
 
 /**
  * 保留 N 位小数
