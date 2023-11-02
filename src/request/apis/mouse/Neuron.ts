@@ -17,6 +17,7 @@ function searchNeurons (loadingTarget: HTMLElement | null, { id_list, criteria }
   const options: RequestInit = {
     body: JSON.stringify(arguments[1])
   }
+  console.log(options.body)
   requestOptions.errorMsg = requestOptions.errorMsg || 'search error'
   const params = { url, loadingTarget, options, ...requestOptions }
   console.log(params)
@@ -71,8 +72,9 @@ function getNeuronInfo (loadingTarget: HTMLElement | null, id: string, atlas: st
 function AISearch (loadingTarget: HTMLElement | null, question: string, requestOptions: RequestOptions = {}) {
   const url = `${REQUEST_NAME_SPACE}AI/${question}`
   const options: RequestInit = {
-    // method: 'get'
-    body: JSON.stringify(question)
+    // method: 'post',
+    // body: JSON.stringify(question)
+    body: question
   }
   requestOptions.errorMsg = requestOptions.errorMsg || 'get AI advice error'
   const params = { url, loadingTarget, options, ...requestOptions }

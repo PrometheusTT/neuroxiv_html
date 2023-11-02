@@ -343,7 +343,8 @@ export default class NeuronInfo extends Vue {
             loadingInstance.close()
           }
           if (data.id === -1) {
-            await this.dendriteScene.loadDendrite(data)
+            // await this.dendriteScene.loadDendrite(data)\
+            await this.dendriteScene.loadDendriteRadius(data, 10)
           }
         }
       } else {

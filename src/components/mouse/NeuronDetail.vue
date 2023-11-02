@@ -83,7 +83,7 @@ export default class NeuronDetail extends Vue {
     } else if (tab.name === 'multiNeuronsViewer') {
       this.$emit('viewNeurons')
     } else if (tab.name === 'neuronFeatureMap') {
-      // this.$emit()
+      this.$emit('showNeuronMap')
     }
   }
 }

@@ -42,6 +42,7 @@
     <!-- 神经元搜索对话框 -->
     <el-dialog
       title="Neuron Search"
+      class="AIWindow"
       :visible.sync="searchDialogVisible"
       width="90%"
       top="10vh"
@@ -66,20 +67,26 @@
     <!-- AI搜索对话框 -->
     <el-dialog
       title="Neuron GPT"
+      custom-class="AIWindow"
       :visible.sync="LLMDialogVisible"
-      width="90%"
-      top="10vh"
+      width="50%"
+      top="20vh"
       :close-on-click-modal="false"
     >
-      <NeuronLLM ref="neuronLLM" />
+      <AISearchWindow
+        ref="aiSearchWindow"
+        @AISearch="AISearch"
+      />
       <span
         slot="footer"
         class="dialog-footer"
       >
-        <el-button @click="LLMDialogVisible = false">Cancel</el-button>
+        <el-button @click="LLMDialogVisible = false">
+          Cancel
+        </el-button>
         <el-button
           type="primary"
-          @click="Reset"
+          @click="ClearMessage()"
         >Clear</el-button>
         <el-button
           type="primary"
@@ -99,6 +106,8 @@ import NeuronSearch from '@/components/mouse/NeuronSearch.vue'
 import { getNeuronInfo, searchNeurons, searchSimilarNeuron, uploadNeuron, searchROINeuron, AISearch } from '@/request/apis/mouse/Neuron'
 import SmallScreenAlert from '@/components/common/SmallScreenAlert.vue'
 import NeuronLLM from '@/components/mouse/NeuronLLM.vue'
+import AISearchWindow from '@/components/mouse/AISearchWindow.vue'
+import { result } from 'lodash'
 
 @Component({
   components: {
@@ -107,15 +116,18 @@ import NeuronLLM from '@/components/mouse/NeuronLLM.vue'
     NeuronSearch,
     NeuronDetail,
     NeuronList,
-    HeaderBar
+    HeaderBar,
+    AISearchWindow
   }
 })
+
 export default class Container extends Vue {
   @Ref('neuronDetail') readonly neuronDetail!: NeuronDetail
   @Ref('neuronSearch') readonly neuronSearch!: NeuronSearch
   @Ref('neuronList') readonly neuronList!: NeuronList
   @Ref('neuronLLM') readonly neuronLLM!: NeuronLLM
   @Ref('headBar') readonly headBar!: HeaderBar
+  @Ref('aiSearchWindow') readonly aiSearchWindow!: AISearchWindow
   private searchDialogVisible: boolean = false
   private LLMDialogVisible: boolean = false
   private reFresh: boolean = true
@@ -141,10 +153,6 @@ export default class Container extends Vue {
      * @param neuronDetail neuron detail
      * @private
      */
-  private async showNeuronMap (neuronDetail: any) {
-    this.neuronDetail.selectedTab = 'neuronFeatureMap'
-    await this.$nextTick()
-  }
 
   /**
      * 更新AI模型返回答案
@@ -231,21 +239,45 @@ export default class Container extends Vue {
   }
 
   private async AISearch (func: any = () => {}) {
-    const question = this.neuronLLM.getQuestion()
-    try {
-      // eslint-disable-next-line camelcase
-      await AISearch(document.body, question).start()
-      // this.neuronList.setListData(neurons)
-      // this.neuronDetail.selectedTab = 'neuronStates'
-      // this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
-      // await this.$nextTick()
-      // this.neuronDetail.neuronStates.featurePlot.renderChart()
-      // this.neuronDetail.neuronStates.histogramBars.renderChart()
-      // this.searchDialogVisible = false
-      func()
-    } catch (e) {
-      console.error(e)
-    }
+    this.aiSearchWindow.sendMessage()
+    const question = this.aiSearchWindow.lastInput
+    console.log('question is: ' + question)
+    let result = this.aiSearchWindow.GetIntent(question)
+    console.log(result)
+    // if (result.searchIntent === 'Search') {
+    //   const condition = { criteria: result.criteria }
+    //   console.log(condition)
+    //   try {
+    //     // eslint-disable-next-line camelcase
+    //     const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
+    //     console.log(neurons)
+    //     this.neuronList.setListData(neurons)
+    //     this.neuronDetail.selectedTab = 'neuronStates'
+    //     this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+    //     await this.$nextTick()
+    //     this.neuronDetail.neuronStates.featurePlot.renderChart()
+    //     this.neuronDetail.neuronStates.histogramBars.renderChart()
+    //     this.searchDialogVisible = false
+    //     func()
+    //     this.LLMDialogVisible = false
+    //   } catch (e) {
+    //     console.error(e)
+    //   }
+    // } else {
+    //   try {
+    //     // eslint-disable-next-line camelcase
+    //     const response = await AISearch(document.body, question).start()
+    //     // let res = JSON.parse(response)
+    //     console.log(response)
+    //     this.aiSearchWindow.addResponseFromAPI(response.response.response)
+    //     func()
+    //   } catch (e) {
+    //     console.error(e)
+    //   }
+    // }
+  }
+  private async ClearMessage (func: any = () => {}) {
+    this.aiSearchWindow.messages = []
   }
 
   /**
@@ -391,6 +423,11 @@ export default class Container extends Vue {
     await this.updateCurrentNeuronInfo(this.neuronList.getFirstItem())
   }
 
+  public async showNeuronMap () {
+    console.log('showNeuronMap')
+    this.neuronDetail.multiNeuronsViewer.neuronScene.showMap(10)
+  }
+
   /**
    * 切换当前atlas
    * @param atlas
@@ -464,5 +501,8 @@ export default class Container extends Vue {
     overflow: visible;
     box-shadow: 3px 3px 8px 2px var(--shadow-color);
   }
+}
+.AIWindow{
+
 }
 </style>

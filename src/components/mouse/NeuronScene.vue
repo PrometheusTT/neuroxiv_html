@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Ref } from 'vue-property-decorator'
 import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { VTKLoader } from 'three/examples/jsm/loaders/VTKLoader'
@@ -335,6 +335,67 @@ export default class NeuronScene extends Vue {
         },
         () => {},
         (err: any) => { reject(err) }
+      )
+    })
+  }
+
+  public loadDendriteRadius (data: neuronSceneComponent, pointSize: number) {
+    this.camera.position.set(0, 0, 25)
+
+    return new Promise((resolve, reject) => {
+      const loader = new OBJLoader()
+      loader.load(
+        data.src,
+        (obj: any) => {
+          this.neuronData.push(data)
+
+          if (data.name.indexOf('axon') !== -1) {
+            const material = new THREE.PointsMaterial({ size: pointSize, color: 0xff0000 })
+            obj.children[0].material.dispose() // 清除之前的材质
+            obj.children[0].material = material
+          } else if (data.name.indexOf('den') !== -1) {
+            const material = new THREE.PointsMaterial({ size: pointSize, color: 0xff0000 })
+            obj.children[0].material.dispose() // 清除之前的材质
+            obj.children[0].material = material
+          }
+
+          obj.children[0].geometry.center()
+
+          // 获取BufferGeometry
+          const baseGeometry = obj.children[0].geometry
+          const positions = baseGeometry.attributes.position.array
+
+          // 获取顶点数
+          const numVertices = positions.length / 3
+
+          for (let i = 0; i < numVertices; i++) {
+            let vertexSize = pointSize // 基本顶点大小
+
+            // // 如果有自定义顶点大小，请使用它
+            // if (customPointSizes.has(i)) {
+            //   vertexSize = customPointSizes.get(i)
+            // }
+
+            // 修改顶点大小
+            obj.children[0].geometry.attributes.size.array[i] = vertexSize
+          }
+
+          // 设置更新标志以通知Three.js需要重新渲染材质
+          obj.children[0].geometry.attributes.size.needsUpdate = true
+
+          if (this.neuronDataMap.has(data.id)) {
+            this.unloadObj(data.id)
+          }
+
+          this.neuronDataMap.set(data.id, obj)
+          this.scene.add(obj)
+          this.resetRender()
+          resolve(true)
+        },
+        () => {},
+        (err) => {
+          reject(err)
+        }
       )
     })
   }
@@ -711,13 +772,46 @@ export default class NeuronScene extends Vue {
      * 显示map中的小球
      */
   public showMap (r: number) {
-    if (this.roiBall) {
-      this.setROIBallVisible(true)
-      return null
-    } else {
-      this.loadMapBall(this.mapPos, r)
-      return this.mapPos
+    console.log('showmap')
+    let points = null
+    let lines = null
+    const pointGeometry = new THREE.BufferGeometry()
+    const lineGeometry = new THREE.BufferGeometry()
+    const material = new THREE.LineBasicMaterial({ color: 0xffffff })
+
+    const pointsArray = [
+      0, 0, 0,
+      1, 1, 1,
+      -1, 1, -1,
+      2, 2, 2
+    ]
+
+    pointGeometry.setAttribute('position', new THREE.Float32BufferAttribute(pointsArray, 3))
+    points = new THREE.Points(pointGeometry, material)
+
+    const lineIndices = [
+      0, 1,
+      1, 2,
+      2, 3,
+      3, 0
+    ]
+
+    lineGeometry.setIndex(lineIndices)
+    lines = new THREE.LineSegments(lineGeometry, material)
+
+    // 添加点和线到场景
+    this.scene.add(points)
+    this.scene.add(lines)
+
+    this.camera.position.z = 5
+
+    // 渲染场景
+    const animate = () => {
+      requestAnimationFrame(animate)
+      this.renderer.render(this.scene, this.camera)
     }
+
+    animate()
   }
   /**
    * 显示代表ROI的小球
