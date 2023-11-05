@@ -27,7 +27,7 @@ export default class AISearchWindow extends Vue {
   public messages: {text: string, isUser: Boolean}[] = []
   private userInput: string = ''
   public lastInput: string = ''
-  private searchConditions: any[] = searchConditions.children
+  private Conditions: any[] = searchConditions.children
 
   public sendMessage () {
     const userMessage = this.userInput
@@ -53,8 +53,11 @@ export default class AISearchWindow extends Vue {
 
   public GetIntent (question:string) {
     let conditions:any = {}
-    for (const sc in this.searchConditions) {
-        for()
+    for (const index in conditions) {
+      console.log(index)
+      // for (const sc in conditions[index].children) {
+      //   console.log(sc)
+      // }
     }
     // 定义用于搜索意图的关键词
     const searchKeywords = ['search', 'find', 'query', 'inquire', 'look for']
