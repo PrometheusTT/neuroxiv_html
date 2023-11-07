@@ -103,7 +103,7 @@ import HeaderBar from '@/components/mouse/HeaderBar.vue'
 import NeuronList from '@/components/mouse/NeuronList.vue'
 import NeuronDetail from '@/components/mouse/NeuronDetail.vue'
 import NeuronSearch from '@/components/mouse/NeuronSearch.vue'
-import { getNeuronInfo, searchNeurons, searchSimilarNeuron, uploadNeuron, searchROINeuron, AISearch } from '@/request/apis/mouse/Neuron'
+import { getNeuronInfo, searchNeurons, searchSimilarNeuron, uploadNeuron, searchROINeuron, AISearch, getSearchIntent } from '@/request/apis/mouse/Neuron'
 import SmallScreenAlert from '@/components/common/SmallScreenAlert.vue'
 import NeuronLLM from '@/components/mouse/NeuronLLM.vue'
 import AISearchWindow from '@/components/mouse/AISearchWindow.vue'
@@ -242,39 +242,51 @@ export default class Container extends Vue {
     this.aiSearchWindow.sendMessage()
     const question = this.aiSearchWindow.lastInput
     console.log('question is: ' + question)
-    let result = this.aiSearchWindow.GetIntent(question)
-    console.log(result)
-    // if (result.searchIntent === 'Search') {
-    //   const condition = { criteria: result.criteria }
-    //   console.log(condition)
-    //   try {
-    //     // eslint-disable-next-line camelcase
-    //     const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
-    //     console.log(neurons)
-    //     this.neuronList.setListData(neurons)
-    //     this.neuronDetail.selectedTab = 'neuronStates'
-    //     this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
-    //     await this.$nextTick()
-    //     this.neuronDetail.neuronStates.featurePlot.renderChart()
-    //     this.neuronDetail.neuronStates.histogramBars.renderChart()
-    //     this.searchDialogVisible = false
-    //     func()
-    //     this.LLMDialogVisible = false
-    //   } catch (e) {
-    //     console.error(e)
-    //   }
-    // } else {
-    //   try {
-    //     // eslint-disable-next-line camelcase
-    //     const response = await AISearch(document.body, question).start()
-    //     // let res = JSON.parse(response)
-    //     console.log(response)
-    //     this.aiSearchWindow.addResponseFromAPI(response.response.response)
-    //     func()
-    //   } catch (e) {
-    //     console.error(e)
-    //   }
-    // }
+    let searchIntent = 'unknown intent'
+    let searchConditions = {}
+    try {
+      // eslint-disable-next-line camelcase
+      const response = await getSearchIntent(document.body, question).start()
+      // let res = JSON.parse(response)
+      console.log(response.response)
+      searchIntent = response.response.toString()
+      func()
+      if (searchIntent === 'search') {
+        let result = this.aiSearchWindow.GetIntent(question, searchIntent)
+        console.log(result)
+        const condition = { criteria: result.criteria }
+        searchConditions = condition
+        console.log(condition)
+        try {
+          // eslint-disable-next-line camelcase
+          const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
+          console.log(neurons)
+          this.neuronList.setListData(neurons)
+          this.neuronDetail.selectedTab = 'neuronStates'
+          this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+          await this.$nextTick()
+          this.neuronDetail.neuronStates.featurePlot.renderChart()
+          this.neuronDetail.neuronStates.histogramBars.renderChart()
+          this.LLMDialogVisible = false
+          func()
+        } catch (e) {
+          console.error(e)
+        }
+      } else {
+        try {
+          // eslint-disable-next-line camelcase
+          const response = await AISearch(document.body, question).start()
+          // let res = JSON.parse(response)
+          console.log(response)
+          this.aiSearchWindow.addResponseFromAPI(response.response.response)
+          func()
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    } catch (e) {
+      console.error(e)
+    }
   }
   private async ClearMessage (func: any = () => {}) {
     this.aiSearchWindow.messages = []

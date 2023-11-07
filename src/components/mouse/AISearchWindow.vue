@@ -51,7 +51,7 @@ export default class AISearchWindow extends Vue {
     this.$emit('AISearch')
   }
 
-  public GetIntent (question:string) {
+  public GetIntent (question:string, searchIntent:string) {
     let conditions:any = {}
     for (const index in conditions) {
       console.log(index)
@@ -66,29 +66,31 @@ export default class AISearchWindow extends Vue {
     // const dataSourceKeywords = ['SEU', 'AIBS', 'Mouselight']
 
     // 初始化意图和参数
-    let searchIntent = 'unknown intent'
-    let searchQuery = ''
+    // let searchIntent = 'unknown intent'
+    let searchQuery = question.trim()
     let criteria = {}
 
     // 遍历搜索关键词，检查用户输入是否包含搜索意图
-    for (const keyword of searchKeywords) {
-      if (question.includes(keyword)) {
-        searchIntent = 'Search'
-        // 从用户输入中去除搜索关键词以获取搜索参数
-        searchQuery = question.replace(keyword, '').trim()
-        for (const keyword of altasKeywords) {
-          if (searchQuery.includes(keyword)) {
-            this.$set(criteria, 'brain_altas', [keyword])
-            // criteria['brain_atlas'] = [keyword]
-          }
-        }
-        for (const keyword of dataSourceKeywords) {
-          if (searchQuery.includes(keyword)) {
-            this.$set(criteria, 'data_source', [keyword])
-          }
+
+    if (searchIntent === 'search') {
+    // 从用户输入中去除搜索关键词以获取搜索参数
+    //   searchQuery = question.replace(keyword, '').trim()
+      for (const keyword of altasKeywords) {
+        if (question.includes(keyword)) {
+          this.$set(criteria, 'brain_altas', [keyword])
+        // criteria['brain_atlas'] = [keyword]
         }
       }
+      for (const keyword of dataSourceKeywords) {
+        if (question.includes(keyword)) {
+          this.$set(criteria, 'data_source', [keyword])
+        }
+      }
+      if (question.includes('AutoArbor')) {
+        this.$set(criteria, 'has_ab', true)
+      }
     }
+
     return { searchIntent, criteria }
   }
 }
