@@ -6,6 +6,15 @@
         @neuronView="$emit('neuronView', $event)"
       />
     </div>
+    <div class="right-top">
+      <el-button
+        icon="el-icon-download"
+        size="mini"
+        @click="loadOBJFile"
+      >
+        Download
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -16,12 +25,11 @@ import SliceSection from '@/components/mouse/SliceSection.vue'
 import ROI from '@/components/mouse/ROI.vue'
 
 import neuronViewerBaseData from './surf_tree.json'
-
 import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
 const rootId = neuronViewerBaseData[0].id
 const rootIdFMost = neuronViewerBaseDataFMost[0].id
 
-@Component<NeuronInfo>({
+@Component<NeuronFeatureMap>({
   mounted () {
   },
   components: {
@@ -30,24 +38,18 @@ const rootIdFMost = neuronViewerBaseDataFMost[0].id
     ROI
   }
 })
-export default class NeuronInfo extends Vue {
+export default class NeuronFeatureMap extends Vue {
     @Ref('neuronScene') neuronScene!: NeuronScene
-    @Ref('ROI') ROI!: ROI
-    public neuronViewerData: any = this.$store.state.atlas === 'CCFv3' ? neuronViewerBaseData : neuronViewerBaseDataFMost // neuronViewerBaseData
-    private rootId: number = this.$store.state.atlas === 'CCFv3' ? rootId : rootIdFMost // rootId
-    private activeNames: any = ['brain']
-    private sagittalMax: number = 11375 // 18.20
-    private AxialMax: number = 7975 // 12.76
-    private coronalMax: number = 13175 // 21.08
-    private step: number = 25
-    public selectedTab: string = 'viewer property'
+    // mounted () {
+    // // 调用 loadOBJFile 方法加载 OBJ 文件
+    //   this.loadOBJFile('./soma_density.obj')
+    // }
 
-  /**
-     * 脑区el-tree节点状态改变的回调函数
-     * @param data 节点数据
-     * @param checked 节点是否被选中
-     * @private
-     */
+    // 方法：使用 NeuronScene 的 loadobj 方法加载 OBJ 文件
+    public async loadOBJFile (objFilePath: string) {
+      console.log('load obj')
+      await this.neuronScene.loadPointObj('./test.obj')
+    }
 }
 </script>
 
@@ -81,6 +83,12 @@ export default class NeuronInfo extends Vue {
   }
   .right-side {
     flex: 1;
+  }
+  .right-top {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
   }
 }
 </style>

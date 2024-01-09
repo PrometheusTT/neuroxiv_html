@@ -29,12 +29,13 @@
           </div>
         </el-main>
         <el-aside width="auto">
-          <NeuronList
-            ref="neuronList"
+          <NeuronLists
+            ref="neuronLists"
             @neuronView="updateCurrentNeuronInfo"
             @neuronAnalysis="updateNeuronAnalysis"
             @checkNeuron="checkNeuron"
             @viewNeurons="viewNeurons"
+            @switchLocalAndFull="switchLocalAndFull($event)"
           />
         </el-aside>
       </el-container>
@@ -108,9 +109,11 @@ import SmallScreenAlert from '@/components/common/SmallScreenAlert.vue'
 import NeuronLLM from '@/components/mouse/NeuronLLM.vue'
 import AISearchWindow from '@/components/mouse/AISearchWindow.vue'
 import { result } from 'lodash'
+import NeuronLists from '@/components/mouse/NeuronLists.vue'
 
 @Component({
   components: {
+    NeuronLists,
     NeuronLLM,
     SmallScreenAlert,
     NeuronSearch,
@@ -124,7 +127,8 @@ import { result } from 'lodash'
 export default class Container extends Vue {
   @Ref('neuronDetail') readonly neuronDetail!: NeuronDetail
   @Ref('neuronSearch') readonly neuronSearch!: NeuronSearch
-  @Ref('neuronList') readonly neuronList!: NeuronList
+  // @Ref('neuronList') readonly neuronList!: NeuronList
+  @Ref('neuronLists') readonly neuronLists!: NeuronLists
   @Ref('neuronLLM') readonly neuronLLM!: NeuronLLM
   @Ref('headBar') readonly headBar!: HeaderBar
   @Ref('aiSearchWindow') readonly aiSearchWindow!: AISearchWindow
@@ -144,8 +148,10 @@ export default class Container extends Vue {
     await this.$nextTick()
     const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
     const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
+    console.log(neuronInfo)
     this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
     this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
+    console.log(this.neuronDetail.neuronInfo.neuronViewerReconstructionData)
     await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
   }
   /**
@@ -194,13 +200,15 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { basic_info, morpho_info, plot, proj_info, neurons } = await searchNeurons(document.body, { id_list: neuronIds }).start()
+      console.log(document.body)
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
       this.neuronDetail.neuronStates.featurePlot.renderChart()
       this.neuronDetail.neuronStates.histogramBars.renderChart()
       if (updateNeuronList) {
-        this.neuronList.setListData(neurons)
+        console.log(neurons)
+        this.neuronLists.neuronList.setListData(neurons)
       }
     } catch (e) {
       console.error(e)
@@ -225,7 +233,24 @@ export default class Container extends Vue {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
       console.log(neurons)
-      this.neuronList.setListData(neurons)
+      // 初始化两个空数组用于存放数据
+      let fullMorphNeurons:any[] = []
+      let localMorphNeurons:any[] = []
+      // 遍历neurons数组，根据名字分配到对应数组
+      neurons.forEach((neuron: { id: string | string[] }) => {
+        if (neuron.id.includes('full')) {
+          fullMorphNeurons.push(neuron)
+        } else if (neuron.id.includes('local')) {
+          localMorphNeurons.push(neuron)
+        }
+      })
+      console.log(fullMorphNeurons)
+      // this.neuronList.setListData(neurons)
+      if (this.neuronLists.selectedTab === 'fullMorph') {
+        this.neuronLists.neuronList.setListData(fullMorphNeurons)
+      } else {
+        this.neuronLists.neuronListLocal.setListData(localMorphNeurons)
+      }
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
@@ -261,13 +286,14 @@ export default class Container extends Vue {
           // eslint-disable-next-line camelcase
           const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
           console.log(neurons)
-          this.neuronList.setListData(neurons)
+          this.neuronLists.neuronList.setListData(neurons)
           this.neuronDetail.selectedTab = 'neuronStates'
           this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
           await this.$nextTick()
           this.neuronDetail.neuronStates.featurePlot.renderChart()
           this.neuronDetail.neuronStates.histogramBars.renderChart()
           this.LLMDialogVisible = false
+          this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please send me more information')
           func()
         } catch (e) {
           console.error(e)
@@ -279,6 +305,8 @@ export default class Container extends Vue {
           // let res = JSON.parse(response)
           console.log(response)
           this.aiSearchWindow.addResponseFromAPI(response.response.response)
+          this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+
           func()
         } catch (e) {
           console.error(e)
@@ -308,6 +336,7 @@ export default class Container extends Vue {
       await this.$nextTick()
       this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
       this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
+      console.log(this.neuronDetail.neuronInfo.neuronViewerReconstructionData)
       await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
     } catch (e) {
       console.error(e)
@@ -348,7 +377,7 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchROINeuron(document.body, roiParameter, this.$store.state.atlas).start()
-      this.neuronList.setListData(neurons)
+      this.neuronLists.neuronList.setListData(neurons)
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
@@ -372,8 +401,8 @@ export default class Container extends Vue {
     await this.$nextTick()
     if (this.neuronDetail.selectedTab === 'multiNeuronsViewer') {
       let dendriteData = {
-        id: neuronDetail.id + '_den',
-        name: neuronDetail.id + '_den',
+        id: neuronDetail.id + '_basal',
+        name: neuronDetail.id + '_basal',
         src: '',
         // eslint-disable-next-line camelcase
         rgb_triplet: [0, 0, 255],
@@ -405,6 +434,7 @@ export default class Container extends Vue {
         }
       } else {
         const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
+        console.log(neuronInfo.viewer_info[0])
         dendriteData.src = neuronInfo.viewer_info[0].children[0].src
         axonData.src = neuronInfo.viewer_info[0].children[1].src
         if (neuronDetail['has_dendrite']) {
@@ -421,7 +451,7 @@ export default class Container extends Vue {
    * 将神经元列表中勾选的的神经元进行展示
    */
   public async viewNeurons () {
-    let neuronsDetail = this.neuronList.getSelectedItems()
+    let neuronsDetail = this.neuronLists.neuronList.getSelectedItems()
     this.neuronDetail.multiNeuronsViewer.neuronScene.setAllNeuronsVisible(false)
     neuronsDetail.forEach((neuronDetail: any) => {
       this.checkNeuron(neuronDetail, true)
@@ -432,7 +462,7 @@ export default class Container extends Vue {
    * 加载神经元列表第一个神经元
    */
   public async loadFirstNeuron () {
-    await this.updateCurrentNeuronInfo(this.neuronList.getFirstItem())
+    await this.updateCurrentNeuronInfo(this.neuronLists.neuronList.getFirstItem())
   }
 
   public async showNeuronMap () {
@@ -449,6 +479,21 @@ export default class Container extends Vue {
     console.log('atlas', atlas)
     this.headBar.setAtlas(atlas)
     this.$store.commit('updateAtlas', atlas)
+    this.reFresh = false
+    this.$nextTick(() => {
+      this.reFresh = true
+      let criteria = {
+        brain_atlas: [this.$store.state.atlas]
+      }
+      this.searchNeurons(criteria, undefined, () => {
+        this.neuronDetail.selectedTab = 'multiNeuronsViewer'
+      })
+    })
+  }
+
+  public async switchLocalAndFull (recDegree: string) {
+    // location.reload()
+    this.neuronLists.setRecDegree(recDegree)
     this.reFresh = false
     this.$nextTick(() => {
       this.reFresh = true

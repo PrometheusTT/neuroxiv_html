@@ -50,16 +50,16 @@
           >
             {{ item.celltype }}
           </el-tag>
+          <!--          <el-tag-->
+          <!--            class="neuron-tag-item"-->
+          <!--            :color="getTagColor(item.brain_atlas)"-->
+          <!--            effect="dark"-->
+          <!--            size="mini"-->
+          <!--          >-->
+          <!--            {{ item.brain_atlas }}-->
+          <!--          </el-tag>-->
           <el-tag
-            class="neuron-tag-item"
-            :color="getTagColor(item.brain_atlas)"
-            effect="dark"
-            size="mini"
-          >
-            {{ item.brain_atlas }}
-          </el-tag>
-          <el-tag
-            v-for="(prop, j) in ['axon', 'bouton', 'dendrite', 'soma']"
+            v-for="(prop, j) in ['axon', 'basal', 'apical', 'soma']"
             :key="j"
             class="neuron-tag-item"
             :class="{ disabled: !item[`has_${prop}`] }"
@@ -67,55 +67,18 @@
             effect="dark"
             size="mini"
           >
-            {{ prop }}
-          </el-tag>
-        </div>
-        <el-button
-          type="primary"
-          size="small"
-          @click="neuronViewHandler(item)"
-        >
-          Info
-        </el-button>
-      </li>
-      <li
-        v-for="(item, i) in currentPageData"
-        :key="i"
-        class="neuron-item"
-      >
-        <el-checkbox
-          v-model="item.selected"
-          @change="checkNeuronCallback(item)"
-        />
-        <img
-          :src="item.img_src"
-          :title="item.id"
-          alt="neuron thumb"
-          class="neuron-thumb"
-        >
-        <div class="neuron-tags">
-          <el-tag
-            class="neuron-tag-item-cell-type"
-            :color="getTagColor(item.celltype)"
-            effect="dark"
-            size="mini"
-            @click="jumpAtlasWeb(item)"
-          >
-            {{ item.celltype }}
+            <template v-if="prop === 'dendrite'">
+              basal
+            </template>
+            <template v-else>
+              {{ prop }}
+            </template>
           </el-tag>
           <el-tag
+            v-for="(prop, k) in ['full']"
+            :key="k"
             class="neuron-tag-item"
-            :color="getTagColor(item.brain_atlas)"
-            effect="dark"
-            size="mini"
-          >
-            {{ item.brain_atlas }}
-          </el-tag>
-          <el-tag
-            v-for="(prop, j) in ['axon', 'bouton', 'dendrite', 'soma']"
-            :key="j"
-            class="neuron-tag-item"
-            :class="{ disabled: !item[`has_${prop}`] }"
+            :class="{ disabled: prop === 'local'}"
             :color="getTagColor(prop)"
             effect="dark"
             size="mini"
@@ -143,6 +106,26 @@
       :pager-count="7"
       @current-change="gotoPage"
     />
+    <el-row
+      class="pager"
+      type="flex"
+      justify="center"
+    >
+      <el-col :span="8">
+        <el-input
+          v-model="targetPage"
+          placeholder="跳转到页码"
+        />
+      </el-col>
+      <el-col :span="8">
+        <el-button
+          type="primary"
+          @click="goToTargetPage"
+        >
+          go to page
+        </el-button>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -157,12 +140,13 @@ export default class NeuronList extends Vue {
   private currentPageData: any[] = []
   private pageSize: number = 10
   private currentPage: number = 1
+  private targetPage : number = 1
   private checkAll: boolean = false
   private isIndeterminate: boolean = false
 
   // 当前这一页选中的 item
   get currentPageSelectedItem () {
-    console.log(this.data)
+    console.log(this.currentPageData)
     return this.currentPageData.filter((item: any) => item.selected === true)
   }
 
@@ -177,6 +161,7 @@ export default class NeuronList extends Vue {
    * 获取列表中勾选的数据
    */
   public getSelectedItems () {
+    console.log(this.data.filter((item: any) => item.selected))
     return this.data.filter((item: any) => item.selected)
   }
 
@@ -214,14 +199,14 @@ export default class NeuronList extends Vue {
       this.$message.warning('No neuron selected')
       return
     }
-    this.$emit('neuronAnalysis', selectedNeuronIds)
+    this.$emit('neuronAnalysisLists', selectedNeuronIds)
   }
 
   /**
    * 批量选择神经元之后3D可视化
    */
   private viewNeuronsHandler () {
-    this.$emit('viewNeurons')
+    this.$emit('viewNeuronsHandlerLists')
   }
 
   /**
@@ -229,7 +214,7 @@ export default class NeuronList extends Vue {
    * @param neuronDetail 神经元信息
    */
   private neuronViewHandler (neuronDetail: any) {
-    this.$emit('neuronView', neuronDetail)
+    this.$emit('neuronViewHandlerLists', neuronDetail)
   }
 
   /**
@@ -237,7 +222,7 @@ export default class NeuronList extends Vue {
    * @param neuronDetail 神经元信息
    */
   private checkNeuronCallback (neuronDetail: any) {
-    this.$emit('checkNeuron', neuronDetail)
+    this.$emit('checkNeuronLists', neuronDetail)
   }
 
   /**
@@ -250,10 +235,15 @@ export default class NeuronList extends Vue {
       axon: 'rgb(247, 206, 205)',
       bouton: 'rgb(253, 242, 208)',
       dendrite: 'rgb(229, 239, 219)',
+      apical: 'rgb(255, 0, 255)',
+      basal: 'rgb(255, 255, 0)',
       soma: 'rgb(224, 235, 245)',
       CCFv3: 'rgb(214, 253, 254)',
-      fMOST: 'rgb(159, 205, 99)'
+      fMOST: 'rgb(159, 205, 99)',
+      local: 'rgb(134,145,234)',
+      full: 'rgb(255,50,50)'
     }
+    // console.log(colorMap[prop] || 'white')
     return colorMap[prop] || 'white'
   }
 
@@ -264,6 +254,13 @@ export default class NeuronList extends Vue {
    */
   private gotoPage (whichPage: number) {
     let currentPage = whichPage || this.currentPage
+    let start = this.pageSize * (currentPage - 1)
+    let end = start + this.pageSize
+    this.currentPageData = this.data.slice(start, end)
+    this.currentPage = currentPage
+  }
+  private goToTargetPage () {
+    let currentPage = this.targetPage
     let start = this.pageSize * (currentPage - 1)
     let end = start + this.pageSize
     this.currentPageData = this.data.slice(start, end)

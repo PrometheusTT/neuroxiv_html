@@ -60,6 +60,7 @@ function getNeuronInfo (loadingTarget: HTMLElement | null, id: string, atlas: st
     // }
     return data
   })
+  console.log(r)
   return r
 }
 

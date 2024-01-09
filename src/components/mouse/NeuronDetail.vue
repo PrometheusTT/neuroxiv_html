@@ -7,13 +7,13 @@
       class="full-height"
       @tab-click="tabClickHandler"
     >
-      <el-tab-pane
-        label="Neurons Map"
-        name="neuronFeatureMap"
-        :lazy="true"
-      >
-        <NeuronFeatureMap ref="neuronFeatureMap" />
-      </el-tab-pane>
+<!--      <el-tab-pane-->
+<!--        label="Neurons Map"-->
+<!--        name="neuronFeatureMap"-->
+<!--        :lazy="true"-->
+<!--      >-->
+<!--        <NeuronFeatureMap ref="neuronFeatureMap" />-->
+<!--      </el-tab-pane>-->
       <el-tab-pane
         label="Neurons viewer"
         name="multiNeuronsViewer"

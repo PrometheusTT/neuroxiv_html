@@ -2,7 +2,7 @@
   <div class="home">
     <section class="mouse-content">
       <NeuronLogo class="neuron-logo" />
-      <p>An open-source pan-neuron table of morphology and connectivity.</p>
+      <p>Atlas Is Not Enough: Open-Databasing Brain-Wide Neuron Morphometry.</p>
       <div class="mouse-features-container">
         <img
           class="dendrite-img"

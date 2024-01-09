@@ -326,6 +326,7 @@ export default class NeuronInfo extends Vue {
    * @private
    */
   private async checkReconstructionTreeCallback (data: any, checked: boolean) {
+    console.log(data)
     if (data.hasOwnProperty('src')) {
       if (checked) {
         if (this.neuronScene.checkLoadComponent(data)) {
@@ -342,9 +343,10 @@ export default class NeuronInfo extends Vue {
           if (LoadingZero()) {
             loadingInstance.close()
           }
-          if (data.id === -1) {
-            // await this.dendriteScene.loadDendrite(data)\
-            await this.dendriteScene.loadDendriteRadius(data, 10)
+          if (data.id === -1 || data.id === -4) {
+            console.log(data)
+            await this.dendriteScene.loadDendrite(data)
+            // await this.dendriteScene.loadDendrite
           }
         }
       } else {

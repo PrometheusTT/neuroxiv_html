@@ -71,7 +71,8 @@ export default class NeuronScene extends Vue {
   private centerShift!: THREE.Vector3
   private camera!: THREE.PerspectiveCamera
   private renderer!: THREE.WebGLRenderer
-  private scene!: THREE.Scene
+  // private scene!: THREE.Scene
+  public scene!: THREE.Scene
   private controls!: TrackballControls
   private debounceOnSceneResize: any = null
   private resizeObserve: any = null
@@ -228,17 +229,21 @@ export default class NeuronScene extends Vue {
         data.src,
         (obj: any) => {
           this.neuronData.push(data)
-          // let material = new LineMaterial()
+          let material = new LineMaterial()
           // material.line-width = 3
           // if (data.name.indexOf('axon') !== -1) {
-          //   obj.children[0].material.line-width = 1
+          //   // obj.children[0].material.line-width = 1
           //   obj.children[0].material.color.set(0xff0000)
           // } else if (data.name.indexOf('den') !== -1) {
-          //   obj.children[0].material.line-width = 10
-          //   obj.children[0].material.color.set(0x0000ff)
+          //   // obj.children[0].material.line-width = 10
+          //   obj.children[0].material.color.set(0xFF00FF)
+          // } else if (data.name.indexOf('apical') !== -1) {
+          //   // obj.children[0].material.line-width = 10
+          //   obj.children[0].material.color.set(0xFF00FF)
           // }
           if (data.hasOwnProperty('rgb_triplet')) {
             // material.color = new THREE.Color(`rgb(${data.rgb_triplet[0]}, ${data.rgb_triplet[1]}, ${data.rgb_triplet[2]})`)
+            console.log(data)
             obj.children[0].material.color = new THREE.Color(`rgb(${data.rgb_triplet[0]}, ${data.rgb_triplet[1]}, ${data.rgb_triplet[2]})`)
             if (data.id > 0) {
               // console.log(data.name, 'ttt')
@@ -272,6 +277,30 @@ export default class NeuronScene extends Vue {
           this.scene.add(obj)
           // console.log(obj)
           this.resetRender()
+          resolve(true)
+        },
+        () => {},
+        (err: any) => { reject(err) }
+      )
+    })
+  }
+
+  public async loadPointObj (data: string) {
+    console.log(data)
+    // await this.waitRootLoaded()
+    return new Promise((resolve, reject) => {
+      const loader = new OBJLoader()
+      loader.load(
+        './test.obj',
+        (obj: any) => {
+          let material = new LineMaterial()
+          obj.children[0].material.color.set(0xff0000)
+          obj.children[0].geometry.translate(this.centerShift.x, this.centerShift.y, this.centerShift.z)
+          // 绕x轴翻转180度，与脑一致
+          obj.children[0].geometry.rotateX(Math.PI)
+          this.scene.add(obj)
+          // console.log(obj)
+          // this.resetRender()
           resolve(true)
         },
         () => {},
@@ -321,8 +350,10 @@ export default class NeuronScene extends Vue {
           this.neuronData.push(data)
           if (data.name.indexOf('axon') !== -1) {
             obj.children[0].material.color.set(0xff0000)
-          } else if (data.name.indexOf('den') !== -1) {
-            obj.children[0].material.color.set(0x0000ff)
+          } else if (data.name.indexOf('basal') !== -1) {
+            obj.children[0].material.color.set(0x0000ff)// 0x0000ff
+          } else if (data.name.indexOf('apical') !== -1) {
+            obj.children[0].material.color.set(0x8B008B)
           }
           obj.children[0].geometry.center()
           if (this.neuronDataMap.has(data.id)) {
