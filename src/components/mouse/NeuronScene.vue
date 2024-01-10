@@ -117,7 +117,7 @@ export default class NeuronScene extends Vue {
       if (this.ifNeuron(data)) {
         await this.loadObj(data)
       } else {
-        await this.loadVtk(data)
+        // await this.loadVtk(data)
       }
     }
   }

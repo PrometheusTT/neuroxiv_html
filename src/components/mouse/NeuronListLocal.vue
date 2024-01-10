@@ -119,7 +119,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator'
 
 @Component
-export default class NeuronList extends Vue {
+export default class NeuronListLocal extends Vue {
   // 搜索结果的所有数据
   private data: any[] = []
   // 当前分页的数据
@@ -132,7 +132,7 @@ export default class NeuronList extends Vue {
 
   // 当前这一页选中的 item
   get currentPageSelectedItem () {
-    console.log(this.data)
+    console.log(this.currentPageData)
     return this.currentPageData.filter((item: any) => item.selected === true)
   }
 
@@ -192,7 +192,7 @@ export default class NeuronList extends Vue {
    * 批量选择神经元之后3D可视化
    */
   private viewNeuronsHandler () {
-    this.$emit('viewNeurons')
+    this.$emit('viewNeuronsHandlerLists')
   }
 
   /**
@@ -200,7 +200,7 @@ export default class NeuronList extends Vue {
    * @param neuronDetail 神经元信息
    */
   private neuronViewHandler (neuronDetail: any) {
-    this.$emit('neuronView', neuronDetail)
+    this.$emit('neuronViewHandlerLists', neuronDetail)
   }
 
   /**
@@ -208,7 +208,9 @@ export default class NeuronList extends Vue {
    * @param neuronDetail 神经元信息
    */
   private checkNeuronCallback (neuronDetail: any) {
-    this.$emit('checkNeuron', neuronDetail)
+    console.log('Show Local')
+    console.log(neuronDetail)
+    this.$emit('checkNeuronLists', neuronDetail)
   }
 
   /**

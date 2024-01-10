@@ -27,6 +27,10 @@
       >
         <NeuronListLocal
           ref="neuronListLocal"
+          @checkNeuronLists="checkNeuronLists"
+          @viewNeuronsHandlerLists="viewNeuronsHandlerLists"
+          @neuronViewHandlerLists="neuronViewHandlerLists"
+          @neuronAnalysisLists="updateNeuronAnalysisLists"
         />
       </el-tab-pane>
     </el-tabs>

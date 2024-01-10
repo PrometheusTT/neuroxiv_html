@@ -394,54 +394,87 @@ export default class Container extends Vue {
    * @param switchTab 是否要主动切换到3D viewer栏
    */
   public async checkNeuron (neuronDetail: any, switchTab: boolean = false) {
+    console.log(this.neuronLists.selectedTab)
     if (switchTab && this.neuronDetail.selectedTab !== 'multiNeuronsViewer') {
       this.neuronDetail.selectedTab = 'multiNeuronsViewer'
       await this.$nextTick()
     }
     await this.$nextTick()
     if (this.neuronDetail.selectedTab === 'multiNeuronsViewer') {
-      let dendriteData = {
-        id: neuronDetail.id + '_basal',
-        name: neuronDetail.id + '_basal',
-        src: '',
-        // eslint-disable-next-line camelcase
-        rgb_triplet: [0, 0, 255],
-        info: {
-          id: neuronDetail.id,
-          cellType: neuronDetail.celltype
+      console.log(this.neuronLists.selectedTab)
+      if (this.neuronLists.selectedTab === 'fullMorph') {
+        let dendriteData = {
+          id: neuronDetail.id + '_basal',
+          name: neuronDetail.id + '_basal',
+          src: '',
+          // eslint-disable-next-line camelcase
+          rgb_triplet: [0, 0, 255],
+          info: {
+            id: neuronDetail.id,
+            cellType: neuronDetail.celltype
+          }
+
+        }
+        let axonData = {
+          id: neuronDetail.id + '_axon',
+          name: neuronDetail.id + '_axon',
+          src: '',
+          // eslint-disable-next-line camelcase
+          rgb_triplet: [255, 0, 0],
+          info: {
+            id: neuronDetail.id,
+            cellType: neuronDetail.celltype
+          }
         }
 
-      }
-      let axonData = {
-        id: neuronDetail.id + '_axon',
-        name: neuronDetail.id + '_axon',
-        src: '',
-        // eslint-disable-next-line camelcase
-        rgb_triplet: [255, 0, 0],
-        info: {
-          id: neuronDetail.id,
-          cellType: neuronDetail.celltype
-        }
-      }
-      if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(dendriteData) ||
-        this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) ||
-        !neuronDetail.selected) {
-        if (neuronDetail['has_dendrite']) {
-          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, neuronDetail.selected)
-        }
-        if (neuronDetail['has_axon']) {
-          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(axonData, neuronDetail.selected)
+        if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(dendriteData) ||
+          this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) ||
+          !neuronDetail.selected) {
+          if (neuronDetail['has_dendrite']) {
+            this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, neuronDetail.selected)
+          }
+          if (neuronDetail['has_axon']) {
+            this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(axonData, neuronDetail.selected)
+          }
+        } else {
+          const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
+          console.log(neuronInfo.viewer_info[0])
+          dendriteData.src = neuronInfo.viewer_info[0].children[0].src
+          axonData.src = neuronInfo.viewer_info[0].children[1].src
+          if (neuronDetail['has_dendrite']) {
+            await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(dendriteData)
+          }
+          if (neuronDetail['has_axon']) {
+            await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(axonData)
+          }
         }
       } else {
-        const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
-        console.log(neuronInfo.viewer_info[0])
-        dendriteData.src = neuronInfo.viewer_info[0].children[0].src
-        axonData.src = neuronInfo.viewer_info[0].children[1].src
-        if (neuronDetail['has_dendrite']) {
-          await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(dendriteData)
+        console.log('LOCAl')
+        let localData = {
+          id: neuronDetail.id + '_local',
+          name: neuronDetail.id + '_local',
+          src: '',
+          // eslint-disable-next-line camelcase
+          rgb_triplet: [0, 0, 255],
+          info: {
+            id: neuronDetail.id,
+            cellType: neuronDetail.celltype
+          }
+
         }
-        if (neuronDetail['has_axon']) {
-          await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(axonData)
+        if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(localData) ||
+          !neuronDetail.selected) {
+          console.log('LOCAL')
+          if (neuronDetail['has_local']) {
+            this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(localData, neuronDetail.selected)
+          }
+        } else {
+          const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
+          console.log(neuronInfo.viewer_info[0])
+          localData.src = neuronInfo.viewer_info[0].children[3].src
+          if (neuronDetail['has_local']) {
+            await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(localData)
+          }
         }
       }
     }

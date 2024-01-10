@@ -119,7 +119,7 @@ import AtlasViewer from '@/components/CrossSpeciesAtlas/AtlasViewer.vue'
 import BrainRegionInfoCard from '@/components/CrossSpeciesAtlas/BrainRegionInfoCard.vue'
 import { debounce, throttle } from 'lodash'
 
-const neuronViewerBaseData = require('../mouse/surf_tree.json')
+import neuronViewerBaseData from '../mouse/surf_tree.json'
 
 @Component({
   components: {

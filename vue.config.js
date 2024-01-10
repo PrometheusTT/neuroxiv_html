@@ -9,12 +9,12 @@ module.exports = {
     proxy: {
       '/api': {
         // target: 'http://11.187.158.123',
-        target: 'http://223.3.33.234:8080',
+        target: 'http://10.192.20.17:5000',
         pathRewrite: { '^/api': '' },
         changeOrigin: true
       },
       '/data': {
-        target: 'http://223.3.33.234:8080',
+        target: 'http://10.192.20.17:5000',
         // target: 'http://11.187.158.123',
         // target: 'http://9.135.230.212',
         pathRewrite: { '^/data': '' },
@@ -23,7 +23,7 @@ module.exports = {
       '/tmp': {
         // target: 'http://11.187.158.123',
         // target: 'http://9.135.230.212',
-        target: 'http://223.3.33.234:8080',
+        target: 'http://10.192.20.17:5000',
         pathRewrite: { '^/tmp': '' },
         changeOrigin: true
       },
