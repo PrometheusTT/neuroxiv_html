@@ -135,6 +135,8 @@ export default class Container extends Vue {
   private searchDialogVisible: boolean = false
   private LLMDialogVisible: boolean = false
   private reFresh: boolean = true
+  private fullMorphNeurons:any[] = []
+  private localMorphNeurons:any[] = []
 
   /**
    * 更新当前显示的 neuron info 信息
@@ -234,22 +236,21 @@ export default class Container extends Vue {
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
       console.log(neurons)
       // 初始化两个空数组用于存放数据
-      let fullMorphNeurons:any[] = []
-      let localMorphNeurons:any[] = []
       // 遍历neurons数组，根据名字分配到对应数组
+      this.fullMorphNeurons = []
+      this.localMorphNeurons = []
       neurons.forEach((neuron: { id: string | string[] }) => {
         if (neuron.id.includes('full')) {
-          fullMorphNeurons.push(neuron)
+          this.fullMorphNeurons.push(neuron)
         } else if (neuron.id.includes('local')) {
-          localMorphNeurons.push(neuron)
+          this.localMorphNeurons.push(neuron)
         }
       })
-      console.log(fullMorphNeurons)
       // this.neuronList.setListData(neurons)
       if (this.neuronLists.selectedTab === 'fullMorph') {
-        this.neuronLists.neuronList.setListData(fullMorphNeurons)
+        this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
       } else {
-        this.neuronLists.neuronListLocal.setListData(localMorphNeurons)
+        this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       }
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
@@ -527,16 +528,21 @@ export default class Container extends Vue {
   public async switchLocalAndFull (recDegree: string) {
     // location.reload()
     this.neuronLists.setRecDegree(recDegree)
-    this.reFresh = false
-    this.$nextTick(() => {
-      this.reFresh = true
-      let criteria = {
-        brain_atlas: [this.$store.state.atlas]
-      }
-      this.searchNeurons(criteria, undefined, () => {
-        this.neuronDetail.selectedTab = 'multiNeuronsViewer'
-      })
-    })
+    this.reFresh = true
+    if (this.neuronLists.selectedTab === 'fullMorph') {
+      this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+    } else {
+      this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
+    }
+    // this.$nextTick(() => {
+    //   this.reFresh = true
+    //   let criteria = {
+    //     brain_atlas: [this.$store.state.atlas]
+    //   }
+    //   this.searchNeurons(criteria, undefined, () => {
+    //     this.neuronDetail.selectedTab = 'multiNeuronsViewer'
+    //   })
+    // })
   }
 
   mounted () {
