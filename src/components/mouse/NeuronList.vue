@@ -185,7 +185,7 @@ export default class NeuronList extends Vue {
   private batchSelectHandler (val: boolean) {
     this.currentPageData.forEach((item: any) => {
       item.selected = val
-      this.$emit('checkNeuron', item)
+      this.$emit('checkNeuronLists', item)
     })
     this.isIndeterminate = false
   }
