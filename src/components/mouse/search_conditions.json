@@ -12,7 +12,7 @@
                     "structure_tree": "info,data source",
                     "candidates": [
                         "SEU",
-                        "AIBS",
+                        "ION",
                         "Mouselight"
                     ],
                     "min_value": null,
@@ -591,22 +591,6 @@
                     "default_min": null,
                     "default_max": null,
                     "name": "has reconstruction dendrite"
-                },
-                {
-                    "querry_name": "has_ab",
-                    "type": "binary",
-                    "display_name": "has AutoArbor result",
-                    "help_info": "Whether the neuron has AutoArbor result.",
-                    "structure_tree": "info,has AutoArbor result",
-                    "candidates": [
-                        true,
-                        false
-                    ],
-                    "min_value": null,
-                    "max_value": null,
-                    "default_min": null,
-                    "default_max": null,
-                    "name": "has AutoArbor result"
                 }
             ]
         },
