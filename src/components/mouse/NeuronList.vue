@@ -59,7 +59,7 @@
           <!--            {{ item.brain_atlas }}-->
           <!--          </el-tag>-->
           <el-tag
-            v-for="(prop, j) in ['axon', 'basal', 'apical', 'soma']"
+            v-for="(prop, j) in ['axon', 'dendrite', 'apical', 'soma']"
             :key="j"
             class="neuron-tag-item"
             :class="{ disabled: !item[`has_${prop}`] }"
@@ -75,15 +75,12 @@
             </template>
           </el-tag>
           <el-tag
-            v-for="(prop, k) in ['full']"
-            :key="k"
             class="neuron-tag-item"
-            :class="{ disabled: prop === 'local'}"
-            :color="getTagColor(prop)"
+            :color="getTagColor(item.id.split('_')[0].split('-')[0])"
             effect="dark"
             size="mini"
           >
-            {{ prop }}
+            {{ item.id.split('_')[0].split('-')[0] }}
           </el-tag>
         </div>
         <el-button
@@ -243,8 +240,9 @@ export default class NeuronList extends Vue {
       soma: 'rgb(224, 235, 245)',
       CCFv3: 'rgb(214, 253, 254)',
       fMOST: 'rgb(159, 205, 99)',
-      local: 'rgb(134,145,234)',
-      full: 'rgb(255,50,50)'
+      ION: 'rgb(134,145,234)',
+      SEU: 'rgb(255,50,50)',
+      MouseLight: 'rgb(134,145,234)'
     }
     // console.log(colorMap[prop] || 'white')
     return colorMap[prop] || 'white'

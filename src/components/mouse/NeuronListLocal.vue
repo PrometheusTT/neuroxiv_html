@@ -132,7 +132,6 @@ export default class NeuronListLocal extends Vue {
 
   // 当前这一页选中的 item
   get currentPageSelectedItem () {
-    console.log(this.currentPageData)
     return this.currentPageData.filter((item: any) => item.selected === true)
   }
 

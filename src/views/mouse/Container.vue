@@ -248,8 +248,10 @@ export default class Container extends Vue {
       })
       // this.neuronList.setListData(neurons)
       if (this.neuronLists.selectedTab === 'fullMorph') {
+        console.log('set full list data')
         this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
       } else {
+        console.log('set local list data')
         this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       }
       this.neuronDetail.selectedTab = 'neuronStates'
