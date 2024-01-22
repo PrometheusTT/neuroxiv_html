@@ -80,7 +80,15 @@
             effect="dark"
             size="mini"
           >
-            {{ item.id.split('_')[0].split('-')[0] }}
+            <template v-if="item.id.split('_')[0].split('-')[0] === 'MouseLight'">
+              Janelia
+            </template>
+            <template v-else-if="item.id.split('_')[0].split('-')[0] === 'SEU'">
+              seuallen
+            </template>
+            <template v-else>
+              ION
+            </template>
           </el-tag>
         </div>
         <el-button

@@ -11,7 +11,7 @@
                     "help_info": "The institute which submits the neuron.",
                     "structure_tree": "info,data source",
                     "candidates": [
-                        "SEU",
+                        "SEU-ALLEN",
                         "ION",
                         "Mouselight"
                     ],

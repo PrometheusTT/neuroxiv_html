@@ -234,7 +234,6 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
-      console.log(neurons)
       // 初始化两个空数组用于存放数据
       // 遍历neurons数组，根据名字分配到对应数组
       this.fullMorphNeurons = []
@@ -248,10 +247,8 @@ export default class Container extends Vue {
       })
       // this.neuronList.setListData(neurons)
       if (this.neuronLists.selectedTab === 'fullMorph') {
-        console.log('set full list data')
         this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
       } else {
-        console.log('set local list data')
         this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       }
       this.neuronDetail.selectedTab = 'neuronStates'
@@ -366,6 +363,7 @@ export default class Container extends Vue {
       await this.$nextTick()
       neuronInfo['brain_atlas'] = this.$store.state.atlas
       this.neuronSearch.selectedConditions = await searchSimilarNeuron(document.body, neuronInfo).start()
+      console.log(this.neuronSearch.selectedConditions)
     } catch (e) {
       console.error(e)
     }
@@ -397,14 +395,12 @@ export default class Container extends Vue {
    * @param switchTab 是否要主动切换到3D viewer栏
    */
   public async checkNeuron (neuronDetail: any, switchTab: boolean = false) {
-    console.log(this.neuronLists.selectedTab)
     if (switchTab && this.neuronDetail.selectedTab !== 'multiNeuronsViewer') {
       this.neuronDetail.selectedTab = 'multiNeuronsViewer'
       await this.$nextTick()
     }
     await this.$nextTick()
     if (this.neuronDetail.selectedTab === 'multiNeuronsViewer') {
-      console.log(this.neuronLists.selectedTab)
       if (this.neuronLists.selectedTab === 'fullMorph') {
         let dendriteData = {
           id: neuronDetail.id + '_basal',
@@ -412,6 +408,18 @@ export default class Container extends Vue {
           src: '',
           // eslint-disable-next-line camelcase
           rgb_triplet: [0, 0, 255],
+          info: {
+            id: neuronDetail.id,
+            cellType: neuronDetail.celltype
+          }
+
+        }
+        let apicalData = {
+          id: neuronDetail.id + '_apical',
+          name: neuronDetail.id + '_apical',
+          src: '',
+          // eslint-disable-next-line camelcase
+          rgb_triplet: [255, 0, 255],
           info: {
             id: neuronDetail.id,
             cellType: neuronDetail.celltype
@@ -431,28 +439,34 @@ export default class Container extends Vue {
         }
 
         if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(dendriteData) ||
-          this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) ||
+          this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) || this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(apicalData) ||
           !neuronDetail.selected) {
           if (neuronDetail['has_dendrite']) {
+            console.log('ser dendrite visible')
             this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, neuronDetail.selected)
           }
           if (neuronDetail['has_axon']) {
             this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(axonData, neuronDetail.selected)
           }
+          if (neuronDetail['has_apical']) {
+            this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(apicalData, neuronDetail.selected)
+          }
         } else {
           const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
-          console.log(neuronInfo.viewer_info[0])
           dendriteData.src = neuronInfo.viewer_info[0].children[0].src
           axonData.src = neuronInfo.viewer_info[0].children[1].src
+          apicalData.src = neuronInfo.viewer_info[0].children[2].src
           if (neuronDetail['has_dendrite']) {
             await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(dendriteData)
           }
           if (neuronDetail['has_axon']) {
             await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(axonData)
           }
+          if (neuronDetail['has_apical']) {
+            await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(apicalData)
+          }
         }
       } else {
-        console.log('LOCAl')
         let localData = {
           id: neuronDetail.id + '_local',
           name: neuronDetail.id + '_local',
@@ -467,13 +481,11 @@ export default class Container extends Vue {
         }
         if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(localData) ||
           !neuronDetail.selected) {
-          console.log('LOCAL')
           if (neuronDetail['has_local']) {
             this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(localData, neuronDetail.selected)
           }
         } else {
           const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
-          console.log(neuronInfo.viewer_info[0])
           localData.src = neuronInfo.viewer_info[0].children[3].src
           if (neuronDetail['has_local']) {
             await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(localData)
@@ -502,7 +514,6 @@ export default class Container extends Vue {
   }
 
   public async showNeuronMap () {
-    console.log('showNeuronMap')
     this.neuronDetail.multiNeuronsViewer.neuronScene.showMap(10)
   }
 
@@ -512,7 +523,6 @@ export default class Container extends Vue {
    */
   public async switchAtlas (atlas: string) {
     // location.reload()
-    console.log('atlas', atlas)
     this.headBar.setAtlas(atlas)
     this.$store.commit('updateAtlas', atlas)
     this.reFresh = false

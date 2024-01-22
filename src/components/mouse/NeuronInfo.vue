@@ -296,6 +296,7 @@ export default class NeuronInfo extends Vue {
    * @private
    */
   private async checkBrainTreeCallback (data: any, checked: boolean) {
+    console.log(data)
     if (data.hasOwnProperty('src')) {
       if (checked) {
         if (this.neuronScene.checkLoadComponent(data)) {
@@ -538,6 +539,7 @@ export default class NeuronInfo extends Vue {
       'celltype': this.neuronInfoData.celltype,
       'brain_atlas': this.neuronInfoData.brain_atlas
     }
+    console.log(neuronInfo)
     this.$emit('searchSimilarNeurons', neuronInfo)
   }
 }

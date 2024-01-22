@@ -102,7 +102,7 @@ export default class NeuronScene extends Vue {
    * @return boolean 返回true为神经元，返回false则为脑区
    */
   public ifNeuron (data: neuronSceneComponent) {
-    return data.name.indexOf('den') !== -1 || data.name.indexOf('axon') !== -1
+    return data.name.indexOf('basal') !== -1 || data.name.indexOf('axon') !== -1 || data.name.indexOf('apical') !== -1 || data.name.indexOf('local') !== -1
   }
 
   /**
@@ -222,6 +222,8 @@ export default class NeuronScene extends Vue {
    * @param data 神经元数据
    */
   public async loadObj (data: any) {
+    console.log('load obj')
+    console.log(data)
     await this.waitRootLoaded()
     return new Promise((resolve, reject) => {
       const loader = new OBJLoader()
@@ -437,7 +439,11 @@ export default class NeuronScene extends Vue {
    * @param flag 是否显示
    */
   public setComponentVisible (component: neuronSceneComponent, flag: boolean) {
+    console.log(component)
+    console.log(flag)
     if (this.ifNeuron(component)) {
+      console.log(component.id)
+      console.log(flag)
       if (this.neuronDataMap.has(component.id)) {
         this.neuronDataMap.get(component.id).visible = flag
       }
