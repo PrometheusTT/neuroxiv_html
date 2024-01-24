@@ -152,6 +152,8 @@ export default class NeuronScene extends Vue {
    * @param data 脑区数据
    */
   public async loadVtk (data: neuronSceneComponent) {
+    console.log('loadVTK')
+    console.log(data.src)
     return new Promise((resolve, reject) => {
       const loader = new VTKLoader()
       loader.load(

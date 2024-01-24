@@ -345,7 +345,6 @@ export default class NeuronInfo extends Vue {
             loadingInstance.close()
           }
           if (data.id === -1 || data.id === -4) {
-            console.log(data)
             await this.dendriteScene.loadDendrite(data)
             // await this.dendriteScene.loadDendrite
           }
@@ -356,6 +355,8 @@ export default class NeuronInfo extends Vue {
     }
     if (data.hasOwnProperty('children')) {
       for (let child of data.children) {
+        console.log('checkReconstructionTreeCallback')
+        console.log(child)
         if (!child.disabled && (!child.hasOwnProperty('brain_region_id') || !checked)) {
           // @ts-ignore
           this.$refs.reconstructionTree.setChecked(child.id, checked)

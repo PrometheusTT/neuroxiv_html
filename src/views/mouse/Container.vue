@@ -442,7 +442,6 @@ export default class Container extends Vue {
           this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) || this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(apicalData) ||
           !neuronDetail.selected) {
           if (neuronDetail['has_dendrite']) {
-            console.log('ser dendrite visible')
             this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, neuronDetail.selected)
           }
           if (neuronDetail['has_axon']) {
