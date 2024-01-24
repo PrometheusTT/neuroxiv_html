@@ -563,7 +563,7 @@
                 {
                     "querry_name": "has_recon_axon",
                     "type": "binary",
-                    "display_name": "has reconstruction axon",
+                    "display_name": "has axon",
                     "help_info": "Whether the neuron has reconstructed axon.",
                     "structure_tree": "info,has reconstruction axon",
                     "candidates": [
@@ -574,14 +574,14 @@
                     "max_value": null,
                     "default_min": null,
                     "default_max": null,
-                    "name": "has reconstruction axon"
+                    "name": "has axon"
                 },
                 {
                     "querry_name": "has_recon_den",
                     "type": "binary",
-                    "display_name": "has reconstruction dendrite",
-                    "help_info": "Whether the neuron has reconstructed dendrite.",
-                    "structure_tree": "info,has reconstruction dendrite",
+                    "display_name": "has basal dendrite",
+                    "help_info": "Whether the neuron has basal dendrite.",
+                    "structure_tree": "info,has basal dendrite",
                     "candidates": [
                         true,
                         false
@@ -590,7 +590,23 @@
                     "max_value": null,
                     "default_min": null,
                     "default_max": null,
-                    "name": "has reconstruction dendrite"
+                    "name": "has basal dendrite"
+                },
+                {
+                  "querry_name": "has_apical",
+                  "type": "binary",
+                  "display_name": "has apical dendrite",
+                  "help_info": "Whether the neuron has apical dendrite.",
+                  "structure_tree": "info,has apical dendrite",
+                  "candidates": [
+                    true,
+                    false
+                  ],
+                  "min_value": null,
+                  "max_value": null,
+                  "default_min": null,
+                  "default_max": null,
+                  "name": "has apical dendrite"
                 }
             ]
         },
