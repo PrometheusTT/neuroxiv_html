@@ -150,10 +150,10 @@ export default class Container extends Vue {
     await this.$nextTick()
     const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
     const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
-    console.log(neuronInfo)
+    // console.log(neuronInfo)
     this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
     this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
-    console.log(this.neuronDetail.neuronInfo.neuronViewerReconstructionData)
+    // console.log(this.neuronDetail.neuronInfo.neuronViewerReconstructionData)
     await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
   }
   /**
@@ -209,7 +209,7 @@ export default class Container extends Vue {
       this.neuronDetail.neuronStates.featurePlot.renderChart()
       this.neuronDetail.neuronStates.histogramBars.renderChart()
       if (updateNeuronList) {
-        console.log(neurons)
+        // console.log(neurons)
         this.neuronLists.neuronList.setListData(neurons)
       }
     } catch (e) {
@@ -230,7 +230,7 @@ export default class Container extends Vue {
     }
     criteria['brain_atlas'] = [this.$store.state.atlas]
     const condition = ids ? { id_list: ids } : { criteria: criteria }
-    console.log(condition)
+    // console.log(condition)
     try {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
@@ -573,7 +573,7 @@ export default class Container extends Vue {
           this.searchNeurons(criteria)
         })
       } else {
-        console.log('mounted atlas', this.$store.state.atlas)
+        // console.log('mounted atlas', this.$store.state.atlas)
         let criteria = {
           brain_atlas: [this.$store.state.atlas]
         }

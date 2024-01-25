@@ -193,8 +193,10 @@ export default class AtlasViewer extends Vue {
       const svgContainer = document.getElementById('svg-layer') || document.createElement('div')
       const xhr = new XMLHttpRequest()
       xhr.open('GET', svgInfo.src)
+      console.log(xhr)
+      console.log(svgInfo.src)
       xhr.addEventListener('load', () => {
-        // console.log(xhr)
+        console.log(xhr)
         // @ts-ignore
         const svg = xhr.responseXML.documentElement
         svg.id = 'svg-content'

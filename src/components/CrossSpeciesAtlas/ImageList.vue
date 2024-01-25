@@ -7,8 +7,8 @@
         class="image-item"
       >
         <img
-          :src="item.src"
           :id="'image_'+item.zslice"
+          :src="'http://10.192.23.213:8080/data/'+item.src"
           alt="image slice"
           class="image-slice"
           :class="item.selected?'image-slice-bigger':'image-slice-normal'"

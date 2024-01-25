@@ -228,7 +228,7 @@ export default class NeuronList extends Vue {
    */
   private checkNeuronCallback (neuronDetail: any) {
     this.currentPageData.forEach((item:any) => {
-      console.log(item.selected)
+      console.log(item.img_src)
     })
     this.$emit('checkNeuronLists', neuronDetail)
   }
