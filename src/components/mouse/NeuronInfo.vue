@@ -173,6 +173,18 @@
     >
       {{ controlDendriteScene }}
     </el-button>
+    <div class="left-bottom">
+      <NeuronScene
+        ref="apicalScene"
+      />
+    </div>
+    <el-button
+      class="control-apical-scene-button"
+      size="mini"
+      @click="switchApicalSceneZIndex"
+    >
+      {{ controlApicalScene }}
+    </el-button>
     <div class="right-top">
       <el-button
         v-show="neuronInfoData.id"
@@ -236,6 +248,7 @@ const rootIdFMost = neuronViewerBaseDataFMost[0].id
 export default class NeuronInfo extends Vue {
   @Ref('neuronScene') neuronScene!: NeuronScene
   @Ref('dendriteScene') dendriteScene!: NeuronScene
+  @Ref('apicalScene') apicalScene!: NeuronScene
   @Ref('ROI') ROI!: ROI
   public neuronViewerReconstructionData: any = []
   public neuronViewerData: any = this.$store.state.atlas === 'CCFv3' ? neuronViewerBaseData : neuronViewerBaseDataFMost // neuronViewerBaseData
@@ -249,7 +262,8 @@ export default class NeuronInfo extends Vue {
   private activeNames1: any = ['basicInfo']
   private downloading: boolean = false
   public selectedTab: string = 'viewer property'
-  private controlDendriteScene = 'hide dendrite viewer'
+  private controlDendriteScene = 'hide basal viewer'
+  private controlApicalScene = 'hide apical viewer'
 
   /**
    * 下载 neuron info json, 轮播图片
@@ -344,8 +358,12 @@ export default class NeuronInfo extends Vue {
           if (LoadingZero()) {
             loadingInstance.close()
           }
-          if (data.id === -1 || data.id === -4) {
+          if (data.id === -1) {
             await this.dendriteScene.loadDendrite(data)
+            // await this.dendriteScene.loadDendrite
+          }
+          if (data.id === -4) {
+            await this.apicalScene.loadDendrite(data)
             // await this.dendriteScene.loadDendrite
           }
         }
@@ -459,12 +477,21 @@ export default class NeuronInfo extends Vue {
    * @private
    */
   private switchDendriteSceneZIndex () {
-    if (this.controlDendriteScene === 'show dendrite viewer') {
-      this.controlDendriteScene = 'hide dendrite viewer'
+    if (this.controlDendriteScene === 'show basal viewer') {
+      this.controlDendriteScene = 'hide basal viewer'
     } else {
-      this.controlDendriteScene = 'show dendrite viewer'
+      this.controlDendriteScene = 'show basal viewer'
     }
     this.dendriteScene.switchZIndex()
+  }
+
+  private switchApicalSceneZIndex () {
+    if (this.controlApicalScene === 'show apical viewer') {
+      this.controlApicalScene = 'hide apical viewer'
+    } else {
+      this.controlApicalScene = 'show apical viewer'
+    }
+    this.apicalScene.switchZIndex()
   }
 
   /**
@@ -600,10 +627,23 @@ export default class NeuronInfo extends Vue {
     bottom: 10px;
     right: 10px;
   }
+  .left-bottom {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    bottom: 10px;
+    left: 370px;
+  }
   .control-dendrite-scene-button {
     position: absolute;
     bottom: 370px;
     right: 10px;
+    z-index: 2;
+  }
+  .control-apical-scene-button {
+    position: absolute;
+    bottom: 370px;
+    left: 370px;
     z-index: 2;
   }
 }

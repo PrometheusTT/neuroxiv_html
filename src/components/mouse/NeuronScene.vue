@@ -344,7 +344,7 @@ export default class NeuronScene extends Vue {
    * 加载树突
    * @param data 树突数据
    */
-  public loadDendrite (data: neuronSceneComponent) {
+  public lvioadDendrite (data: neuronSceneComponent) {
     this.camera.position.set(0, 0, 25)
     return new Promise((resolve, reject) => {
       const loader = new OBJLoader()
@@ -357,7 +357,7 @@ export default class NeuronScene extends Vue {
           } else if (data.name.indexOf('basal') !== -1) {
             obj.children[0].material.color.set(0x0000ff)// 0x0000ff
           } else if (data.name.indexOf('apical') !== -1) {
-            obj.children[0].material.color.set(0x8B008B)
+            obj.children[0].material.color.set(0xff00ff)
           }
           obj.children[0].geometry.center()
           if (this.neuronDataMap.has(data.id)) {
