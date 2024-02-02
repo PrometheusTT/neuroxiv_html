@@ -149,6 +149,8 @@ export default class Container extends Vue {
     this.neuronDetail.neuronInfo.clearReconstruction()
     await this.$nextTick()
     const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
+    console.log('needClear')
+    console.log(needClear)
     const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
     // console.log(neuronInfo)
     this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
@@ -246,11 +248,13 @@ export default class Container extends Vue {
         }
       })
       // this.neuronList.setListData(neurons)
-      if (this.neuronLists.selectedTab === 'fullMorph') {
-        this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-      } else {
-        this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
-      }
+      // if (this.neuronLists.selectedTab === 'fullMorph') {
+      //   this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+      // } else {
+      //   this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
+      // }
+      this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+      this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
@@ -378,7 +382,22 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchROINeuron(document.body, roiParameter, this.$store.state.atlas).start()
-      this.neuronLists.neuronList.setListData(neurons)
+      this.fullMorphNeurons = []
+      this.localMorphNeurons = []
+      neurons.forEach((neuron: { id: string | string[] }) => {
+        if (neuron.id.includes('full')) {
+          this.fullMorphNeurons.push(neuron)
+        } else if (neuron.id.includes('local')) {
+          this.localMorphNeurons.push(neuron)
+        }
+      })
+      // this.neuronList.setListData(neurons)
+      if (this.neuronLists.selectedTab === 'fullMorph') {
+        this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+      } else {
+        this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
+      }
+      // this.neuronLists.neuronList.setListData(neurons)
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
@@ -540,11 +559,7 @@ export default class Container extends Vue {
     // location.reload()
     this.neuronLists.setRecDegree(recDegree)
     this.reFresh = true
-    if (this.neuronLists.selectedTab === 'fullMorph') {
-      this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-    } else {
-      this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
-    }
+    // this.reFresh = true
     // this.$nextTick(() => {
     //   this.reFresh = true
     //   let criteria = {

@@ -334,7 +334,7 @@ export default class NeuronScene extends Vue {
    * 卸载当前所有神经元组件
    */
   public unloadAllNeuron () {
-    for (let neuronId in this.neuronDataMap.keys()) {
+    for (let neuronId of this.neuronDataMap.keys()) {
       this.unloadObj(neuronId)
     }
     this.neuronDataMap.clear()
@@ -344,7 +344,7 @@ export default class NeuronScene extends Vue {
    * 加载树突
    * @param data 树突数据
    */
-  public lvioadDendrite (data: neuronSceneComponent) {
+  public loadDendrite (data: neuronSceneComponent) {
     this.camera.position.set(0, 0, 25)
     return new Promise((resolve, reject) => {
       const loader = new OBJLoader()

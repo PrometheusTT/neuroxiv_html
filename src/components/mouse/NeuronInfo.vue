@@ -512,6 +512,7 @@ export default class NeuronInfo extends Vue {
     if (needClear) {
       this.neuronScene.unloadAllNeuron()
       this.dendriteScene.unloadAllNeuron()
+      this.apicalScene.unloadAllNeuron()
     }
     if (this.activeNames2.indexOf('reconstruction') === -1) {
       this.activeNames2.push('reconstruction')

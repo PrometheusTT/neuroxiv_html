@@ -240,16 +240,15 @@ export default class NeuronList extends Vue {
    */
   private getTagColor (prop: string) {
     const colorMap: { [key: string]: string } = {
-      axon: 'rgb(247, 206, 205)',
+      axon: 'rgb(255, 0, 0)',
       bouton: 'rgb(253, 242, 208)',
-      dendrite: 'rgb(229, 239, 219)',
+      dendrite: 'rgb(70, 85, 140)',
       apical: 'rgb(255, 0, 255)',
-      basal: 'rgb(255, 255, 0)',
-      soma: 'rgb(224, 235, 245)',
+      soma: 'rgb(120, 120, 120)',
       CCFv3: 'rgb(214, 253, 254)',
       fMOST: 'rgb(159, 205, 99)',
       ION: 'rgb(134,145,234)',
-      SEU: 'rgb(255,50,50)',
+      SEU: 'rgb(6,194,172)',
       MouseLight: 'rgb(134,145,234)'
     }
     // console.log(colorMap[prop] || 'white')
