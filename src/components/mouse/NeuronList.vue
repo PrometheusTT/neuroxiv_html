@@ -247,9 +247,9 @@ export default class NeuronList extends Vue {
       soma: 'rgb(120, 120, 120)',
       CCFv3: 'rgb(214, 253, 254)',
       fMOST: 'rgb(159, 205, 99)',
-      ION: 'rgb(134,145,234)',
+      ION: 'rgb(6,194,172)',
       SEU: 'rgb(6,194,172)',
-      MouseLight: 'rgb(134,145,234)'
+      MouseLight: 'rgb(6,194,172)'
     }
     // console.log(colorMap[prop] || 'white')
     return colorMap[prop] || 'white'

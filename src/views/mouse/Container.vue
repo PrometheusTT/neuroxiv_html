@@ -137,6 +137,12 @@ export default class Container extends Vue {
   private reFresh: boolean = true
   private fullMorphNeurons:any[] = []
   private localMorphNeurons:any[] = []
+  private arborColor:any[] = [
+    [6, 194, 172],
+    [70, 85, 140],
+    [159, 205, 99],
+    [253, 242, 208]
+  ]
 
   /**
    * 更新当前显示的 neuron info 信息
@@ -457,6 +463,19 @@ export default class Container extends Vue {
           }
         }
 
+        let arborData = {
+          id: neuronDetail.id + '_arbor',
+          name: neuronDetail.id + '_arbor',
+          src: '',
+          // eslint-disable-next-line camelcase
+          rgb_triplet: [6, 194, 172],
+          info: {
+            id: neuronDetail.id,
+            cellType: neuronDetail.celltype
+          },
+          count: 0
+        }
+
         if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(dendriteData) ||
           this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) || this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(apicalData) ||
           !neuronDetail.selected) {
@@ -469,11 +488,26 @@ export default class Container extends Vue {
           if (neuronDetail['has_apical']) {
             this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(apicalData, neuronDetail.selected)
           }
+          if (neuronDetail['has_arbor']) {
+            let arborCount = arborData.count || 4 // 如果没有提供arborCount，默认为4
+            for (let i = 0; i < arborCount; i++) {
+              // 创建一个新的arborData对象，以避免修改原始对象
+              let newArborData = {
+                ...arborData, // 使用对象展开运算符克隆arborData
+                id: `${arborData.id.split('arbor')[0]}${i}`,
+                name: `${arborData.name.split('arbor')[0]}${i}`,
+                src: `${arborData.src.split('.obj')[0]}${i}.obj`,
+                rgb_triplet: this.arborColor[i]
+              }
+              this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(arborData, neuronDetail.selected)
+            }
+          }
         } else {
           const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
           dendriteData.src = neuronInfo.viewer_info[0].children[0].src
           axonData.src = neuronInfo.viewer_info[0].children[1].src
           apicalData.src = neuronInfo.viewer_info[0].children[2].src
+          arborData.src = neuronInfo.viewer_info[0].children[5].src
           if (neuronDetail['has_dendrite']) {
             await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(dendriteData)
           }
@@ -482,6 +516,20 @@ export default class Container extends Vue {
           }
           if (neuronDetail['has_apical']) {
             await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(apicalData)
+          }
+          if (neuronDetail['has_arbor']) {
+            let arborCount = arborData.count || 4 // 如果没有提供arborCount，默认为4
+            for (let i = 0; i < arborCount; i++) {
+              // 创建一个新的arborData对象，以避免修改原始对象
+              let newArborData = {
+                ...arborData, // 使用对象展开运算符克隆arborData
+                id: `${arborData.id.split('arbor')[0]}${i}`,
+                name: `${arborData.name.split('arbor')[0]}${i}`,
+                src: `${arborData.src.split('.obj')[0]}${i}.obj`,
+                rgb_triplet: this.arborColor[i]
+              }
+              await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(newArborData)
+            }
           }
         }
       } else {

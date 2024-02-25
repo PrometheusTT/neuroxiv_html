@@ -90,6 +90,13 @@
         @neuronView="$emit('neuronView', $event)"
       />
     </div>
+    <div class="right-top">
+      <el-button
+        @click="Rotate"
+      >
+        Animation
+      </el-button>
+    </div>
   </div>
 </template>
 
@@ -128,6 +135,9 @@ export default class NeuronInfo extends Vue {
   private step: number = 25
   public selectedTab: string = 'viewer property'
 
+  private Rotate () {
+    this.neuronScene.toggleRotation()
+  }
   /**
    * 脑区el-tree节点状态改变的回调函数
    * @param data 节点数据
@@ -270,6 +280,12 @@ export default class NeuronInfo extends Vue {
   }
   .right-side {
     flex: 1;
+  }
+  .right-top {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
   }
 }
 </style>

@@ -95,6 +95,8 @@ export default class NeuronScene extends Vue {
   private neuronInfoMap!: Map<any, any>
   private mapPos: number[][] = [[1, 1, 1], [1, 2, 1], [1, 3, 1], [1, 1, 2], [1, 1, 3], [2, 1, 1], [3, 1, 1]]
   private mapBalls: any[] = []
+  public loadedObj:any = null
+  public isRotating: boolean = false
 
   /**
    * 检查数据是脑区还是神经元
@@ -280,6 +282,7 @@ export default class NeuronScene extends Vue {
           this.neuronDataMap.set(data.id, obj)
           this.scene.add(obj)
           // console.log(obj)
+          this.loadedObj = obj // 保存加载的对象
           this.resetRender()
           resolve(true)
         },
@@ -882,6 +885,23 @@ export default class NeuronScene extends Vue {
 
   public destroyed () {
     this.resizeObserve.disconnect()
+  }
+
+  public toggleRotation () {
+    this.isRotating = !this.isRotating
+    if (this.isRotating) {
+      this.playAnimate()
+    }
+  }
+
+  public playAnimate () {
+    if (!this.isRotating) return // 如果不应该旋转，则直接返回
+
+    requestAnimationFrame(this.animate)
+    if (this.loadedObj) {
+      this.loadedObj.rotation.y += 10
+      this.renderer.render(this.scene, this.camera)
+    }
   }
 }
 </script>
