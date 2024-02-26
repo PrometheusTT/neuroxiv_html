@@ -353,6 +353,7 @@ export default class NeuronInfo extends Vue {
           let loadingInstance = showLoading(document.body)
           increaseLoadingCount()
           await this.neuronScene.loadComponent(data)
+          // await this.neuronScene.loadComponent(data)
           NeuronInfo.setLoadingForNode(node, false)
           decreaseLoadingCount()
           if (LoadingZero()) {

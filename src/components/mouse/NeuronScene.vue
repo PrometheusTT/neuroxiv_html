@@ -55,7 +55,7 @@ interface neuronSceneComponent {
   name: string,
   src: string,
   // eslint-disable-next-line camelcase
-  rgb_triplet: number[]
+  rgb_triplet: number[],
 }
 
 @Component<NeuronScene>({
@@ -104,7 +104,7 @@ export default class NeuronScene extends Vue {
    * @return boolean 返回true为神经元，返回false则为脑区
    */
   public ifNeuron (data: neuronSceneComponent) {
-    return data.name.indexOf('basal') !== -1 || data.name.indexOf('axon') !== -1 || data.name.indexOf('apical') !== -1 || data.name.indexOf('local') !== -1
+    return data.name.indexOf('basal') !== -1 || data.name.indexOf('axon') !== -1 || data.name.indexOf('apical') !== -1 || data.name.indexOf('local') !== -1 || data.name.indexOf('arbor0') !== -1 || data.name.indexOf('arbor1') !== -1 || data.name.indexOf('arbor2') !== -1 || data.name.indexOf('arbor3') !== -1
   }
 
   /**
@@ -226,8 +226,6 @@ export default class NeuronScene extends Vue {
    * @param data 神经元数据
    */
   public async loadObj (data: any) {
-    console.log('load obj')
-    console.log(data)
     await this.waitRootLoaded()
     return new Promise((resolve, reject) => {
       const loader = new OBJLoader()
