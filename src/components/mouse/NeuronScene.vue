@@ -53,6 +53,7 @@ import { sleep } from '@/utils/util'
 interface neuronSceneComponent {
   id: any,
   name: string,
+
   src: string,
   // eslint-disable-next-line camelcase
   rgb_triplet: number[],
