@@ -139,6 +139,7 @@ export default class ROI extends Vue {
     this.roiX = x
     this.roiY = y
     this.roiZ = z
+    this.updateROI()
   }
 
   /**

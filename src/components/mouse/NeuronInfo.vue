@@ -532,9 +532,13 @@ export default class NeuronInfo extends Vue {
    * @private
    */
   private showROI (r: number) {
+    console.log(this.neuronInfoData.soma[0])
     const roiInitialPosition = this.neuronScene.showROIBall(r)
+    // if (roiInitialPosition) {
+    //   this.ROI.setROI(Math.round(roiInitialPosition[0]), Math.round(roiInitialPosition[1]), Math.round(roiInitialPosition[2]))
+    // }
     if (roiInitialPosition) {
-      this.ROI.setROI(Math.round(roiInitialPosition[0]), Math.round(roiInitialPosition[1]), Math.round(roiInitialPosition[2]))
+      this.ROI.setROI(Math.round(this.neuronInfoData.soma[0]), Math.round(this.neuronInfoData.soma[1]), Math.round(this.neuronInfoData.soma[2]))
     }
   }
 
