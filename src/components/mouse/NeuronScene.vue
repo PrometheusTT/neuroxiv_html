@@ -94,10 +94,9 @@ export default class NeuronScene extends Vue {
     '--left': 0
   }
   private neuronInfoMap!: Map<any, any>
-  private mapPos: number[][] = [[1, 1, 1], [1, 2, 1], [1, 3, 1], [1, 1, 2], [1, 1, 3], [2, 1, 1], [3, 1, 1]]
-  private mapBalls: any[] = []
   public loadedObj:any = null
   public isRotating: boolean = false
+  private somaBall:any = null // soma点的小球
 
   /**
    * 检查数据是脑区还是神经元
@@ -443,11 +442,7 @@ export default class NeuronScene extends Vue {
    * @param flag 是否显示
    */
   public setComponentVisible (component: neuronSceneComponent, flag: boolean) {
-    console.log(component)
-    console.log(flag)
     if (this.ifNeuron(component)) {
-      console.log(component.id)
-      console.log(flag)
       if (this.neuronDataMap.has(component.id)) {
         this.neuronDataMap.get(component.id).visible = flag
       }
@@ -776,21 +771,16 @@ export default class NeuronScene extends Vue {
   }
   /**
    * 加载代表ROI的小球
-   * @param mapPos
    * @param r ROI的半径
    */
-  public loadMapBall (mapPos: number[][], r: number) {
-    for (const m of mapPos) {
-      let index = 0
-      const geometry = new THREE.SphereGeometry(r / 25, 32, 16)
-      const material = new THREE.MeshBasicMaterial({ color: 0xff00ff })
-      material.transparent = true
-      material.opacity = 0.3
-      this.mapBalls[index] = new THREE.Mesh(geometry, material)
-      this.mapBalls[index].position = new THREE.Vector3()
-      this.scene.add(this.mapBalls[index])
-      index += 1
-    }
+  public loadSoma (r: number = 50) {
+    const geometry = new THREE.SphereGeometry(r / 25, 32, 16)
+    const material = new THREE.MeshBasicMaterial({ color: 0x000000 })
+    material.transparent = true
+    material.opacity = 0.3
+    this.somaBall = new THREE.Mesh(geometry, material)
+    this.somaBall.position = new THREE.Vector3()
+    this.scene.add(this.somaBall)
   }
 
   /**
@@ -801,12 +791,23 @@ export default class NeuronScene extends Vue {
     this.roiBall = null
   }
 
+  public unloadSomaBall () {
+    this.scene.remove(this.somaBall)
+    this.somaBall = null
+  }
+
   /**
    * 设置代表ROI的小球是否显示
    */
   public setROIBallVisible (flag: boolean) {
     if (this.roiBall) {
       this.roiBall.visible = flag
+    }
+  }
+
+  public setSomaBallVisible (flag: boolean) {
+    if (this.somaBall) {
+      this.somaBall.visible = flag
     }
   }
   /**
@@ -867,6 +868,16 @@ export default class NeuronScene extends Vue {
     }
   }
 
+  public showSomaBall (r: number) {
+    if (this.somaBall) {
+      this.setSomaBallVisible(true)
+      return null
+    } else {
+      this.loadSoma(100)
+      return [-this.centerShift.x * 25, -this.centerShift.y * 25, -this.centerShift.z * 25]
+    }
+  }
+
   /**
    * 更新ROI的状态
    * @param x ROI在标准脑坐标系下的x坐标
@@ -882,6 +893,13 @@ export default class NeuronScene extends Vue {
     this.roiBall.position = new THREE.Vector3(x / 25 + this.centerShift.x, -y / 25 - this.centerShift.y, -z / 25 - this.centerShift.z)
   }
 
+  public updateSomaBall (x: number, y: number, z: number, r: number) {
+    if (this.somaBall.geometry.parameters.radius !== r) {
+      this.unloadSomaBall()
+      this.loadSoma(r)
+    }
+    this.somaBall.position = new THREE.Vector3(x / 25 + this.centerShift.x, -y / 25 - this.centerShift.y, -z / 25 - this.centerShift.z)
+  }
   public destroyed () {
     this.resizeObserve.disconnect()
   }

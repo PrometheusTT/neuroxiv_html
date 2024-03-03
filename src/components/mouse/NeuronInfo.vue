@@ -149,6 +149,18 @@
                   @searchROINeurons="$emit('searchROINeurons', $event)"
                 />
               </el-collapse-item>
+              <el-collapse-item
+                title="soma"
+                name="soma"
+              >
+                <Soma
+                  ref="Soma"
+                  :_show-soma="showSoma"
+                  :_hide-soma="hideSoma"
+                  :_update-soma-ball="updateSomaBall"
+                  @searchROINeurons="$emit('searchROINeurons', $event)"
+                />
+              </el-collapse-item>
             </el-collapse>
           </div>
         </el-tab-pane>
@@ -221,6 +233,7 @@ import { showLoading, increaseLoadingCount, decreaseLoadingCount, LoadingZero } 
 import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
 
 import neuronViewerBaseData from './surf_tree.json'
+import Soma from '@/components/mouse/Soma.vue'
 const rootId = neuronViewerBaseData[0].id
 const rootIdFMost = neuronViewerBaseDataFMost[0].id
 
@@ -238,6 +251,7 @@ const rootIdFMost = neuronViewerBaseDataFMost[0].id
     this.loadRootComponent()
   },
   components: {
+    Soma,
     MorphologyFeaturesTable,
     ProjectionInfoTable,
     NeuronScene,
@@ -250,6 +264,7 @@ export default class NeuronInfo extends Vue {
   @Ref('dendriteScene') dendriteScene!: NeuronScene
   @Ref('apicalScene') apicalScene!: NeuronScene
   @Ref('ROI') ROI!: ROI
+  @Ref('Soma') Soma!: Soma
   public neuronViewerReconstructionData: any = []
   public neuronViewerData: any = this.$store.state.atlas === 'CCFv3' ? neuronViewerBaseData : neuronViewerBaseDataFMost // neuronViewerBaseData
   private rootId: number = this.$store.state.atlas === 'CCFv3' ? rootId : rootIdFMost // rootId
@@ -264,6 +279,9 @@ export default class NeuronInfo extends Vue {
   public selectedTab: string = 'viewer property'
   private controlDendriteScene = 'hide basal viewer'
   private controlApicalScene = 'hide apical viewer'
+  private lastSomaPosition:[number, number, number] = [0, 0, 0]
+  public roiShown:boolean = false
+  public somaShown:boolean = false
 
   /**
    * 下载 neuron info json, 轮播图片
@@ -469,6 +487,7 @@ export default class NeuronInfo extends Vue {
   private handleDBClick (event: any) {
     event.preventDefault()
     let p = this.neuronScene.handleMouseDoubleClick(event)
+    // let q = this.neuronScene.handleMouseDoubleClickNeuron(event)
     this.ROI.setROI(Math.round(p[0]), Math.round(p[1]), Math.round(p[2]))
   }
 
@@ -532,13 +551,26 @@ export default class NeuronInfo extends Vue {
    * @private
    */
   private showROI (r: number) {
-    console.log(this.neuronInfoData.soma[0])
+    this.roiShown = true
     const roiInitialPosition = this.neuronScene.showROIBall(r)
     // if (roiInitialPosition) {
     //   this.ROI.setROI(Math.round(roiInitialPosition[0]), Math.round(roiInitialPosition[1]), Math.round(roiInitialPosition[2]))
     // }
-    if (roiInitialPosition) {
+    if (roiInitialPosition || (this.lastSomaPosition[0] !== this.neuronInfoData.soma[0] || this.lastSomaPosition[1] !== this.neuronInfoData.soma[1] || this.lastSomaPosition[2] !== this.neuronInfoData.soma[2])) {
+      this.lastSomaPosition = this.neuronInfoData.soma
       this.ROI.setROI(Math.round(this.neuronInfoData.soma[0]), Math.round(this.neuronInfoData.soma[1]), Math.round(this.neuronInfoData.soma[2]))
+    }
+  }
+
+  public showSoma (r: number) {
+    this.somaShown = true
+    const somaInitialPosition = this.neuronScene.showSomaBall(100)
+    // if (roiInitialPosition) {
+    //   this.ROI.setROI(Math.round(roiInitialPosition[0]), Math.round(roiInitialPosition[1]), Math.round(roiInitialPosition[2]))
+    // }
+    if (somaInitialPosition || (this.lastSomaPosition[0] !== this.neuronInfoData.soma[0] || this.lastSomaPosition[1] !== this.neuronInfoData.soma[1] || this.lastSomaPosition[2] !== this.neuronInfoData.soma[2])) {
+      this.lastSomaPosition = this.neuronInfoData.soma
+      this.updateSomaBall(Math.round(this.neuronInfoData.soma[0]), Math.round(this.neuronInfoData.soma[1]), Math.round(this.neuronInfoData.soma[2]), 100)
     }
   }
 
@@ -547,7 +579,13 @@ export default class NeuronInfo extends Vue {
    * @private
    */
   private hideROI () {
+    this.roiShown = false
     this.neuronScene.setROIBallVisible(false)
+  }
+
+  private hideSoma () {
+    this.somaShown = false
+    this.neuronScene.setSomaBallVisible(false)
   }
 
   /**
@@ -560,6 +598,10 @@ export default class NeuronInfo extends Vue {
    */
   private updateROIBall (x: number, y: number, z: number, r: number) {
     this.neuronScene.updateROIBall(x, y, z, r)
+  }
+
+  private updateSomaBall (x: number, y: number, z: number, r: number) {
+    this.neuronScene.updateSomaBall(x, y, z, r)
   }
 
   /**
