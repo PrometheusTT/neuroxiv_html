@@ -59,7 +59,7 @@
           <!--            {{ item.brain_atlas }}-->
           <!--          </el-tag>-->
           <el-tag
-            v-for="(prop, j) in ['axon', 'dendrite', 'apical', 'soma']"
+            v-for="(prop, j) in ['axon', 'dendrite', 'apical', 'arbor']"
             :key="j"
             class="neuron-tag-item"
             :class="{ disabled: !item[`has_${prop}`] }"
@@ -242,9 +242,9 @@ export default class NeuronList extends Vue {
     const colorMap: { [key: string]: string } = {
       axon: 'rgb(255, 0, 0)',
       bouton: 'rgb(253, 242, 208)',
-      dendrite: 'rgb(70, 85, 140)',
+      dendrite: 'rgb(0, 80, 255)',
       apical: 'rgb(255, 0, 255)',
-      soma: 'rgb(120, 120, 120)',
+      arbor: 'rgb(255, 121, 108)',
       CCFv3: 'rgb(214, 253, 254)',
       fMOST: 'rgb(159, 205, 99)',
       ION: 'rgb(6,194,172)',
