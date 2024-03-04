@@ -16,7 +16,7 @@
           ref="neuronList"
           @checkNeuronLists="checkNeuronLists"
           @viewNeuronsHandlerLists="viewNeuronsHandlerLists"
-          @neuronViewHandlerLists="neuronViewHandlerLists"
+          @neuronViewHandlerLists="updateNeuronAnalysis"
           @neuronAnalysisLists="updateNeuronAnalysisLists"
         />
       </el-tab-pane>
@@ -29,7 +29,7 @@
           ref="neuronListLocal"
           @checkNeuronLists="checkNeuronLists"
           @viewNeuronsHandlerLists="viewNeuronsHandlerLists"
-          @neuronViewHandlerLists="neuronViewHandlerLists"
+          @neuronViewHandlerLists="updateNeuronAnalysis"
           @neuronAnalysisLists="updateNeuronAnalysisLists"
         />
       </el-tab-pane>
@@ -76,7 +76,7 @@ export default class NeuronLists extends Vue {
     this.$emit('viewNeurons')
   }
 
-  private neuronViewHandlerLists (neuronDetail: any) {
+  private updateNeuronAnalysis (neuronDetail: any) {
     this.$emit('neuronView', neuronDetail)
   }
 

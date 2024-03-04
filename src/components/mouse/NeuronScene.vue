@@ -531,8 +531,8 @@ export default class NeuronScene extends Vue {
     this.scene = new THREE.Scene()
     const el = this.$refs.NeuronScene as Element
     /* 二、添加光源 */
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
-    this.scene.add(directionalLight)
+    // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+    // this.scene.add(directionalLight)
     //  环境光
     const ambient = new THREE.AmbientLight(0x444444)
     this.scene.add(ambient)
@@ -544,7 +544,8 @@ export default class NeuronScene extends Vue {
     /* 四、渲染设置 */
     this.renderer = new THREE.WebGLRenderer()
     this.renderer.setSize(el.clientWidth, el.clientHeight)
-    this.renderer.setClearColor(0xeeeeee, 1)
+    // this.renderer.setClearColor(0xeeeeee, 1)
+    this.renderer.setClearColor(0xffffff, 1)
     el.appendChild(this.renderer.domElement)
     this.resetRender()
 

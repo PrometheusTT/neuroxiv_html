@@ -112,7 +112,7 @@ export default class NeuronFeatureScatter extends Vue {
         }
       ],
       title: {
-        text: 'Axon Projection',
+        text: 'Arbor Projection',
         left: 'center'
         // text: 'Arbor Distribution',
         // left: 'center'

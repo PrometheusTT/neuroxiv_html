@@ -213,7 +213,15 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { basic_info, morpho_info, plot, proj_info, neurons } = await searchNeurons(document.body, { id_list: neuronIds }).start()
-      console.log(document.body)
+      this.fullMorphNeurons = []
+      this.localMorphNeurons = []
+      neurons.forEach((neuron: { id: string | string[] }) => {
+        if (neuron.id.includes('full')) {
+          this.fullMorphNeurons.push(neuron)
+        } else if (neuron.id.includes('local')) {
+          this.localMorphNeurons.push(neuron)
+        }
+      })
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
@@ -221,7 +229,8 @@ export default class Container extends Vue {
       this.neuronDetail.neuronStates.histogramBars.renderChart()
       if (updateNeuronList) {
         // console.log(neurons)
-        this.neuronLists.neuronList.setListData(neurons)
+        this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+        this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       }
     } catch (e) {
       console.error(e)
@@ -245,6 +254,8 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
+      console.log('neurons')
+      console.log(neurons)
       // 初始化两个空数组用于存放数据
       // 遍历neurons数组，根据名字分配到对应数组
       this.fullMorphNeurons = []
@@ -256,20 +267,22 @@ export default class Container extends Vue {
           this.localMorphNeurons.push(neuron)
         }
       })
+      console.log(this.fullMorphNeurons)
       // this.neuronList.setListData(neurons)
       // if (this.neuronLists.selectedTab === 'fullMorph') {
       //   this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
       // } else {
       //   this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       // }
-      this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-      this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
+
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
       this.neuronDetail.neuronStates.featurePlot.renderChart()
       this.neuronDetail.neuronStates.histogramBars.renderChart()
       this.searchDialogVisible = false
+      this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+      this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       func()
     } catch (e) {
       console.error(e)
@@ -299,7 +312,17 @@ export default class Container extends Vue {
           // eslint-disable-next-line camelcase
           const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
           console.log(neurons)
-          this.neuronLists.neuronList.setListData(neurons)
+          this.fullMorphNeurons = []
+          this.localMorphNeurons = []
+          neurons.forEach((neuron: { id: string | string[] }) => {
+            if (neuron.id.includes('full')) {
+              this.fullMorphNeurons.push(neuron)
+            } else if (neuron.id.includes('local')) {
+              this.localMorphNeurons.push(neuron)
+            }
+          })
+          this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+          this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
           this.neuronDetail.selectedTab = 'neuronStates'
           this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
           await this.$nextTick()
@@ -399,12 +422,8 @@ export default class Container extends Vue {
           this.localMorphNeurons.push(neuron)
         }
       })
-      // this.neuronList.setListData(neurons)
-      if (this.neuronLists.selectedTab === 'fullMorph') {
-        this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-      } else {
-        this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
-      }
+      this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+      this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       // this.neuronLists.neuronList.setListData(neurons)
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }

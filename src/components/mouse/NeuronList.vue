@@ -175,6 +175,8 @@ export default class NeuronList extends Vue {
    * @param listData 列表数据
    */
   public setListData (listData: any[]) {
+    console.log('listData')
+    console.log(listData)
     listData.forEach((item: any) => {
       item.selected = false
     })
@@ -204,7 +206,7 @@ export default class NeuronList extends Vue {
       this.$message.warning('No neuron selected')
       return
     }
-    this.$emit('neuronAnalysisLists', selectedNeuronIds)
+    this.$emit('updateNeuronAnalysis', selectedNeuronIds)
   }
 
   /**
