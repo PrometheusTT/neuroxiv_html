@@ -147,6 +147,7 @@ export default class Container extends Vue {
     this.neuronDetail.selectedTab = 'neuronInfo'
     await this.$nextTick()
     this.neuronDetail.neuronInfo.clearReconstruction()
+    this.neuronDetail.neuronInfo.hideSoma()
     await this.$nextTick()
     const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
     console.log('needClear')
@@ -166,6 +167,8 @@ export default class Container extends Vue {
     this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
     console.log('viewer loaded')
     await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
+    await this.$nextTick()
+    this.neuronDetail.neuronInfo.showSoma(100)
   }
   /**
      * 更新当前显示的 neuron info 信息

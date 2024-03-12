@@ -21,6 +21,7 @@
     "html2canvas": "^1.1.4",
     "js-cookie": "^2.2.1",
     "jszip": "^3.7.0",
+    "jupyter-vue": "^1.10.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "ol": "^6.10.0",

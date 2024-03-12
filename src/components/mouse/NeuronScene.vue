@@ -4,6 +4,9 @@
     class="neuron-scene"
     :style="pStyle"
   >
+    <div>
+      <ColorPicker @color-selected="setColor" />
+    </div>
     <div
       class="position"
     >
@@ -36,19 +39,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import * as THREE from 'three'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import { VTKLoader } from 'three/examples/jsm/loaders/VTKLoader'
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls'
 import Slice from '@/components/mouse/Slice'
 import { debounce } from 'lodash'
-import { Line2 } from 'three/examples/jsm/lines/Line2'
 import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
-import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2'
-import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
-import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry'
 import { sleep } from '@/utils/util'
+import ColorPicker from '@/components/mouse/ColorPicker.vue'
 
 interface neuronSceneComponent {
   id: any,
@@ -60,6 +60,7 @@ interface neuronSceneComponent {
 }
 
 @Component<NeuronScene>({
+  components: { ColorPicker },
   mounted () {
     this.init()
   }
@@ -97,7 +98,13 @@ export default class NeuronScene extends Vue {
   public loadedObj:any = null
   public isRotating: boolean = false
   private somaBall:any = null // soma点的小球
+  private selectedColor: string = '#ffffff'
 
+  setColor (color: string) {
+    this.selectedColor = color
+    this.renderer.setClearColor(this.selectedColor, 1)
+    this.resetRender()
+  }
   /**
    * 检查数据是脑区还是神经元
    * @param data 脑区数据或者神经元数据
@@ -233,25 +240,16 @@ export default class NeuronScene extends Vue {
         data.src,
         (obj: any) => {
           this.neuronData.push(data)
-          let material = new LineMaterial()
-          // material.line-width = 3
-          // if (data.name.indexOf('axon') !== -1) {
-          //   // obj.children[0].material.line-width = 1
-          //   obj.children[0].material.color.set(0xff0000)
-          // } else if (data.name.indexOf('den') !== -1) {
-          //   // obj.children[0].material.line-width = 10
-          //   obj.children[0].material.color.set(0xFF00FF)
-          // } else if (data.name.indexOf('apical') !== -1) {
-          //   // obj.children[0].material.line-width = 10
-          //   obj.children[0].material.color.set(0xFF00FF)
-          // }
+          // obj.children[0].material = new LineMaterial({
+          //   linewidth: 100
+          // })
+          // obj.children[0].material.resolution.set(window.innerWidth, window.innerHeight)
           if (data.hasOwnProperty('rgb_triplet')) {
             // material.color = new THREE.Color(`rgb(${data.rgb_triplet[0]}, ${data.rgb_triplet[1]}, ${data.rgb_triplet[2]})`)
             console.log(data)
             obj.children[0].material.color = new THREE.Color(`rgb(${data.rgb_triplet[0]}, ${data.rgb_triplet[1]}, ${data.rgb_triplet[2]})`)
             if (data.id > 0) {
-              // console.log(data.name, 'ttt')
-              // material.linewidth = 1
+              obj.children[0].material.linewidth = 100
               obj.children[0].material.transparent = true
               obj.children[0].material.opacity = 0.3
               // if (data.name.indexOf('axon') !== -1) {
@@ -264,12 +262,6 @@ export default class NeuronScene extends Vue {
           obj.children[0].geometry.translate(this.centerShift.x, this.centerShift.y, this.centerShift.z)
           // 绕x轴翻转180度，与脑一致
           obj.children[0].geometry.rotateX(Math.PI)
-          // obj.children[0].geometry.scale(0.001, 0.001, 0.001)
-          // const el = this.$refs.NeuronScene as Element
-          // material.resolution.set(el.clientWidth, el.clientHeight)
-          // let geometry = new LineSegmentsGeometry()
-          // geometry.fromLineSegments(obj.children[0])
-          // let mesh = new LineSegments2(geometry, material)
           if (this.neuronDataMap.has(data.id)) {
             this.unloadObj(data.id)
           }
@@ -531,8 +523,7 @@ export default class NeuronScene extends Vue {
     this.scene = new THREE.Scene()
     const el = this.$refs.NeuronScene as Element
     /* 二、添加光源 */
-    // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
-    // this.scene.add(directionalLight)
+
     //  环境光
     const ambient = new THREE.AmbientLight(0x444444)
     this.scene.add(ambient)
@@ -545,7 +536,7 @@ export default class NeuronScene extends Vue {
     this.renderer = new THREE.WebGLRenderer()
     this.renderer.setSize(el.clientWidth, el.clientHeight)
     // this.renderer.setClearColor(0xeeeeee, 1)
-    this.renderer.setClearColor(0xffffff, 1)
+    this.renderer.setClearColor(this.selectedColor, 1)
     el.appendChild(this.renderer.domElement)
     this.resetRender()
 
@@ -658,7 +649,10 @@ export default class NeuronScene extends Vue {
     console.log(event)
     this.pStyle['--top'] = event.offsetY + 'px'
     this.pStyle['--right'] = el.clientWidth - event.offsetX + 5 + 'px'
-    this.highlightObject(event)
+    this.neuronTipStyle['--bottom'] = el.clientHeight - event.offsetY - 5 + 'px'
+    this.neuronTipStyle['--left'] = event.offsetX + 10 + 'px'
+    // this.highlightObject(event)
+    this.highlightNeuron(event)
     return this.roiBall ? [(this.roiBall.position.x - this.centerShift.x) * 25, (-this.roiBall.position.y - this.centerShift.y) * 25, (-this.roiBall.position.z - this.centerShift.z) * 25] : [0, 0, 0]
   }
 
@@ -721,6 +715,47 @@ export default class NeuronScene extends Vue {
     this.neuronTipStyle['--left'] = event.offsetX + 10 + 'px'
     this.highlightNeuron(event)
     return this.roiBall ? [(this.roiBall.position.x - this.centerShift.x) * 25, (-this.roiBall.position.y - this.centerShift.y) * 25, (-this.roiBall.position.z - this.centerShift.z) * 25] : [0, 0, 0]
+  }
+
+  public handleMouseRightClick (event: any) {
+    console.log('handleMouseRightClick')
+    event.preventDefault()
+    const el = this.$refs.NeuronScene as Element
+    this.neuronTipStyle['--bottom'] = el.clientHeight - event.offsetY - 5 + 'px'
+    this.neuronTipStyle['--left'] = event.offsetX + 10 + 'px'
+    this.rightClickHighlightNeuron(event)
+  }
+
+  private rightClickHighlightNeuron (event: any) {
+    console.log('rightClickHighlightNeuron')
+    event.preventDefault()
+    const el = this.$refs.NeuronScene as Element
+    let rayCaster = new THREE.Raycaster()
+    let mouse = new THREE.Vector2()
+    mouse.x = (event.offsetX / el.clientWidth) * 2 - 1
+    mouse.y = -(event.offsetY / el.clientHeight) * 2 + 1
+
+    rayCaster.setFromCamera(mouse, this.camera)
+
+    let intersects = rayCaster.intersectObjects(this.scene.children)
+
+    if (this.selectNeuron) {
+      this.neuronTipVisible = false
+      this.selectNeuron.material = this.selectNeuronMaterial
+      this.selectNeuron = null
+    }
+    for (let intersect of intersects) {
+      console.log(intersect.object)
+      if (intersect.object.visible && (intersect.object.name.indexOf('den') !== -1 || intersect.object.name.indexOf('axon') !== -1)) {
+        this.selectNeuron = intersect.object
+        this.selectNeuronMaterial = this.selectNeuron.material.clone()
+        this.selectNeuron.material.color = new THREE.Color(0, 255, 0)
+        this.selectNeuronInfo = this.neuronInfoMap.get(this.selectNeuron.name)
+        this.neuronTipVisible = true
+        break
+      }
+    }
+    this.resetRender()
   }
 
   /**

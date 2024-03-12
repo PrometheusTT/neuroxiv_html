@@ -6,7 +6,7 @@
     >
       {{ ifSoma }}
     </el-button>
-    <div v-if="ifSoma === 'Hide Soma'"/>
+    <div v-if="ifSoma === 'Hide Soma'" />
     <div
       class="div-op-roi"
     >

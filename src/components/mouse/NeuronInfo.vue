@@ -149,18 +149,18 @@
                   @searchROINeurons="$emit('searchROINeurons', $event)"
                 />
               </el-collapse-item>
-              <el-collapse-item
-                title="soma"
-                name="soma"
-              >
-                <Soma
-                  ref="Soma"
-                  :_show-soma="showSoma"
-                  :_hide-soma="hideSoma"
-                  :_update-soma-ball="updateSomaBall"
-                  @searchROINeurons="$emit('searchROINeurons', $event)"
-                />
-              </el-collapse-item>
+              <!--              <el-collapse-item-->
+              <!--                title="soma"-->
+              <!--                name="soma"-->
+              <!--              >-->
+              <!--                <Soma-->
+              <!--                  ref="Soma"-->
+              <!--                  :_show-soma="showSoma"-->
+              <!--                  :_hide-soma="hideSoma"-->
+              <!--                  :_update-soma-ball="updateSomaBall"-->
+              <!--                  @searchROINeurons="$emit('searchROINeurons', $event)"-->
+              <!--                />-->
+              <!--              </el-collapse-item>-->
             </el-collapse>
           </div>
         </el-tab-pane>
@@ -171,6 +171,8 @@
       <NeuronScene
         ref="neuronScene"
         @dblclick.native="handleDBClick"
+        @contextmenu="handleRightClick"
+        @neuronView="$emit('neuronView', $event)"
       />
     </div>
     <div class="right-bottom">
@@ -198,6 +200,12 @@
       {{ controlApicalScene }}
     </el-button>
     <div class="right-top">
+      <el-button
+        size="mini"
+        @click="opSoma"
+      >
+        {{ ifSoma }}
+      </el-button>
       <el-button
         v-show="neuronInfoData.id"
         icon="el-icon-search"
@@ -249,6 +257,9 @@ const rootIdFMost = neuronViewerBaseDataFMost[0].id
     // }
     // this.$nextTick()
     this.loadRootComponent()
+    this.dendriteScene.switchZIndex()
+    this.apicalScene.switchZIndex()
+    // this.showSoma(100)
   },
   components: {
     Soma,
@@ -277,12 +288,26 @@ export default class NeuronInfo extends Vue {
   private activeNames1: any = ['basicInfo']
   private downloading: boolean = false
   public selectedTab: string = 'viewer property'
-  private controlDendriteScene = 'hide basal viewer'
-  private controlApicalScene = 'hide apical viewer'
+  private controlDendriteScene = 'show basal viewer'
+  private controlApicalScene = 'show apical viewer'
   private lastSomaPosition:[number, number, number] = [0, 0, 0]
   public roiShown:boolean = false
   public somaShown:boolean = false
+  private ifSoma: string = 'Hide Soma Area'
+  private somaX: number = 100
+  private somaY: number = 100
+  private somaZ: number = 100
+  private somaR: number = 100
 
+  private opSoma () {
+    if (this.ifSoma === 'Show Soma Area') {
+      this.showSoma(this.somaR)
+      this.ifSoma = 'Hide Soma Area'
+    } else {
+      this.hideSoma()
+      this.ifSoma = 'Show Soma Area'
+    }
+  }
   /**
    * 下载 neuron info json, 轮播图片
    * @private
@@ -492,6 +517,16 @@ export default class NeuronInfo extends Vue {
   }
 
   /**
+     * 鼠标双击的回调函数，用于highlight渲染的组件，并显示出该组件的名字
+     * @event 鼠标事件
+     */
+  private handleRightClick (event: any) {
+    console.log('handleRightClick')
+    event.preventDefault()
+    this.neuronScene.handleMouseRightClick(event)
+  }
+
+  /**
    * 收起或展开渲染dendrite的场景
    * @private
    */
@@ -563,15 +598,17 @@ export default class NeuronInfo extends Vue {
   }
 
   public showSoma (r: number) {
-    this.somaShown = true
     const somaInitialPosition = this.neuronScene.showSomaBall(100)
     // if (roiInitialPosition) {
     //   this.ROI.setROI(Math.round(roiInitialPosition[0]), Math.round(roiInitialPosition[1]), Math.round(roiInitialPosition[2]))
     // }
-    if (somaInitialPosition || (this.lastSomaPosition[0] !== this.neuronInfoData.soma[0] || this.lastSomaPosition[1] !== this.neuronInfoData.soma[1] || this.lastSomaPosition[2] !== this.neuronInfoData.soma[2])) {
+    if (somaInitialPosition || (this.lastSomaPosition[0] !== Number(this.neuronInfoData.soma[0]) || this.lastSomaPosition[1] !== Number(this.neuronInfoData.soma[1]) || this.lastSomaPosition[2] !== Number(this.neuronInfoData.soma[2]))) {
       this.lastSomaPosition = this.neuronInfoData.soma
       this.updateSomaBall(Math.round(this.neuronInfoData.soma[0]), Math.round(this.neuronInfoData.soma[1]), Math.round(this.neuronInfoData.soma[2]), 100)
     }
+    console.log('this.neuronInfoData.soma')
+    console.log(this.neuronInfoData.soma)
+    this.somaShown = true
   }
 
   /**
@@ -583,7 +620,7 @@ export default class NeuronInfo extends Vue {
     this.neuronScene.setROIBallVisible(false)
   }
 
-  private hideSoma () {
+  public hideSoma () {
     this.somaShown = false
     this.neuronScene.setSomaBallVisible(false)
   }
