@@ -43,7 +43,6 @@
     <!-- 神经元搜索对话框 -->
     <el-dialog
       title="Neuron Search"
-      class="AIWindow"
       :visible.sync="searchDialogVisible"
       width="90%"
       top="10vh"
@@ -104,7 +103,7 @@ import HeaderBar from '@/components/mouse/HeaderBar.vue'
 import NeuronList from '@/components/mouse/NeuronList.vue'
 import NeuronDetail from '@/components/mouse/NeuronDetail.vue'
 import NeuronSearch from '@/components/mouse/NeuronSearch.vue'
-import { getNeuronInfo, searchNeurons, searchSimilarNeuron, uploadNeuron, searchROINeuron, AISearch, getSearchIntent } from '@/request/apis/mouse/Neuron'
+import { getNeuronInfo, searchNeurons, searchSimilarNeuron, uploadNeuron, searchROINeuron, AISearch, getSearchIntent, ArticleSearch } from '@/request/apis/mouse/Neuron'
 import SmallScreenAlert from '@/components/common/SmallScreenAlert.vue'
 import NeuronLLM from '@/components/mouse/NeuronLLM.vue'
 import AISearchWindow from '@/components/mouse/AISearchWindow.vue'
@@ -233,7 +232,7 @@ export default class Container extends Vue {
       if (updateNeuronList) {
         // console.log(neurons)
         this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-        this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
+        // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       }
     } catch (e) {
       console.error(e)
@@ -285,7 +284,7 @@ export default class Container extends Vue {
       this.neuronDetail.neuronStates.histogramBars.renderChart()
       this.searchDialogVisible = false
       this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-      this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
+      // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       func()
     } catch (e) {
       console.error(e)
@@ -305,50 +304,67 @@ export default class Container extends Vue {
       console.log(response.response)
       searchIntent = response.response.toString()
       func()
-      if (searchIntent === 'search') {
-        let result = this.aiSearchWindow.GetIntent(question, searchIntent)
-        console.log(result)
-        const condition = { criteria: result.criteria }
-        searchConditions = condition
-        console.log(condition)
+      if (question.includes('article') || question.includes('Article') || question.includes('articles') || question.includes('Articles')) {
         try {
           // eslint-disable-next-line camelcase
-          const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
-          console.log(neurons)
-          this.fullMorphNeurons = []
-          this.localMorphNeurons = []
-          neurons.forEach((neuron: { id: string | string[] }) => {
-            if (neuron.id.includes('full')) {
-              this.fullMorphNeurons.push(neuron)
-            } else if (neuron.id.includes('local')) {
-              this.localMorphNeurons.push(neuron)
-            }
-          })
-          this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-          this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
-          this.neuronDetail.selectedTab = 'neuronStates'
-          this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
-          await this.$nextTick()
-          this.neuronDetail.neuronStates.featurePlot.renderChart()
-          this.neuronDetail.neuronStates.histogramBars.renderChart()
-          this.LLMDialogVisible = false
-          this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please send me more information')
+          const response = await ArticleSearch(document.body, question).start()
+          // let res = JSON.parse(response)
+          console.log(response)
+          this.aiSearchWindow.addResponseFromAPI(response.response.articles)
+          // this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+
           func()
         } catch (e) {
           console.error(e)
         }
       } else {
-        try {
-          // eslint-disable-next-line camelcase
-          const response = await AISearch(document.body, question).start()
-          // let res = JSON.parse(response)
-          console.log(response)
-          this.aiSearchWindow.addResponseFromAPI(response.response.response)
-          this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+        if (searchIntent === 'search') {
+          let result = this.aiSearchWindow.GetIntent(question, searchIntent)
+          console.log(result)
+          const condition = { criteria: result.criteria }
+          searchConditions = condition
+          console.log(condition)
+          try {
+            // eslint-disable-next-line camelcase
+            const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
+            console.log(neurons)
+            this.fullMorphNeurons = []
+            this.localMorphNeurons = []
+            neurons.forEach((neuron: { id: string | string[] }) => {
+              if (neuron.id.includes('full')) {
+                this.fullMorphNeurons.push(neuron)
+              } else if (neuron.id.includes('local')) {
+                this.localMorphNeurons.push(neuron)
+              }
+            })
+            this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+            // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
+            this.neuronDetail.selectedTab = 'neuronStates'
+            this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+            await this.$nextTick()
+            this.neuronDetail.neuronStates.featurePlot.renderChart()
+            this.neuronDetail.neuronStates.histogramBars.renderChart()
+            this.LLMDialogVisible = false
+            this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please send me more information')
+            func()
+          } catch (e) {
+            console.error(e)
+          }
+        } else {
+          try {
+            // eslint-disable-next-line camelcase
+            const response = await AISearch(document.body, question).start()
+            // let res = JSON.parse(response)
+            console.log(response)
+            const formattedResponse = response.response.replace(/\n/g, '<br>')
+            this.aiSearchWindow.addResponseFromAPI(formattedResponse)
+            // this.aiSearchWindow.addResponseFromAPI(response.response)
+            this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
 
-          func()
-        } catch (e) {
-          console.error(e)
+            func()
+          } catch (e) {
+            console.error(e)
+          }
         }
       }
     } catch (e) {
@@ -426,7 +442,7 @@ export default class Container extends Vue {
         }
       })
       this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-      this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
+      // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       // this.neuronLists.neuronList.setListData(neurons)
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
@@ -664,7 +680,125 @@ export default class Container extends Vue {
     box-shadow: 3px 3px 8px 2px var(--shadow-color);
   }
 }
-.AIWindow{
+.AIWindow {
+  /* 调整对话框宽度，使其适应内容 */
+  width: 50%;
+  /* 可以调整对话框顶部的位置 */
+  top: 20vh;
+  /* 如果您想要对话框宽度自适应，可以设置为 auto */
+  /* width: auto; */
+}
 
+.AIWindow .el-dialog__header {
+  /* 对话框头部的样式，如果需要的话 */
+  text-align: center;
+  padding: 15px 20px;
+}
+
+.AIWindow .el-dialog {
+  /* 设置对话框的背景颜色为现代的灰色，并略微调整阴影 */
+  background: #f5f5f5; /* 调整为您喜欢的颜色 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.AIWindow .el-dialog__body {
+  /* 对话框内容的内边距 */
+  padding: 20px;
+}
+
+.AIWindow .chat-window {
+  /* 移除可能影响到布局的最大宽度和阴影 */
+  max-width: none;
+  box-shadow: none;
+  /* 设置聊天窗口的高度，这取决于您的对话框高度 */
+  height: 65vh;
+  /* 满宽度 */
+  width: 100%;
+  /* 移除边距 */
+  margin: 0;
+}
+
+.AIWindow .chat-messages {
+  /* 设置消息区域的样式，允许滚动 */
+  overflow-y: auto;
+  height: 100%; /* 或根据需要设置一个固定高度 */
+}
+
+/* 样式调整，以适应聊天窗口内的消息气泡 */
+.AIWindow .user-message, .AIWindow .system-message {
+  /* 限制气泡宽度，确保消息在对话框中正确显示 */
+  max-width: 70%;
+  margin-bottom: 10px;
+  border-radius: 18px;
+  padding: 10px;
+}
+
+/* 用户消息的特定样式 */
+.AIWindow .user-message {
+  /* 靠右浮动，背景色调整 */
+  float: right;
+  clear: both;
+  background-color: #007bff;
+  color: white;
+  margin-right: 20px; /* 消息与对话框边缘的距离 */
+}
+
+/* 系统消息的特定样式 */
+.AIWindow .system-message {
+  /* 靠左浮动，背景色调整 */
+  float: left;
+  clear: both;
+  background-color: #e1e1e1;
+  color: black;
+  margin-left: 20px; /* 消息与对话框边缘的距离 */
+}
+
+/* 输入框样式调整，以适应对话框 */
+.AIWindow .input-box {
+  width: calc(100% - 40px); /* 输入框的宽度减去左右边距 */
+  margin: 20px; /* 输入框与对话框边缘的距离 */
+  padding: 10px 15px;
+  border-radius: 22px;
+  border: 2px solid #007bff;
+  outline: none;
+}
+
+/* 对话框底部按钮的样式 */
+.AIWindow .dialog-footer {
+  text-align: right; /* 按钮靠右对齐 */
+  padding: 10px 20px; /* 底部内边距 */
+}
+
+/* 确保按钮具有一致的样式 */
+.AIWindow .el-button {
+  margin-left: 10px; /* 按钮之间的间距 */
+}
+
+/* 按钮样式 */
+.AIWindow .dialog-footer .el-button {
+  border: none; /* 移除边框 */
+  box-shadow: none; /* 移除阴影 */
+  border-radius: 4px; /* 轻微的圆角 */
+  background: #007bff; /* 蓝色背景，可以根据您的品牌颜色调整 */
+  color: white; /* 白色文字 */
+  margin-left: 8px; /* 按钮之间的间距 */
+}
+
+.AIWindow .dialog-footer .el-button:hover {
+  background: #0056b3; /* 悬浮时更深的蓝色 */
+}
+
+.AIWindow .dialog-footer .el-button:active {
+  background: #003a75; /* 按下时的颜色 */
+}
+
+/* 第一个按钮使用透明背景，以区分它与其他操作按钮 */
+.AIWindow .dialog-footer .el-button:first-child {
+  background: transparent;
+  color: #007bff;
+}
+
+.AIWindow .dialog-footer .el-button:first-child:hover {
+  background: rgba(0, 123, 255, 0.1); /* 悬浮时的背景颜色 */
 }
 </style>
