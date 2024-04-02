@@ -4,15 +4,37 @@
       <div
         v-for="(message, index) in messages"
         :key="index"
-        :class="{'user-message': message.isUser}"
+        class="message-container"
+        :class="{'user-message-container': message.isUser, 'system-message-container': !message.isUser}"
       >
-        {{ message.text }}
+        <img
+          v-if="!message.isUser"
+          src="../../../public/img/SystemAvtar.jpg"
+          alt="System Avatar"
+          class="avatar system-avatar"
+        >
+        <div
+          class="message-bubble"
+          :class="{'user-message': message.isUser, 'system-message': !message.isUser}"
+        >
+          <span v-html="message.text" />
+          <div class="message-timestamp">
+            {{ message.timestamp }}
+          </div> <!-- 时间戳 -->
+        </div>
+        <img
+          v-if="message.isUser"
+          src="../../../public/img/User.png"
+          alt="User Avatar"
+          class="avatar user-avatar"
+        >
       </div>
     </div>
     <input
       v-model="userInput"
       placeholder="Type a message..."
-      @keyup.enter="confirmSearch"
+      class="input-box"
+      @keyup.enter="sendMessage"
     >
   </div>
 </template>
@@ -24,37 +46,78 @@ const searchConditions = require('./search_conditions.json')
 @Component
 
 export default class AISearchWindow extends Vue {
-  public messages: {text: string, isUser: Boolean}[] = []
+  public messages: {text: string, isUser: Boolean, timestamp: string}[] = []
   private userInput: string = ''
   public lastInput: string = ''
   private Conditions: any[] = searchConditions.children
 
+  public scrollToBottom () {
+    this.$nextTick(() => {
+      const container = this.$el.querySelector('.chat-messages')
+      if (container) { // 检查 container 是否为 null
+        container.scrollTop = container.scrollHeight
+      }
+    })
+  }
+
   public sendMessage () {
     const userMessage = this.userInput
     if (userMessage) {
-      this.messages.push({ text: userMessage, isUser: true })
+      const currentTime = new Date() // 获取当前时间
+      // 格式化时间为 HH:MM 格式
+      const timestamp = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0')
+
+      this.messages.push({
+        text: userMessage,
+        isUser: true,
+        timestamp: timestamp // 添加时间戳属性
+      })
       this.lastInput = userMessage
       this.userInput = ''
-      this.addResponseFromAPI(userMessage)
-    }
-  }
-
-  public addResponseFromAPI (Response: string) {
-    // Simulate a response from an API (replace with your actual API call)
-    if (Response !== this.lastInput) {
-      const responseMessage = 'SEU-Allen: ' + Response
-      this.messages.push({ text: responseMessage, isUser: false })
+      // this.addResponseFromAPI(userMessage)
+      this.scrollToBottom()
     }
   }
 
   // public addResponseFromAPI (Response: string) {
   //   // Simulate a response from an API (replace with your actual API call)
   //   if (Response !== this.lastInput) {
-  //     const responseMessage = 'Response: ' + Response
-  //     this.messages.push({ text: responseMessage, isUser: false })
+  //     const responseMessage = 'SEU-Allen: ' + Response
+  //     const currentTime = new Date() // 获取当前时间
+  //     // 格式化时间为 HH:MM 格式
+  //     const timestamp = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0')
+  //     this.messages.push({ text: responseMessage, isUser: false, timestamp: timestamp })
   //   }
   // }
 
+  public addResponseFromAPI (data: any) {
+    // 获取当前时间戳
+    const currentTime = new Date() // 获取当前时间
+    //     // 格式化时间为 HH:MM 格式
+    const timestamp = currentTime.getHours().toString().padStart(2, '0') + ':' + currentTime.getMinutes().toString().padStart(2, '0')
+
+    // 如果传入的是字符串（原有需求）
+    if (typeof data === 'string') {
+      this.messages.push({
+        text: data, isUser: false, timestamp
+      })
+      // eslint-disable-next-line brace-style
+    }
+    // 如果传入的是对象数组（新需求）
+    else if (Array.isArray(data) && data.length > 0) {
+      data.forEach((article: { title: string; summary: string; link: string }, index: number) => {
+        let responseMessage = `<span style="font-weight: bold; font-size: larger;">${index + 1}. Article Title:</span> ${article.title}<br>
+  <span style="font-weight: bold; font-size: larger;">Summary:</span> ${article.summary}<br>
+  <span style="font-weight: bold; font-size: larger;">Link:</span> <a href="${article.link}" target="_blank" style="text-decoration: underline; color: #007bff">${article.link}</a>`
+        this.messages.push({ text: responseMessage, isUser: false, timestamp })
+      })
+      // eslint-disable-next-line brace-style
+    }
+    // 如果数组为空，表示没有搜索到结果
+    else if (Array.isArray(data) && data.length === 0) {
+      this.messages.push({ text: 'No results found.', isUser: false, timestamp })
+    }
+  }
   public confirmSearch () {
     this.$emit('AISearch')
   }
@@ -1119,26 +1182,116 @@ export default class AISearchWindow extends Vue {
 
 <style scoped>
 .chat-window {
-  width: 100%;
-  border: 1px solid #ccc;
-  padding: 10px;
+  width: 100%; /* 聊天窗口宽度自适应父元素 */
+  max-width: 768px; /* 控制最大宽度 */
+  border-radius: 16px; /* 圆角边框 */
+  overflow: hidden; /* 防止子元素溢出边框 */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 更轻的阴影，增加立体感 */
+  background: #ffffff; /* 纯白背景 */
+  margin: auto; /* 居中显示 */
+  display: flex;
+  flex-direction: column; /* 垂直布局 */
+  max-height: 90vh; /* 最大高度不超过视口的90% */
+  min-height: 300px; /* 最小高度 */
+  overflow: hidden; /* 内容溢出时隐藏 */
 }
 
 .chat-messages {
-  height: 400px;
-  overflow-y: auto;
-  border: 1px solid #eee;
-  padding: 10px;
-  margin-bottom: 5px;
+  flex: 1; /* 让消息列表填充所有可用空间 */
+  padding: 20px; /* 增加内部间距 */
+  background: #f7f7f7; /* 淡灰色背景 */
+  overflow-y: auto; /* 自动显示滚动条 */
+}
+
+.message-bubble {
+  background: #e1e1e1; /* 统一气泡背景色 */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+  border-radius: 20px; /* 圆角 */
+  margin: 4px 0; /* 消息间距 */
+  padding: 10px 20px; /* 内边距 */
+  display: inline-block; /* 保证气泡根据内容扩展 */
+  max-width: 70%; /* 控制气泡宽度 */
 }
 
 .user-message {
-  text-align: right;
-  background-color: #ccf;
+  background: #007bff; /* 用户消息颜色 */
+  color: white; /* 用户消息文字颜色 */
+  float: right; /* 靠右浮动 */
+  clear: both; /* 避免相邻元素的浮动 */
+  margin-right: 20px; /* 与窗口边缘的间距 */
+}
+
+.system-message {
+  background: #e1e1e1; /* 系统消息颜色 */
+  color: black; /* 系统消息文字颜色 */
+  float: left; /* 靠左浮动 */
+  clear: both; /* 避免相邻元素的浮动 */
+  margin-left: 20px; /* 与窗口边缘的间距 */
 }
 
 input {
-  width: 100%;
-  padding: 5px;
+  padding: 12px 20px; /* 输入框内边距 */
+  border-radius: 30px; /* 圆角边框 */
+  border: 2px solid #007bff; /* 边框颜色与用户消息气泡一致 */
+  margin: 10px 20px; /* 边距 */
+  width: calc(100% - 40px); /* 输入框宽度 */
+  box-sizing: border-box; /* 边框盒模型 */
+}
+
+/* 自适应滚动条样式 */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px; /* 圆角滚动条 */
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 10px;
+}
+/* 时间戳样式 */
+.message-timestamp {
+  font-size: 0.75em;
+  margin-top: 5px;
+  color: #999;
+  text-align: right;
+}
+.avatar {
+    width: 40px; /* 设置头像宽度 */
+    height: 40px; /* 设置头像高度 */
+    border-radius: 50%; /* 圆形头像 */
+    object-fit: cover; /* 保持图片比例 */
+    margin: 4px; /* 头像与气泡间隔 */
+}
+
+.user-avatar {
+    float: right; /* 用户头像靠右 */
+}
+
+.system-avatar {
+    float: left; /* 系统头像靠左 */
+}
+
+.message-container {
+    display: flex;
+    align-items: flex-start; /* 对齐到底部 */
+    clear: both; /* 清除浮动 */
+}
+
+.user-message-container {
+    justify-content: flex-end; /* 用户气泡靠右 */
+}
+
+.system-message-container {
+    justify-content: flex-start; /* 系统气泡靠左 */
+}
+
+.message-bubble {
+    /* 气泡样式调整，如有需要 */
+    margin-right: 10px; /* 给右边头像留出空间 */
+    margin-left: 10px; /* 给左边头像留出空间 */
 }
 </style>
