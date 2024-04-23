@@ -19,7 +19,7 @@
           label="value(mean)"
         >
           <template slot-scope="scope">
-            {{ scope.row.mean + ' ' + (scope.row.unit || '')}}
+            {{ scope.row.mean + ' ' + (scope.row.unit || '') }}
           </template>
         </el-table-column>
         <el-table-column
@@ -27,7 +27,7 @@
           label="std"
         >
           <template slot-scope="scope">
-            {{ scope.row.std + ' ' + (scope.row.unit || '')}}
+            {{ scope.row.std + ' ' + (scope.row.unit || '') }}
           </template>
         </el-table-column>
         <el-table-column

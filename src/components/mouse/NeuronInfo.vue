@@ -22,6 +22,9 @@
                 <p v-show="neuronInfoData.layer">
                   layer: {{ neuronInfoData.layer }}
                 </p>
+                <p v-show="neuronInfoData.hemisphere">
+                  hemisphere: {{ neuronInfoData.hemisphere }}
+                </p>
               </el-collapse-item>
               <el-collapse-item
                 title="nearby neurons"

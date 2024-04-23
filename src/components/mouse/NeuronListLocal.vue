@@ -52,6 +52,14 @@
           </el-tag>
           <el-tag
             class="neuron-tag-item"
+            :color="getTagColor('hemisphere')"
+            effect="dark"
+            size="mini"
+          >
+            {{ item.hemisphere }}
+          </el-tag>
+          <el-tag
+            class="neuron-tag-item"
             :color="getTagColor(item.brain_atlas)"
             effect="dark"
             size="mini"
@@ -69,17 +77,17 @@
           >
             {{ prop }}
           </el-tag>
-          <el-tag
-            v-for="(prop, k) in ['local']"
-            :key="k"
-            class="neuron-tag-item"
-            :class="{ disabled: prop === 'full' }"
-            :color="getTagColor(prop)"
-            effect="dark"
-            size="mini"
-          >
-            {{ prop }}
-          </el-tag>
+<!--          <el-tag-->
+<!--            v-for="(prop, k) in ['local']"-->
+<!--            :key="k"-->
+<!--            class="neuron-tag-item"-->
+<!--            :class="{ disabled: prop === 'full' }"-->
+<!--            :color="getTagColor(prop)"-->
+<!--            effect="dark"-->
+<!--            size="mini"-->
+<!--          >-->
+<!--            {{ prop }}-->
+<!--          </el-tag>-->
         </div>
         <el-button
           type="primary"
@@ -170,7 +178,7 @@ export default class NeuronListLocal extends Vue {
   private batchSelectHandler (val: boolean) {
     this.currentPageData.forEach((item: any) => {
       item.selected = val
-      this.$emit('checkNeuron', item)
+      this.$emit('checkNeuronLists', item)
     })
     this.isIndeterminate = false
   }
@@ -228,7 +236,8 @@ export default class NeuronListLocal extends Vue {
       CCFv3: 'rgb(214, 253, 254)',
       fMOST: 'rgb(159, 205, 99)',
       local: 'rgb(134,145,234)',
-      full: 'rgb(255,50,50)'
+      full: 'rgb(255,50,50)',
+      hemisphere: 'rgb(255, 121, 108)'
     }
     return colorMap[prop] || 'white'
   }

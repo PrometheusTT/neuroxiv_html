@@ -50,6 +50,14 @@
           >
             {{ item.celltype }}
           </el-tag>
+          <el-tag
+            class="neuron-tag-item"
+            :color="getTagColor('hemisphere')"
+            effect="dark"
+            size="mini"
+          >
+            {{ item.hemisphere }}
+          </el-tag>
           <!--          <el-tag-->
           <!--            class="neuron-tag-item"-->
           <!--            :color="getTagColor(item.brain_atlas)"-->
@@ -59,7 +67,7 @@
           <!--            {{ item.brain_atlas }}-->
           <!--          </el-tag>-->
           <el-tag
-            v-for="(prop, j) in ['axon', 'dendrite', 'apical', 'arbor']"
+            v-for="(prop, j) in ['axon', 'dendrite', 'apical']"
             :key="j"
             class="neuron-tag-item"
             :class="{ disabled: !item[`has_${prop}`] }"
@@ -166,7 +174,6 @@ export default class NeuronList extends Vue {
    * 获取列表中勾选的数据
    */
   public getSelectedItems () {
-    console.log(this.data.filter((item: any) => item.selected))
     return this.data.filter((item: any) => item.selected)
   }
 
@@ -194,6 +201,7 @@ export default class NeuronList extends Vue {
       item.selected = val
       this.$emit('checkNeuronLists', item)
     })
+    console.log(this.currentPageData)
     this.isIndeterminate = false
   }
 
@@ -229,6 +237,8 @@ export default class NeuronList extends Vue {
    * @param neuronDetail 神经元信息
    */
   private checkNeuronCallback (neuronDetail: any) {
+    console.log('checkNeuronCallback')
+    console.log(neuronDetail)
     this.$emit('checkNeuronLists', neuronDetail)
   }
 
@@ -248,7 +258,8 @@ export default class NeuronList extends Vue {
       fMOST: 'rgb(159, 205, 99)',
       ION: 'rgb(6,194,172)',
       SEU: 'rgb(6,194,172)',
-      MouseLight: 'rgb(6,194,172)'
+      MouseLight: 'rgb(6,194,172)',
+      hemisphere: 'rgb(255, 121, 108)'
     }
     // console.log(colorMap[prop] || 'white')
     return colorMap[prop] || 'white'

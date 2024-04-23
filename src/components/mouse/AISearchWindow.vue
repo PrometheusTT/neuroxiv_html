@@ -18,6 +18,24 @@
           :class="{'user-message': message.isUser, 'system-message': !message.isUser}"
         >
           <span v-html="message.text" />
+          <button
+            v-if="isPythonCode(message.text)"
+            class="execute-code-btn"
+            @click="executePythonCode(message.text)"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon-play"
+            >
+              <polygon points="5 3 19 12 5 21 5 3" />
+            </svg>
+          </button>
           <div class="message-timestamp">
             {{ message.timestamp }}
           </div> <!-- 时间戳 -->
@@ -34,7 +52,7 @@
       v-model="userInput"
       placeholder="Type a message..."
       class="input-box"
-      @keyup.enter="sendMessage"
+      @keyup.enter="$emit('AISearch')"
     >
   </div>
 </template>
@@ -50,6 +68,8 @@ export default class AISearchWindow extends Vue {
   private userInput: string = ''
   public lastInput: string = ''
   private Conditions: any[] = searchConditions.children
+  private pyodide:any = null
+  public code:string = ''
 
   public scrollToBottom () {
     this.$nextTick(() => {
@@ -77,6 +97,21 @@ export default class AISearchWindow extends Vue {
       // this.addResponseFromAPI(userMessage)
       this.scrollToBottom()
     }
+  }
+  public setCode (code: string) {
+    this.code = code
+  }
+
+  public isPythonCode (text: string): boolean {
+    return text.trim().includes('import')
+  }
+
+  public async executePythonCode (code: string) {
+    this.$emit('executeCode')
+  }
+
+  formatTimestamp (date: Date): string {
+    return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`
   }
 
   // public addResponseFromAPI (Response: string) {
@@ -1289,9 +1324,48 @@ input {
     justify-content: flex-start; /* 系统气泡靠左 */
 }
 
+.execute-code-btn {
+    background-color: #007bff; /* Primary color */
+    border: none; /* No border */
+    border-radius: 50%; /* Circle shape */
+    width: 30px; /* Diameter of the button */
+    height: 30px; /* Diameter of the button */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 10px;
+    bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    transition: background-color 0.2s, transform 0.2s; /* Smooth transitions for feedback */
+}
+
+.icon-play {
+    fill: white; /* Icon color contrast */
+    width: 20px; /* Icon size */
+    height: 20px; /* Icon size */
+}
+
+.execute-code-btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+.execute-code-btn:active {
+    transform: scale(0.9); /* Slightly shrink the button when clicked */
+}
+
 .message-bubble {
-    /* 气泡样式调整，如有需要 */
-    margin-right: 10px; /* 给右边头像留出空间 */
-    margin-left: 10px; /* 给左边头像留出空间 */
+    position: relative; /* Needed for absolute positioning of the button */
+    padding: 10px 10px 10px 10px ; /* Adjust padding to give space for the button */
+}
+
+pre, code {
+  background-color: #f4f4f4; /* 浅灰色背景，突出显示代码区域 */
+  border: 1px solid #ddd; /* 边框 */
+  border-radius: 5px; /* 圆角边框 */
+  padding: 10px; /* 内边距 */
+  overflow: auto; /* 超长代码滚动 */
+  white-space: pre-wrap; /* 保持空白符 */
+  word-break: break-all; /* 单词断行 */
 }
 </style>

@@ -2,7 +2,7 @@
     "name": "root",
     "children": [
         {
-            "name": "info",
+            "name": "metadata info",
             "children": [
                 {
                     "querry_name": "data_source",
@@ -24,7 +24,7 @@
                 {
                     "querry_name": "celltype",
                     "type": "category",
-                    "display_name": "brain region",
+                    "display_name": "soma region",
                     "help_info": "Soma region/Cell type of the neuron.",
                     "structure_tree": "info,cell type",
                     "candidates": [
@@ -524,7 +524,7 @@
                     "max_value": null,
                     "default_min": null,
                     "default_max": null,
-                    "name": "brain region"
+                    "name": "soma region"
                 },
                 {
                     "querry_name": "brain_atlas",
@@ -550,9 +550,8 @@
                     "help_info": "auto_r': auto reconstruction. 'semi_r': auto reconstruction and manual correction. 'manual': manual reconstruction.",
                     "structure_tree": "info,reconstruction method",
                     "candidates": [
-                        "auto_r",
-                        "semi_r",
-                        "manual"
+                        "auto",
+                        "semi_auto"
                     ],
                     "min_value": null,
                     "max_value": null,
@@ -607,14 +606,30 @@
                   "default_min": null,
                   "default_max": null,
                   "name": "has apical dendrite"
+                },
+                {
+                  "querry_name": "hemisphere",
+                  "type": "category",
+                  "display_name": "hemisphere",
+                  "help_info": "Left': left hemisphere. 'Right': left hemisphere.",
+                  "structure_tree": "info,hemisphere",
+                  "candidates": [
+                    "Left",
+                    "Right"
+                  ],
+                  "min_value": null,
+                  "max_value": null,
+                  "default_min": null,
+                  "default_max": null,
+                  "name": "hemisphere"
                 }
             ]
         },
         {
-            "name": "axon",
+            "name": "axonal patterns",
             "children": [
                 {
-                    "name": "features",
+                    "name": "morphological features",
                     "children": [
                         {
                             "querry_name": "morpho_axon_center shift",
@@ -1035,7 +1050,7 @@
                     ]
                 },
                 {
-                    "name": "projection",
+                    "name": "anatomical projection strength",
                     "children": [
                         {
                             "name": "FRP",
@@ -11024,10 +11039,10 @@
             ]
         },
         {
-            "name": "dendrite",
+            "name": "dendritic patterns",
             "children": [
                 {
-                    "name": "features",
+                    "name": "morphological features",
                     "children": [
                         {
                             "querry_name": "morpho_den_center shift",
@@ -11448,7 +11463,7 @@
                     ]
                 },
                 {
-                    "name": "projection",
+                    "name": "anatomical projection strength",
                     "children": [
                         {
                             "name": "FRP",
@@ -21437,10 +21452,10 @@
             ]
         },
         {
-            "name": "arbor",
+            "name": "auto arbors",
             "children": [
                 {
-                    "name": "projection",
+                    "name": "anatomical projection strength",
                     "children": [
                         {
                             "name": "FRP",
