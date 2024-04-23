@@ -87,6 +87,56 @@ function AISearch (loadingTarget: HTMLElement | null, question: string, requestO
   return r
 }
 
+function ArticleSearch (loadingTarget: HTMLElement | null, question: string, requestOptions: RequestOptions = {}) {
+  const url = `${REQUEST_NAME_SPACE}Article/${question}`
+  const options: RequestInit = {
+    // method: 'post',
+    // body: JSON.stringify(question)
+    body: question
+  }
+  requestOptions.errorMsg = requestOptions.errorMsg || 'get Articles error'
+  const params = { url, loadingTarget, options, ...requestOptions }
+  let r = request(params)
+  let originR = r.start.bind(r)
+  r.start = () => originR().then((data: any) => {
+    return data
+  })
+  return r
+}
+
+function CodeGenerator (loadingTarget: HTMLElement | null, question: string, requestOptions: RequestOptions = {}) {
+  const url = `${REQUEST_NAME_SPACE}GenerateCode/${question}`
+  const options: RequestInit = {
+    // method: 'post',
+    // body: JSON.stringify(question)
+    body: question
+  }
+  requestOptions.errorMsg = requestOptions.errorMsg || 'get Code error'
+  const params = { url, loadingTarget, options, ...requestOptions }
+  let r = request(params)
+  let originR = r.start.bind(r)
+  r.start = () => originR().then((data: any) => {
+    return data
+  })
+  return r
+}
+
+function executeCode (loadingTarget: HTMLElement | null, requestOptions: RequestOptions = {}) {
+  const url = `${REQUEST_NAME_SPACE}executeCode`
+  const options: RequestInit = {
+    // method: 'post',
+    // body: JSON.stringify(question)
+  }
+  requestOptions.errorMsg = requestOptions.errorMsg || 'execute Code error'
+  const params = { url, loadingTarget, options, ...requestOptions }
+  let r = request(params)
+  let originR = r.start.bind(r)
+  r.start = () => originR().then((data: any) => {
+    return data
+  })
+  return r
+}
+
 /**
  * 根据神经元 id 获取神经元信息
  * @param loadingTarget { HTMLElement | null } 要显示 loading 的元素
@@ -191,4 +241,4 @@ function searchROINeuron (loadingTarget: HTMLElement | null, roiParameter: strin
   return r
 }
 
-export { searchNeurons, getNeuronInfo, uploadNeuron, searchSimilarNeuron, searchROINeuron, AISearch, getSearchIntent }
+export { searchNeurons, getNeuronInfo, uploadNeuron, searchSimilarNeuron, searchROINeuron, AISearch, getSearchIntent, ArticleSearch, CodeGenerator, executeCode }

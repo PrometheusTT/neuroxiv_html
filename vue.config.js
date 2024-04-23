@@ -8,18 +8,21 @@ module.exports = {
     clientLogLevel: 'warn',
     proxy: {
       '/api': {
-        target: 'http://10.192.55.203:5000',
+        // target: 'http://localhost:8083',
+        target: 'http://10.192.9.222:5000',
         pathRewrite: { '^/api': '' },
         changeOrigin: true
       },
       '/data': {
-        target: 'http://10.192.55.203:5000',
+        // target: 'http://localhost:8083',
+        target: 'http://10.192.9.222:5000',
         pathRewrite: { '^/data': '' },
         changeOrigin: true
       },
       '/tmp': {
-        target: 'http://10.192.55.203:5000',
-        // pathRewrite: { '^/tmp': '' },
+        // target: 'http://localhost:8083',
+        target: 'http://10.192.9.222:5000',
+        pathRewrite: { '^/tmp': '' },
         changeOrigin: true
       },
       '/socket.io': {
