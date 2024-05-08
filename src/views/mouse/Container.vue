@@ -29,13 +29,12 @@
           </div>
         </el-main>
         <el-aside width="auto">
-          <NeuronLists
-            ref="neuronLists"
+          <NeuronList
+            ref="neuronList"
             @neuronView="updateCurrentNeuronInfo"
             @neuronAnalysis="updateNeuronAnalysis"
             @checkNeuron="checkNeuron"
             @viewNeurons="viewNeurons"
-            @switchLocalAndFull="switchLocalAndFull($event)"
           />
         </el-aside>
       </el-container>
@@ -104,7 +103,7 @@ import HeaderBar from '@/components/mouse/HeaderBar.vue'
 import NeuronList from '@/components/mouse/NeuronList.vue'
 import NeuronDetail from '@/components/mouse/NeuronDetail.vue'
 import NeuronSearch from '@/components/mouse/NeuronSearch.vue'
-import { getNeuronInfo, searchNeurons, searchSimilarNeuron, uploadNeuron, searchROINeuron, AISearch, getSearchIntent, ArticleSearch, CodeGenerator, executeCode } from '@/request/apis/mouse/Neuron'
+import { getNeuronInfo, searchNeurons, searchSimilarNeuron, uploadNeuron, searchROINeuron, AIChat, getSearchIntent, ArticleSearch, CodeGenerator, executeCode } from '@/request/apis/mouse/Neuron'
 import SmallScreenAlert from '@/components/common/SmallScreenAlert.vue'
 import NeuronLLM from '@/components/mouse/NeuronLLM.vue'
 import AISearchWindow from '@/components/mouse/AISearchWindow.vue'
@@ -113,7 +112,6 @@ import NeuronLists from '@/components/mouse/NeuronLists.vue'
 
 @Component({
   components: {
-    NeuronLists,
     NeuronLLM,
     SmallScreenAlert,
     NeuronSearch,
@@ -127,8 +125,8 @@ import NeuronLists from '@/components/mouse/NeuronLists.vue'
 export default class Container extends Vue {
   @Ref('neuronDetail') readonly neuronDetail!: NeuronDetail
   @Ref('neuronSearch') readonly neuronSearch!: NeuronSearch
-  // @Ref('neuronList') readonly neuronList!: NeuronList
-  @Ref('neuronLists') readonly neuronLists!: NeuronLists
+  @Ref('neuronList') readonly neuronList!: NeuronList
+  // @Ref('neuronLists') readonly neuronLists!: NeuronLists
   @Ref('neuronLLM') readonly neuronLLM!: NeuronLLM
   @Ref('headBar') readonly headBar!: HeaderBar
   @Ref('aiSearchWindow') readonly aiSearchWindow!: AISearchWindow
@@ -185,7 +183,7 @@ export default class Container extends Vue {
     // this.neuronDetail.neuronInfo.clearReconstruction()
     // await this.$nextTick()
     // const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
-    const AIAdvice = await AISearch(document.body, neuronDetail.question).start()
+    const AIAdvice = await AIChat(document.body, neuronDetail.question).start()
     // this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
     // this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
     // await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
@@ -216,23 +214,15 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { basic_info, morpho_info, plot, proj_info, neurons } = await searchNeurons(document.body, { id_list: neuronIds }).start()
-      this.fullMorphNeurons = []
-      this.localMorphNeurons = []
-      neurons.forEach((neuron: { id: string | string[] }) => {
-        if (neuron.id.includes('full')) {
-          this.fullMorphNeurons.push(neuron)
-        } else if (neuron.id.includes('local')) {
-          this.localMorphNeurons.push(neuron)
-        }
-      })
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
       this.neuronDetail.neuronStates.featurePlot.renderChart()
       this.neuronDetail.neuronStates.histogramBars.renderChart()
       if (updateNeuronList) {
+        this.neuronList.setListData(neurons)
         // console.log(neurons)
-        this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+        // this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
         // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       }
     } catch (e) {
@@ -257,34 +247,13 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, condition).start()
-      console.log('neurons')
-      console.log(neurons)
-      // 初始化两个空数组用于存放数据
-      // 遍历neurons数组，根据名字分配到对应数组
-      this.fullMorphNeurons = []
-      this.localMorphNeurons = []
-      neurons.forEach((neuron: { id: string | string[] }) => {
-        if (neuron.id.includes('full')) {
-          this.fullMorphNeurons.push(neuron)
-        } else if (neuron.id.includes('local')) {
-          this.localMorphNeurons.push(neuron)
-        }
-      })
-      console.log(this.fullMorphNeurons)
-      // this.neuronList.setListData(neurons)
-      // if (this.neuronLists.selectedTab === 'fullMorph') {
-      //   this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-      // } else {
-      //   this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
-      // }
-
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
       this.neuronDetail.neuronStates.featurePlot.renderChart()
       this.neuronDetail.neuronStates.histogramBars.renderChart()
       this.searchDialogVisible = false
-      this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+      this.neuronList.setListData(neurons)
       // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       func()
     } catch (e) {
@@ -316,27 +285,26 @@ export default class Container extends Vue {
     let searchConditions = {}
     try {
       // eslint-disable-next-line camelcase
-      const response = await getSearchIntent(document.body, question).start()
+      const response = await AIChat(document.body, question).start()
+      // let res = JSON.parse(response)
+      console.log(response)
+      const formattedResponse = response.response.replace(/\n/g, '<br>')
+      this.aiSearchWindow.addResponseFromAPI(formattedResponse)
+      // this.aiSearchWindow.addResponseFromAPI(response.response)
+      // this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+      func()
+    } catch (e) {
+      console.error(e)
+    }
+    try {
+      // eslint-disable-next-line camelcase
+      let response = await getSearchIntent(document.body, question).start()
       // let res = JSON.parse(response)
       console.log(response.response)
       searchIntent = response.response.toString()
+      this.aiSearchWindow.addResponseFromAPI('I guess you want to ' + searchIntent + ', is that right?')
       func()
-      if (question.includes('code')) {
-        try {
-          // eslint-disable-next-line camelcase
-          const response = await CodeGenerator(document.body, question).start()
-          // let res = JSON.parse(response)
-          console.log(response)
-          this.aiSearchWindow.addResponseFromAPI(response.response)
-          this.aiSearchWindow.setCode(response.response)
-          // this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
-
-          func()
-        } catch (e) {
-          console.error(e)
-        }
-      }
-      // if (question.includes('article') || question.includes('Article') || question.includes('articles') || question.includes('Articles')) {
+      // if (searchIntent === 'search articles') {
       //   try {
       //     // eslint-disable-next-line camelcase
       //     const response = await ArticleSearch(document.body, question).start()
@@ -349,60 +317,60 @@ export default class Container extends Vue {
       //   } catch (e) {
       //     console.error(e)
       //   }
-      // } else {
-      //   if (searchIntent === 'search') {
-      //     let result = this.aiSearchWindow.GetIntent(question, searchIntent)
-      //     console.log(result)
-      //     const condition = { criteria: result.criteria }
-      //     searchConditions = condition
-      //     console.log(condition)
-      //     try {
-      //       // eslint-disable-next-line camelcase
-      //       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
-      //       console.log(neurons)
-      //       this.fullMorphNeurons = []
-      //       this.localMorphNeurons = []
-      //       neurons.forEach((neuron: { id: string | string[] }) => {
-      //         if (neuron.id.includes('full')) {
-      //           this.fullMorphNeurons.push(neuron)
-      //         } else if (neuron.id.includes('local')) {
-      //           this.localMorphNeurons.push(neuron)
-      //         }
-      //       })
-      //       this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-      //       // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
-      //       this.neuronDetail.selectedTab = 'neuronStates'
-      //       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
-      //       await this.$nextTick()
-      //       this.neuronDetail.neuronStates.featurePlot.renderChart()
-      //       this.neuronDetail.neuronStates.histogramBars.renderChart()
-      //       this.LLMDialogVisible = false
-      //       this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please send me more information')
-      //       func()
-      //     } catch (e) {
-      //       console.error(e)
-      //     }
-      //   } else {
-      //     try {
-      //       // eslint-disable-next-line camelcase
-      //       const response = await AISearch(document.body, question).start()
-      //       // let res = JSON.parse(response)
-      //       console.log(response)
-      //       const formattedResponse = response.response.replace(/\n/g, '<br>')
-      //       this.aiSearchWindow.addResponseFromAPI(formattedResponse)
-      //       // this.aiSearchWindow.addResponseFromAPI(response.response)
-      //       this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
-      //
-      //       func()
-      //     } catch (e) {
-      //       console.error(e)
-      //     }
+      // } else if (searchIntent === 'search neuron data') {
+      //   let result = this.aiSearchWindow.GetIntent(question, searchIntent)
+      //   console.log(result)
+      //   const condition = { criteria: result.criteria }
+      //   searchConditions = condition
+      //   console.log(condition)
+      //   try {
+      //     // eslint-disable-next-line camelcase
+      //     const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
+      //     console.log(neurons)
+      //     this.fullMorphNeurons = []
+      //     this.localMorphNeurons = []
+      //     neurons.forEach((neuron: { id: string | string[] }) => {
+      //       if (neuron.id.includes('full')) {
+      //         this.fullMorphNeurons.push(neuron)
+      //       } else if (neuron.id.includes('local')) {
+      //         this.localMorphNeurons.push(neuron)
+      //       }
+      //     })
+      //     this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+      //     // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
+      //     this.neuronDetail.selectedTab = 'neuronStates'
+      //     this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+      //     await this.$nextTick()
+      //     this.neuronDetail.neuronStates.featurePlot.renderChart()
+      //     this.neuronDetail.neuronStates.histogramBars.renderChart()
+      //     this.LLMDialogVisible = false
+      //     this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please send me more information')
+      //     func()
+      //   } catch (e) {
+      //     console.error(e)
       //   }
+      // } else if (searchIntent === 'chat with neuroxiv website') {
+      //   try {
+      //     // eslint-disable-next-line camelcase
+      //     const response = await AIChat(document.body, question).start()
+      //     // let res = JSON.parse(response)
+      //     console.log(response)
+      //     const formattedResponse = response.response.replace(/\n/g, '<br>')
+      //     this.aiSearchWindow.addResponseFromAPI(formattedResponse)
+      //     // this.aiSearchWindow.addResponseFromAPI(response.response)
+      //     this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+      //     func()
+      //   } catch (e) {
+      //     console.error(e)
+      //   }
+      // } else {
+      //   this.aiSearchWindow.addResponseFromAPI('NeuAgent didn\'t understand what you meant, can you ask it differently?')
       // }
     } catch (e) {
       console.error(e)
     }
   }
+
   private async ClearMessage (func: any = () => {}) {
     this.aiSearchWindow.messages = []
   }
@@ -464,16 +432,16 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchROINeuron(document.body, roiParameter, this.$store.state.atlas).start()
-      this.fullMorphNeurons = []
-      this.localMorphNeurons = []
-      neurons.forEach((neuron: { id: string | string[] }) => {
-        if (neuron.id.includes('full')) {
-          this.fullMorphNeurons.push(neuron)
-        } else if (neuron.id.includes('local')) {
-          this.localMorphNeurons.push(neuron)
-        }
-      })
-      this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
+      // this.fullMorphNeurons = []
+      // this.localMorphNeurons = []
+      // neurons.forEach((neuron: { id: string | string[] }) => {
+      //   if (neuron.id.includes('full')) {
+      //     this.fullMorphNeurons.push(neuron)
+      //   } else if (neuron.id.includes('local')) {
+      //     this.localMorphNeurons.push(neuron)
+      //   }
+      // })
+      this.neuronList.setListData(neurons)
       // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       // this.neuronLists.neuronList.setListData(neurons)
       this.neuronDetail.selectedTab = 'neuronStates'
@@ -498,104 +466,82 @@ export default class Container extends Vue {
     }
     await this.$nextTick()
     if (this.neuronDetail.selectedTab === 'multiNeuronsViewer') {
-      if (this.neuronLists.selectedTab === 'fullMorph') {
-        let dendriteData = {
-          id: neuronDetail.id + '_basal',
-          name: neuronDetail.id + '_basal',
-          src: '',
-          // eslint-disable-next-line camelcase
-          rgb_triplet: [0, 0, 255],
-          info: {
-            id: neuronDetail.id,
-            cellType: neuronDetail.celltype
-          }
+      let dendriteData = {
+        id: neuronDetail.id + '_basal',
+        name: neuronDetail.id + '_basal',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [0, 0, 255],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
         }
-        let apicalData = {
-          id: neuronDetail.id + '_apical',
-          name: neuronDetail.id + '_apical',
-          src: '',
-          // eslint-disable-next-line camelcase
-          rgb_triplet: [255, 0, 255],
-          info: {
-            id: neuronDetail.id,
-            cellType: neuronDetail.celltype
-          }
+      }
+      let apicalData = {
+        id: neuronDetail.id + '_apical',
+        name: neuronDetail.id + '_apical',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [255, 0, 255],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
         }
-        let axonData = {
-          id: neuronDetail.id + '_axon',
-          name: neuronDetail.id + '_axon',
-          src: '',
-          // eslint-disable-next-line camelcase
-          rgb_triplet: [255, 0, 0],
-          info: {
-            id: neuronDetail.id,
-            cellType: neuronDetail.celltype
-          }
+      }
+      let axonData = {
+        id: neuronDetail.id + '_axon',
+        name: neuronDetail.id + '_axon',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [255, 0, 0],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
         }
-        if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(dendriteData) ||
-          this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) || this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(apicalData) ||
+      }
+      let localData = {
+        id: neuronDetail.id + '_local',
+        name: neuronDetail.id + '_local',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [0, 0, 255],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
+        }
+      }
+      if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(dendriteData) ||
+          this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) || this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(apicalData) || this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(localData) ||
           !neuronDetail.selected) {
-          if (neuronDetail['has_dendrite']) {
-            this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, neuronDetail.selected)
-          }
-          if (neuronDetail['has_axon']) {
-            this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(axonData, neuronDetail.selected)
-          }
-          if (neuronDetail['has_apical']) {
-            this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(apicalData, neuronDetail.selected)
-          }
-        } else {
-          const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
-          dendriteData.src = neuronInfo.viewer_info[0].children[0].src
-          axonData.src = neuronInfo.viewer_info[0].children[1].src
-          apicalData.src = neuronInfo.viewer_info[0].children[2].src
-          if (neuronDetail['has_dendrite']) {
-            await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(dendriteData)
-          }
-          if (neuronDetail['has_axon']) {
-            await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(axonData)
-          }
-          if (neuronDetail['has_apical']) {
-            await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(apicalData)
-          }
-          // if (neuronDetail['has_arbor']) {
-          //   let arborCount = arborData.count || 4 // 如果没有提供arborCount，默认为4
-          //   for (let i = 0; i < arborCount; i++) {
-          //     // 创建一个新的arborData对象，以避免修改原始对象
-          //     let newArborData = {
-          //       ...arborData, // 使用对象展开运算符克隆arborData
-          //       id: `${arborData.id.split('arbor')[0]}${i}`,
-          //       name: `${arborData.name.split('arbor')[0]}${i}`,
-          //       src: `${arborData.src.split('.obj')[0]}${i}.obj`,
-          //       rgb_triplet: this.arborColor[i]
-          //     }
-          //     await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(newArborData)
-          //   }
-          // }
+        if (neuronDetail['has_dendrite']) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, neuronDetail.selected)
+        }
+        if (neuronDetail['has_axon']) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(axonData, neuronDetail.selected)
+        }
+        if (neuronDetail['has_apical']) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(apicalData, neuronDetail.selected)
+        }
+        if (neuronDetail['has_local']) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(localData, neuronDetail.selected)
         }
       } else {
-        let localData = {
-          id: neuronDetail.id + '_local',
-          name: neuronDetail.id + '_local',
-          src: '',
-          // eslint-disable-next-line camelcase
-          rgb_triplet: [0, 0, 255],
-          info: {
-            id: neuronDetail.id,
-            cellType: neuronDetail.celltype
-          }
+        const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
+        dendriteData.src = neuronInfo.viewer_info[0].children[0].src
+        axonData.src = neuronInfo.viewer_info[0].children[1].src
+        apicalData.src = neuronInfo.viewer_info[0].children[2].src
+        localData.src = neuronInfo.viewer_info[0].children[3].src
+        if (neuronDetail['has_dendrite']) {
+          await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(dendriteData)
         }
-        if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(localData) ||
-          !neuronDetail.selected) {
-          if (neuronDetail['has_local']) {
-            this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(localData, neuronDetail.selected)
-          }
-        } else {
-          const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
-          localData.src = neuronInfo.viewer_info[0].children[3].src
-          if (neuronDetail['has_local']) {
-            await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(localData)
-          }
+        if (neuronDetail['has_axon']) {
+          await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(axonData)
+        }
+        if (neuronDetail['has_apical']) {
+          await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(apicalData)
+        }
+        if (neuronDetail['has_local']) {
+          await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(localData)
         }
       }
     }
@@ -605,7 +551,7 @@ export default class Container extends Vue {
    * 将神经元列表中勾选的的神经元进行展示
    */
   public async viewNeurons () {
-    let neuronsDetail = this.neuronLists.neuronList.getSelectedItems()
+    let neuronsDetail = this.neuronList.getSelectedItems()
     this.neuronDetail.multiNeuronsViewer.neuronScene.setAllNeuronsVisible(false)
     neuronsDetail.forEach((neuronDetail: any) => {
       this.checkNeuron(neuronDetail, true)
@@ -616,7 +562,7 @@ export default class Container extends Vue {
    * 加载神经元列表第一个神经元
    */
   public async loadFirstNeuron () {
-    await this.updateCurrentNeuronInfo(this.neuronLists.neuronList.getFirstItem())
+    await this.updateCurrentNeuronInfo(this.neuronList.getFirstItem())
   }
 
   public async showNeuronMap () {
@@ -642,23 +588,6 @@ export default class Container extends Vue {
       })
     })
   }
-
-  public async switchLocalAndFull (recDegree: string) {
-    // location.reload()
-    this.neuronLists.setRecDegree(recDegree)
-    this.reFresh = true
-    // this.reFresh = true
-    // this.$nextTick(() => {
-    //   this.reFresh = true
-    //   let criteria = {
-    //     brain_atlas: [this.$store.state.atlas]
-    //   }
-    //   this.searchNeurons(criteria, undefined, () => {
-    //     this.neuronDetail.selectedTab = 'multiNeuronsViewer'
-    //   })
-    // })
-  }
-
   mounted () {
     setTimeout(() => {
       console.log('----------route----------', this.$route.query)

@@ -70,7 +70,7 @@ function getNeuronInfo (loadingTarget: HTMLElement | null, id: string, atlas: st
  * @param question 用户提问
  * @param requestOptions { RequestOptions } 请求选项
  */
-function AISearch (loadingTarget: HTMLElement | null, question: string, requestOptions: RequestOptions = {}) {
+function AIChat (loadingTarget: HTMLElement | null, question: string, requestOptions: RequestOptions = {}) {
   const url = `${REQUEST_NAME_SPACE}AI/${question}`
   const options: RequestInit = {
     // method: 'post',
@@ -241,4 +241,4 @@ function searchROINeuron (loadingTarget: HTMLElement | null, roiParameter: strin
   return r
 }
 
-export { searchNeurons, getNeuronInfo, uploadNeuron, searchSimilarNeuron, searchROINeuron, AISearch, getSearchIntent, ArticleSearch, CodeGenerator, executeCode }
+export { searchNeurons, getNeuronInfo, uploadNeuron, searchSimilarNeuron, searchROINeuron, AIChat, getSearchIntent, ArticleSearch, CodeGenerator, executeCode }

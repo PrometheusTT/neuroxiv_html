@@ -1,12 +1,20 @@
 <template>
   <div class="neuron-list-container">
     <div class="batch-actions">
-      <el-checkbox
-        v-model="checkAll"
-        label="Select All"
-        :indeterminate="isIndeterminate"
-        @change="batchSelectHandler"
-      />
+      <div class="batch-select">
+        <el-checkbox
+          v-model="checkAll"
+          label="Select All"
+          :indeterminate="isIndeterminate"
+          @change="batchSelectHandler"
+        />
+        <el-checkbox
+          v-model="checkAllPages"
+          label="Select All Pages"
+          :indeterminate="isIndeterminate"
+          @change="batchSelectHandlerAll"
+        />
+      </div>
       <el-button
         type="primary"
         size="small"
@@ -155,6 +163,7 @@ export default class NeuronList extends Vue {
   private currentPage: number = 1
   private targetPage : number = 1
   private checkAll: boolean = false
+  private checkAllPages: boolean = false
   private isIndeterminate: boolean = false
 
   // 当前这一页选中的 item
@@ -199,9 +208,16 @@ export default class NeuronList extends Vue {
   private batchSelectHandler (val: boolean) {
     this.currentPageData.forEach((item: any) => {
       item.selected = val
-      this.$emit('checkNeuronLists', item)
+      this.$emit('checkNeuron', item)
     })
-    console.log(this.currentPageData)
+    this.isIndeterminate = false
+  }
+
+  private batchSelectHandlerAll (val: boolean) {
+    this.data.forEach((item: any) => {
+      item.selected = val
+      this.$emit('checkNeuron', item)
+    })
     this.isIndeterminate = false
   }
 
@@ -214,14 +230,14 @@ export default class NeuronList extends Vue {
       this.$message.warning('No neuron selected')
       return
     }
-    this.$emit('updateNeuronAnalysis', selectedNeuronIds)
+    this.$emit('neuronAnalysis', selectedNeuronIds)
   }
 
   /**
    * 批量选择神经元之后3D可视化
    */
   private viewNeuronsHandler () {
-    this.$emit('viewNeuronsHandlerLists')
+    this.$emit('viewNeurons')
   }
 
   /**
@@ -229,7 +245,7 @@ export default class NeuronList extends Vue {
    * @param neuronDetail 神经元信息
    */
   private neuronViewHandler (neuronDetail: any) {
-    this.$emit('neuronViewHandlerLists', neuronDetail)
+    this.$emit('neuronView', neuronDetail)
   }
 
   /**
@@ -239,7 +255,7 @@ export default class NeuronList extends Vue {
   private checkNeuronCallback (neuronDetail: any) {
     console.log('checkNeuronCallback')
     console.log(neuronDetail)
-    this.$emit('checkNeuronLists', neuronDetail)
+    this.$emit('checkNeuron', neuronDetail)
   }
 
   /**
@@ -304,14 +320,22 @@ export default class NeuronList extends Vue {
   height: 100%;
   padding: 20px;
   display: flex;
+  //flex-flow: column nowrap;
   flex-flow: column nowrap;
   border-left: 1px solid gray;
   .batch-actions {
+    display: flex;
+    //flex-flow: column nowrap;
+    flex-flow: row nowrap;
     border-bottom: 1px solid gray;
     padding: 0 0 20px 0;
     .analysis-button {
       margin-left: 20px;
     }
+  }
+  .batch-select {
+    display: flex;
+    flex-direction: column;
   }
   .neuron-items {
     height: 0;

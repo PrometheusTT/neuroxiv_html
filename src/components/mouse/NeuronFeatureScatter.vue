@@ -49,9 +49,11 @@ import { Component, Vue, Ref, Prop } from 'vue-property-decorator'
 import { findColorBetween } from '@/utils/util'
 import * as echarts from 'echarts'
 
-const yTicks = [ 'ACAd', 'AId', 'CLA', 'MOp', 'MOs', 'ORBl', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-ul', 'SSp-un', 'SSs', 'VISl', 'VISp', 'CL', 'LD', 'LGd', 'LP', 'MD', 'MG', 'PO', 'RT', 'SMT', 'VAL', 'VM', 'VPL', 'VPLpc', 'VPM', 'CP', 'OT', 'CA1', 'DG', 'POST', 'PRE', 'ProS', 'SUB', 'LHA', 'ZI' ] // 40
-const xTicks = [ 'ACAd', 'AId', 'AUDd', 'AUDp', 'AUDv', 'CLA', 'MOp', 'MOs', 'ORBl', 'ORBvl', 'RSPagl', 'RSPd', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-tr', 'SSp-ul', 'SSp-un', 'SSs', 'VISC', 'VISa', 'VISal', 'VISl', 'VISp', 'VISpm', 'VISrl', 'AV', 'CL', 'LD', 'LGd', 'LP', 'MD', 'MG', 'PO', 'RT', 'SMT', 'VAL', 'VM', 'VPL', 'VPLpc', 'VPM', 'AAA', 'ACB', 'CP', 'GPe', 'LSr', 'OT', 'SI', 'CA1', 'CA3', 'DG', 'ENTl', 'ENTm', 'POST', 'PRE', 'ProS', 'SUB', 'LHA', 'MM', 'ZI', 'MRN', 'PAG', 'SNr' ] // 65
+// const yTicks = [ 'ACAd', 'AId', 'CLA', 'MOp', 'MOs', 'ORBl', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-ul', 'SSp-un', 'SSs', 'VISl', 'VISp', 'CL', 'LD', 'LGd', 'LP', 'MD', 'MG', 'PO', 'RT', 'SMT', 'VAL', 'VM', 'VPL', 'VPLpc', 'VPM', 'CP', 'OT', 'CA1', 'DG', 'POST', 'PRE', 'ProS', 'SUB', 'LHA', 'ZI' ] // 40
+// const xTicks = [ 'ACAd', 'AId', 'AUDd', 'AUDp', 'AUDv', 'CLA', 'MOp', 'MOs', 'ORBl', 'ORBvl', 'RSPagl', 'RSPd', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-tr', 'SSp-ul', 'SSp-un', 'SSs', 'VISC', 'VISa', 'VISal', 'VISl', 'VISp', 'VISpm', 'VISrl', 'AV', 'CL', 'LD', 'LGd', 'LP', 'MD', 'MG', 'PO', 'RT', 'SMT', 'VAL', 'VM', 'VPL', 'VPLpc', 'VPM', 'AAA', 'ACB', 'CP', 'GPe', 'LSr', 'OT', 'SI', 'CA1', 'CA3', 'DG', 'ENTl', 'ENTm', 'POST', 'PRE', 'ProS', 'SUB', 'LHA', 'MM', 'ZI', 'MRN', 'PAG', 'SNr' ] // 65
 
+const yTicks = ['ACAd', 'ACAv', 'AId', 'AIv', 'AV', 'CA1', 'CA2', 'CA3', 'CL', 'CLA', 'CP', 'DG', 'DG-mo', 'DG-po', 'DG-sg', 'FRP', 'HATA', 'HY', 'ILA', 'LD', 'LGd', 'LHA', 'LP', 'MB', 'MD', 'MG', 'MOp', 'MOs', 'ORBl', 'ORBm', 'ORBvl', 'OT', 'PAR', 'PCN', 'PL', 'PO', 'POST', 'PRE', 'ProS', 'RE', 'RSPv', 'RT', 'SMT', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-ul', 'SSp-un', 'SSs', 'SUB', 'TRN', 'VAL', 'VISC', 'VISl', 'VISp', 'VISrl', 'VM', 'VPL', 'VPLpc', 'VPM', 'VPMpc', 'ZI'] // 40
+const xTicks = [ 'ACAd', 'AId', 'AUDd', 'AUDp', 'AUDv', 'CLA', 'MOp', 'MOs', 'ORBl', 'ORBvl', 'RSPagl', 'RSPd', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-tr', 'SSp-ul', 'SSp-un', 'SSs', 'VISC', 'VISa', 'VISal', 'VISl', 'VISp', 'VISpm', 'VISrl', 'AV', 'CL', 'LD', 'LGd', 'LP', 'MD', 'MG', 'PO', 'RT', 'SMT', 'VAL', 'VM', 'VPL', 'VPLpc', 'VPM', 'AAA', 'ACB', 'CP', 'GPe', 'LSr', 'OT', 'SI', 'CA1', 'CA3', 'DG', 'ENTl', 'ENTm', 'POST', 'PRE', 'ProS', 'SUB', 'LHA', 'MM', 'ZI', 'MRN', 'PAG', 'SNr' ] // 65
 @Component
 export default class NeuronFeatureScatter extends Vue {
   @Ref('neuronScatterPlot') neuronScatterPlot!: HTMLDivElement
@@ -112,7 +114,7 @@ export default class NeuronFeatureScatter extends Vue {
         }
       ],
       title: {
-        text: 'Arbor Projection',
+        text: 'Arbor Distribution',
         left: 'center'
         // text: 'Arbor Distribution',
         // left: 'center'

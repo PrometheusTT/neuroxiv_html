@@ -9,19 +9,19 @@ module.exports = {
     proxy: {
       '/api': {
         // target: 'http://localhost:8083',
-        target: 'http://10.192.9.222:5000',
+        target: 'http://127.0.0.1:5000',
         pathRewrite: { '^/api': '' },
         changeOrigin: true
       },
       '/data': {
         // target: 'http://localhost:8083',
-        target: 'http://10.192.9.222:5000',
+        target: 'http://127.0.0.1:5000',
         pathRewrite: { '^/data': '' },
         changeOrigin: true
       },
       '/tmp': {
         // target: 'http://localhost:8083',
-        target: 'http://10.192.9.222:5000',
+        target: 'http://127.0.0.1:5000',
         pathRewrite: { '^/tmp': '' },
         changeOrigin: true
       },

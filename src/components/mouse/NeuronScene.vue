@@ -1106,7 +1106,7 @@ export default class NeuronScene extends Vue {
   z-index: 999;
 }
 .view_button {
-  width:30px;
-  height:20px
+  width:32px;
+  height:30px
 }
 </style>
