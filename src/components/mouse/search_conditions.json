@@ -8,7 +8,7 @@
                     "querry_name": "data_source",
                     "type": "category",
                     "display_name": "data source",
-                    "help_info": "The institute of production data.",
+                    "help_info": "The institute which submits the neuron.",
                     "structure_tree": "info,data source",
                     "candidates": [
                         "SEU-ALLEN",
@@ -736,7 +736,7 @@
                     "max_value": null,
                     "default_min": null,
                     "default_max": null,
-                    "name": "has axon"
+                    "name": "with axon"
                 },
                 {
                     "querry_name": "has_recon_den",
@@ -752,7 +752,7 @@
                     "max_value": null,
                     "default_min": null,
                     "default_max": null,
-                    "name": "has basal dendrite"
+                    "name": "with dendrite"
                 },
                 {
                   "querry_name": "has_apical",
@@ -768,7 +768,7 @@
                   "max_value": null,
                   "default_min": null,
                   "default_max": null,
-                  "name": "has apical dendrite"
+                  "name": "with apical dendrite"
                 },
                 {
                   "querry_name": "hemisphere",
