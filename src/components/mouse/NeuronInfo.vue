@@ -260,7 +260,9 @@ const rootIdFMost = neuronViewerBaseDataFMost[0].id
     // }
     // this.$nextTick()
     this.loadRootComponent()
+    this.dendriteScene.ThreeViewer = false
     this.dendriteScene.switchZIndex()
+    this.apicalScene.ThreeViewer = false
     this.apicalScene.switchZIndex()
     // this.showSoma(100)
   },
@@ -406,11 +408,9 @@ export default class NeuronInfo extends Vue {
           }
           if (data.id === -1) {
             await this.dendriteScene.loadDendrite(data)
-            // await this.dendriteScene.loadDendrite
           }
           if (data.id === -4) {
             await this.apicalScene.loadDendrite(data)
-            // await this.dendriteScene.loadDendrite
           }
         }
       } else {
@@ -571,6 +571,7 @@ export default class NeuronInfo extends Vue {
       this.dendriteScene.unloadAllNeuron()
       this.apicalScene.unloadAllNeuron()
     }
+    console.log('cleared')
     if (this.activeNames2.indexOf('reconstruction') === -1) {
       this.activeNames2.push('reconstruction')
     }

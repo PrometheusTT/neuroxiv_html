@@ -23,6 +23,10 @@
           ref="multiNeuronsViewer"
           @searchROINeurons="$emit('searchROINeurons', $event)"
           @neuronView="$emit('neuronView', $event)"
+          @setVisualizedAxon="$emit('setVisualizedAxon')"
+          @setVisualizedBasal="$emit('setVisualizedBasal')"
+          @setVisualizedApical="$emit('setVisualizedApical')"
+          @setVisualizedSoma="$emit('setVisualizedSoma')"
         />
       </el-tab-pane>
       <el-tab-pane

@@ -77,6 +77,35 @@
                   @searchROINeurons="$emit('searchROINeurons', $event)"
                 />
               </el-collapse-item>
+              <el-collapse-item
+                title="visualized structures"
+                name="visualized structures"
+              >
+                <el-checkbox
+                  v-model="showAllSoma"
+                  label="soma"
+                  name="soma"
+                  @change="setSoma"
+                />
+                <el-checkbox
+                  v-model="showAllAxon"
+                  label="axon"
+                  name="axon"
+                  @change="setAxon"
+                />
+                <el-checkbox
+                  v-model="showAllBasal"
+                  label="basal dendrite"
+                  name="basal dendrite"
+                  @change="setBasal"
+                />
+                <el-checkbox
+                  v-model="showAllApical"
+                  label="apical dendrite"
+                  name="apical dendrite"
+                  @change="setApical"
+                />
+              </el-collapse-item>
             </el-collapse>
           </div>
         </el-tab-pane>
@@ -134,9 +163,29 @@ export default class NeuronInfo extends Vue {
   private coronalMax: number = 13175 // 21.08
   private step: number = 25
   public selectedTab: string = 'viewer property'
+  public showAllSoma:boolean = false
+  public showAllAxon:boolean = true
+  public showAllBasal:boolean = true
+  public showAllApical:boolean = true
 
   private Rotate () {
     this.neuronScene.toggleRotation()
+  }
+
+  private setAxon () {
+    this.$emit('setVisualizedAxon')
+  }
+  private setBasal () {
+    console.log('showAllBasal')
+    this.$emit('setVisualizedBasal')
+  }
+  private setApical () {
+    console.log('showAllApical')
+    this.$emit('setVisualizedApical')
+  }
+  private setSoma () {
+    console.log('showAllAxon')
+    this.$emit('setVisualizedSoma')
   }
   /**
    * 脑区el-tree节点状态改变的回调函数

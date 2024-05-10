@@ -6,7 +6,10 @@
   >
     <div class="top-button">
       <ColorPicker @color-selected="setColor" />
-      <div class="right-top">
+      <div
+        v-if="ThreeViewer"
+        class="right-top"
+      >
         <el-button @click="setView('front')">
           <img
             class="view_button"
@@ -123,11 +126,7 @@ export default class NeuronScene extends Vue {
   public isRotating: boolean = false
   private somaBall:any = null // soma点的小球
   private selectedColor: string = '#ffffff'
-  private initialStates = new Map<THREE.Object3D, {
-      position: THREE.Vector3
-      rotation: THREE.Euler
-      scale: THREE.Vector3
-  }>()
+  public ThreeViewer:boolean = true
 
     VIEW_TRANSFORMATIONS: any = {
       'front': new THREE.Vector3(-1, 0, 0), // Z轴正向朝向观察者

@@ -4,7 +4,7 @@
       <div class="batch-select">
         <el-checkbox
           v-model="checkAll"
-          label="Select All"
+          label="Select this page"
           :indeterminate="isIndeterminate"
           @change="batchSelectHandler"
         />

@@ -25,6 +25,10 @@
               @neuronView="updateCurrentNeuronInfo"
               @viewNeurons="viewNeurons"
               @showNeuronMap="showNeuronMap"
+              @setVisualizedAxon="setVisualizedAxon"
+              @setVisualizedBasal="setVisualizedBasal"
+              @setVisualizedApical="setVisualizedApical"
+              @setVisualizedSoma="setVisualizedSoma"
             />
           </div>
         </el-main>
@@ -148,10 +152,8 @@ export default class Container extends Vue {
     this.neuronDetail.neuronInfo.hideSoma()
     await this.$nextTick()
     const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
-    console.log('needClear')
-    console.log(needClear)
     const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
-    // console.log(neuronInfo)
+    console.log(neuronInfo.viewer_info)
     this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
     if (this.neuronDetail.neuronInfo.roiShown) {
       this.neuronDetail.neuronInfo.ROI.setROI(Math.round(neuronInfo.soma[0]), Math.round(neuronInfo.soma[1]), Math.round(neuronInfo.soma[2]))
@@ -162,7 +164,9 @@ export default class Container extends Vue {
     // this.neuronDetail.neuronInfo.showSoma(100)
     // console.log('soma loaded')
     // this.neuronDetail.neuronInfo.neuronScene.updateSomaBall(Math.round(neuronInfo.soma[0]), Math.round(neuronInfo.soma[1]), Math.round(neuronInfo.soma[2]), 100)
+    console.log('neuronViewerReconstructionData')
     this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
+    console.log('neuronViewerReconstructionData added')
     console.log('viewer loaded')
     await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
     await this.$nextTick()
@@ -513,16 +517,16 @@ export default class Container extends Vue {
       if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(dendriteData) ||
           this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData) || this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(apicalData) || this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(localData) ||
           !neuronDetail.selected) {
-        if (neuronDetail['has_dendrite']) {
+        if (neuronDetail['has_dendrite'] && this.neuronDetail.multiNeuronsViewer.showAllBasal) {
           this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, neuronDetail.selected)
         }
-        if (neuronDetail['has_axon']) {
+        if (neuronDetail['has_axon'] && this.neuronDetail.multiNeuronsViewer.showAllAxon) {
           this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(axonData, neuronDetail.selected)
         }
-        if (neuronDetail['has_apical']) {
+        if (neuronDetail['has_apical'] && this.neuronDetail.multiNeuronsViewer.showAllApical) {
           this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(apicalData, neuronDetail.selected)
         }
-        if (neuronDetail['has_local']) {
+        if (neuronDetail['has_local'] && this.neuronDetail.multiNeuronsViewer.showAllBasal) {
           this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(localData, neuronDetail.selected)
         }
       } else {
@@ -533,15 +537,19 @@ export default class Container extends Vue {
         localData.src = neuronInfo.viewer_info[0].children[3].src
         if (neuronDetail['has_dendrite']) {
           await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(dendriteData)
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, this.neuronDetail.multiNeuronsViewer.showAllBasal)
         }
         if (neuronDetail['has_axon']) {
           await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(axonData)
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(axonData, this.neuronDetail.multiNeuronsViewer.showAllAxon)
         }
         if (neuronDetail['has_apical']) {
           await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(apicalData)
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(apicalData, this.neuronDetail.multiNeuronsViewer.showAllApical)
         }
         if (neuronDetail['has_local']) {
           await this.neuronDetail.multiNeuronsViewer.neuronScene.loadObj(localData)
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(localData, this.neuronDetail.multiNeuronsViewer.showAllBasal)
         }
       }
     }
@@ -558,6 +566,92 @@ export default class Container extends Vue {
     })
   }
 
+  /**
+   * 将神经元列表中勾选的的神经元进行展示
+   */
+  public async setVisualizedSoma () {
+    let neuronsDetail = this.neuronList.getSelectedItems()
+    neuronsDetail.forEach((neuronDetail: any) => {
+      this.checkNeuron(neuronDetail, true)
+    })
+  }
+  public async setVisualizedAxon ($event: any) {
+    let neuronsDetail = this.neuronList.getSelectedItems()
+    neuronsDetail.forEach((neuronDetail: any) => {
+      let axonData = {
+        id: neuronDetail.id + '_axon',
+        name: neuronDetail.id + '_axon',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [255, 0, 0],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
+        }
+      }
+      if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(axonData)) {
+        if (neuronDetail['has_axon']) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(axonData, this.neuronDetail.multiNeuronsViewer.showAllAxon)
+        }
+      }
+    })
+  }
+  public async setVisualizedBasal () {
+    let neuronsDetail = this.neuronList.getSelectedItems()
+    neuronsDetail.forEach((neuronDetail: any) => {
+      let dendriteData = {
+        id: neuronDetail.id + '_basal',
+        name: neuronDetail.id + '_basal',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [0, 0, 255],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
+        }
+      }
+      let localData = {
+        id: neuronDetail.id + '_local',
+        name: neuronDetail.id + '_local',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [0, 0, 255],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
+        }
+      }
+      if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(dendriteData) || this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(localData)) {
+        if (neuronDetail['has_dendrite']) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, this.neuronDetail.multiNeuronsViewer.showAllBasal)
+        }
+        if (neuronDetail['has_local'] && this.neuronDetail.multiNeuronsViewer.showAllBasal) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(localData, this.neuronDetail.multiNeuronsViewer.showAllBasal)
+        }
+      }
+    })
+  }
+  public async setVisualizedApical () {
+    let neuronsDetail = this.neuronList.getSelectedItems()
+    neuronsDetail.forEach((neuronDetail: any) => {
+      let apicalData = {
+        id: neuronDetail.id + '_apical',
+        name: neuronDetail.id + '_apical',
+        src: '',
+        // eslint-disable-next-line camelcase
+        rgb_triplet: [255, 0, 255],
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
+        }
+      }
+      if (this.neuronDetail.multiNeuronsViewer.neuronScene.checkLoadComponent(apicalData)) {
+        if (neuronDetail['has_dendrite']) {
+          this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(apicalData, this.neuronDetail.multiNeuronsViewer.showAllApical)
+        }
+      }
+    })
+  }
   /**
    * 加载神经元列表第一个神经元
    */

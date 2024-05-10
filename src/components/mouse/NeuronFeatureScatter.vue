@@ -52,8 +52,8 @@ import * as echarts from 'echarts'
 // const yTicks = [ 'ACAd', 'AId', 'CLA', 'MOp', 'MOs', 'ORBl', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-ul', 'SSp-un', 'SSs', 'VISl', 'VISp', 'CL', 'LD', 'LGd', 'LP', 'MD', 'MG', 'PO', 'RT', 'SMT', 'VAL', 'VM', 'VPL', 'VPLpc', 'VPM', 'CP', 'OT', 'CA1', 'DG', 'POST', 'PRE', 'ProS', 'SUB', 'LHA', 'ZI' ] // 40
 // const xTicks = [ 'ACAd', 'AId', 'AUDd', 'AUDp', 'AUDv', 'CLA', 'MOp', 'MOs', 'ORBl', 'ORBvl', 'RSPagl', 'RSPd', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-tr', 'SSp-ul', 'SSp-un', 'SSs', 'VISC', 'VISa', 'VISal', 'VISl', 'VISp', 'VISpm', 'VISrl', 'AV', 'CL', 'LD', 'LGd', 'LP', 'MD', 'MG', 'PO', 'RT', 'SMT', 'VAL', 'VM', 'VPL', 'VPLpc', 'VPM', 'AAA', 'ACB', 'CP', 'GPe', 'LSr', 'OT', 'SI', 'CA1', 'CA3', 'DG', 'ENTl', 'ENTm', 'POST', 'PRE', 'ProS', 'SUB', 'LHA', 'MM', 'ZI', 'MRN', 'PAG', 'SNr' ] // 65
 
-const yTicks = ['ACAd', 'ACAv', 'AId', 'AIv', 'AV', 'CA1', 'CA2', 'CA3', 'CL', 'CLA', 'CP', 'DG', 'DG-mo', 'DG-po', 'DG-sg', 'FRP', 'HATA', 'HY', 'ILA', 'LD', 'LGd', 'LHA', 'LP', 'MB', 'MD', 'MG', 'MOp', 'MOs', 'ORBl', 'ORBm', 'ORBvl', 'OT', 'PAR', 'PCN', 'PL', 'PO', 'POST', 'PRE', 'ProS', 'RE', 'RSPv', 'RT', 'SMT', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-ul', 'SSp-un', 'SSs', 'SUB', 'TRN', 'VAL', 'VISC', 'VISl', 'VISp', 'VISrl', 'VM', 'VPL', 'VPLpc', 'VPM', 'VPMpc', 'ZI'] // 40
-const xTicks = [ 'ACAd', 'AId', 'AUDd', 'AUDp', 'AUDv', 'CLA', 'MOp', 'MOs', 'ORBl', 'ORBvl', 'RSPagl', 'RSPd', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-tr', 'SSp-ul', 'SSp-un', 'SSs', 'VISC', 'VISa', 'VISal', 'VISl', 'VISp', 'VISpm', 'VISrl', 'AV', 'CL', 'LD', 'LGd', 'LP', 'MD', 'MG', 'PO', 'RT', 'SMT', 'VAL', 'VM', 'VPL', 'VPLpc', 'VPM', 'AAA', 'ACB', 'CP', 'GPe', 'LSr', 'OT', 'SI', 'CA1', 'CA3', 'DG', 'ENTl', 'ENTm', 'POST', 'PRE', 'ProS', 'SUB', 'LHA', 'MM', 'ZI', 'MRN', 'PAG', 'SNr' ] // 65
+const yTicks = ['ACAd', 'ACAv', 'AId', 'AIv', 'FRP', 'ILA', 'MOp', 'MOs', 'ORBl', 'ORBm', 'ORBvl', 'PL', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-ul', 'SSs', 'VISl', 'VISp', 'CA1', 'CA2', 'CA3', 'DG', 'HATA', 'PAR', 'POST', 'PRE', 'ProS', 'SUB', 'CLA', 'CP', 'OT', 'LD', 'LGd', 'LP', 'MD', 'MG', 'PO', 'RT', 'VAL', 'VM', 'VPL', 'VPLpc', 'VPM', 'LHA', 'ZI'] // 40
+const xTicks = ['L1', 'L2/3', 'L4', 'L5', 'L6a', 'L6b', 'ACAd', 'ACAv', 'AId', 'AIv', 'AUDp', 'FRP', 'MOp', 'MOs', 'ORBl', 'ORBm', 'ORBvl', 'PL', 'RSPagl', 'RSPd', 'RSPv', 'SSp-bfd', 'SSp-ll', 'SSp-m', 'SSp-n', 'SSp-ul', 'SSs', 'VISC', 'VISa', 'VISam', 'VISp', 'VISrl', 'CA1', 'CA3', 'DG', 'ENTl', 'ENTm', 'PAR', 'ProS', 'SUB', 'AON', 'COAp', 'PIR', 'TR', 'BLA', 'ACB', 'CP', 'LSr', 'OT', 'SI', 'AM', 'MD', 'VM', 'VPM', 'AHN', 'LHA', 'MM', 'CS', 'PCG', 'PG', 'PRNr', 'MDRN', 'PARN', 'MRN', 'PAG', 'SCm', 'fiber tracts'] // 65
 @Component
 export default class NeuronFeatureScatter extends Vue {
   @Ref('neuronScatterPlot') neuronScatterPlot!: HTMLDivElement
@@ -204,8 +204,8 @@ export default class NeuronFeatureScatter extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
 .neuron-plot-container {
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
   display: flex;
   flex-flow: column nowrap;
   .neuron-scatter-plot {
