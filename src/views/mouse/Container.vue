@@ -263,6 +263,7 @@ export default class Container extends Vue {
     } catch (e) {
       console.error(e)
     }
+    await this.setVisualizedSoma()
   }
 
   private async executeCode (func: any = () => {}) {
@@ -425,6 +426,7 @@ export default class Container extends Vue {
     } catch (e) {
       console.error(e)
     }
+    await this.setVisualizedSoma()
   }
 
   /**
@@ -456,6 +458,7 @@ export default class Container extends Vue {
     } catch (e) {
       console.log(e)
     }
+    await this.setVisualizedSoma()
   }
 
   /**
@@ -531,6 +534,8 @@ export default class Container extends Vue {
         }
       } else {
         const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
+        console.log(neuronInfo)
+        this.neuronDetail.multiNeuronsViewer.neuronScene.multiViewerSomaPos.set(neuronDetail.id, neuronInfo.soma)
         dendriteData.src = neuronInfo.viewer_info[0].children[0].src
         axonData.src = neuronInfo.viewer_info[0].children[1].src
         apicalData.src = neuronInfo.viewer_info[0].children[2].src
@@ -552,6 +557,7 @@ export default class Container extends Vue {
           this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(localData, this.neuronDetail.multiNeuronsViewer.showAllBasal)
         }
       }
+      await this.setVisualizedSoma()
     }
   }
 
@@ -571,8 +577,19 @@ export default class Container extends Vue {
    */
   public async setVisualizedSoma () {
     let neuronsDetail = this.neuronList.getSelectedItems()
+    let selectedIds = new Set(neuronsDetail.map(neuronDetail => neuronDetail.id))
+
+    // 显示选中的神经元
     neuronsDetail.forEach((neuronDetail: any) => {
-      this.checkNeuron(neuronDetail, true)
+      this.neuronDetail.multiNeuronsViewer.neuronScene.showMultiViewerSomaBall(neuronDetail.id, 100, this.neuronDetail.multiNeuronsViewer.showAllSoma)
+    })
+
+    // 清除Map中未被选中的神经元
+    this.neuronDetail.multiNeuronsViewer.neuronScene.multiViewerSoma.forEach((value, key) => {
+      if (!selectedIds.has(key)) {
+        this.neuronDetail.multiNeuronsViewer.neuronScene.unloadMultiViewerSomaBalls(key)
+        this.neuronDetail.multiNeuronsViewer.neuronScene.multiViewerSoma.delete(key)
+      }
     })
   }
   public async setVisualizedAxon ($event: any) {
@@ -625,7 +642,7 @@ export default class Container extends Vue {
         if (neuronDetail['has_dendrite']) {
           this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(dendriteData, this.neuronDetail.multiNeuronsViewer.showAllBasal)
         }
-        if (neuronDetail['has_local'] && this.neuronDetail.multiNeuronsViewer.showAllBasal) {
+        if (neuronDetail['has_local']) {
           this.neuronDetail.multiNeuronsViewer.neuronScene.setComponentVisible(localData, this.neuronDetail.multiNeuronsViewer.showAllBasal)
         }
       }

@@ -145,6 +145,8 @@ const rootIdFMost = neuronViewerBaseDataFMost[0].id
 @Component<NeuronInfo>({
   mounted () {
     this.loadRootComponent()
+    this.neuronScene.multiViewerSoma = new Map()
+    this.neuronScene.multiViewerSomaPos = new Map()
   },
   components: {
     NeuronScene,
@@ -184,7 +186,7 @@ export default class NeuronInfo extends Vue {
     this.$emit('setVisualizedApical')
   }
   private setSoma () {
-    console.log('showAllAxon')
+    console.log('showAllSoma')
     this.$emit('setVisualizedSoma')
   }
   /**

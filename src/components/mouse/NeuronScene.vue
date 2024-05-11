@@ -127,6 +127,9 @@ export default class NeuronScene extends Vue {
   private somaBall:any = null // soma点的小球
   private selectedColor: string = '#ffffff'
   public ThreeViewer:boolean = true
+  public multiViewerSoma!: Map<any, any>
+  public multiViewerSomaPos !: Map<any, any>
+  public mSomaBall:any = null;
 
     VIEW_TRANSFORMATIONS: any = {
       'front': new THREE.Vector3(-1, 0, 0), // Z轴正向朝向观察者
@@ -923,7 +926,7 @@ export default class NeuronScene extends Vue {
    * 加载代表ROI的小球
    * @param r ROI的半径
    */
-    public loadSoma (r: number = 50) {
+    public loadSoma (r: number = 100) {
       const geometry = new THREE.SphereGeometry(r / 25, 32, 16)
       const material = new THREE.MeshBasicMaterial({ color: 0x000000 })
       material.transparent = true
@@ -933,6 +936,26 @@ export default class NeuronScene extends Vue {
       this.scene.add(this.somaBall)
     }
 
+    public loadMultiSoma (neuronId:string, x:number, y:number, z:number, r: number = 100) {
+      const geometry = new THREE.SphereGeometry(r / 25, 32, 16)
+      const material = new THREE.MeshBasicMaterial({ color: 0x000000 })
+      material.transparent = true
+      material.opacity = 0.3
+      const somaBall = new THREE.Mesh(geometry, material)
+
+      // // 计算位置并设置
+      // const somaPos = new THREE.Vector3(
+      //   Math.round(x) / 25 + this.centerShift.x,
+      //   -Math.round(y) / 25 - this.centerShift.y,
+      //   -Math.round(z) / 25 - this.centerShift.z
+      // )
+      // somaBall.position.x = somaPos.x
+      // somaBall.position.y = somaPos.y
+      // somaBall.position.z = somaPos.z
+      somaBall.position.set(0, 0, 0)
+      this.scene.add(somaBall)
+      return somaBall
+    }
     /**
    * 卸载代表ROI的小球
    */
@@ -1028,6 +1051,38 @@ export default class NeuronScene extends Vue {
       }
     }
 
+    public showMultiViewerSomaBall (neuronId:string, r: number = 100, flag:boolean) {
+      console.log(this.multiViewerSoma.get(neuronId))
+      if (this.multiViewerSoma.get(neuronId)) {
+        this.multiViewerSoma.get(neuronId).visible = flag
+        return null
+      } else {
+        if (this.multiViewerSomaPos.get(neuronId)) {
+          const somaPos = this.multiViewerSomaPos.get(neuronId)
+          if (somaPos) {
+            this.mSomaBall = this.loadMultiSoma(somaPos[0], somaPos[1], somaPos[2], 100)
+            this.mSomaBall.visible = flag
+            this.mSomaBall.position = new THREE.Vector3(somaPos[0] / 25 + this.centerShift.x, -somaPos[1] / 25 - this.centerShift.y, -somaPos[2] / 25 - this.centerShift.z)
+            this.multiViewerSoma.set(neuronId, this.mSomaBall)
+          }
+          return null
+        }
+      }
+    }
+
+    public unloadMultiViewerSomaBall () {
+      this.multiViewerSoma.forEach((neuronID:string, soma: any) => {
+        this.scene.remove(soma)
+        soma = null
+      })
+    }
+
+    public unloadMultiViewerSomaBalls (neuronId:string) {
+      let soma = this.multiViewerSoma.get(neuronId)
+      this.scene.remove(soma)
+      soma = null
+    }
+
     /**
    * 更新ROI的状态
    * @param x ROI在标准脑坐标系下的x坐标
@@ -1048,6 +1103,10 @@ export default class NeuronScene extends Vue {
         this.unloadSomaBall()
         this.loadSoma(r)
       }
+      this.somaBall.position = new THREE.Vector3(x / 25 + this.centerShift.x, -y / 25 - this.centerShift.y, -z / 25 - this.centerShift.z)
+    }
+
+    public updateMultiViewerSomaBall (x: number, y: number, z: number, r: number) {
       this.somaBall.position = new THREE.Vector3(x / 25 + this.centerShift.x, -y / 25 - this.centerShift.y, -z / 25 - this.centerShift.z)
     }
     public destroyed () {
