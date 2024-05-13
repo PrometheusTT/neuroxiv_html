@@ -303,6 +303,7 @@ export default class NeuronInfo extends Vue {
   private somaY: number = 100
   private somaZ: number = 100
   private somaR: number = 100
+  public sliceAtlas:string = this.$store.state.atlas
 
   private opSoma () {
     if (this.ifSoma === 'Show Soma Area') {
@@ -480,7 +481,7 @@ export default class NeuronInfo extends Vue {
       if (this.neuronScene.checkLoadSlice(sliceName)) {
         this.neuronScene.setSliceVisible(sliceName, true)
       } else {
-        this.neuronScene.loadSlice(sliceName)
+        this.neuronScene.loadSlice(sliceName, this.sliceAtlas)
       }
     } else {
       this.neuronScene.setSliceVisible(sliceName, false)
@@ -493,7 +494,7 @@ export default class NeuronInfo extends Vue {
    * @param sliceName SLice的方向名称
    */
   public sliderChange (value: number, sliceName: string) {
-    this.neuronScene.updateSlice(sliceName, Math.round(value / 25))
+    this.neuronScene.updateSlice(sliceName, Math.round(value / 25), this.sliceAtlas)
   }
 
   /**
