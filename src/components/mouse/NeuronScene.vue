@@ -129,7 +129,8 @@ export default class NeuronScene extends Vue {
   public ThreeViewer:boolean = true
   public multiViewerSoma!: Map<any, any>
   public multiViewerSomaPos !: Map<any, any>
-  public mSomaBall:any = null;
+  public mSomaBall:any = null
+  public atlas:string = ''
 
     VIEW_TRANSFORMATIONS: any = {
       'front': new THREE.Vector3(-1, 0, 0), // Z轴正向朝向观察者
@@ -591,28 +592,32 @@ export default class NeuronScene extends Vue {
     }
 
     /**
-   * 加载Slice
-   * @param name SLice的方向名称
-   */
-    public loadSlice (name: string) {
-      let slice = new Slice(name, () => {
+     * 加载Slice
+     * @param name SLice的方向名称
+     * @param atlas
+     */
+    public loadSlice (name: string, atlas:string) {
+      console.log('loadSlice')
+      let slice = new Slice(name, atlas, () => {
         this.resetRender()
       })
       slice.mesh.name = name
       this.sliceMap.set(name, slice)
+      console.log(this.sliceMap)
       this.scene.add(slice.mesh)
     }
 
     /**
-   * 更新Slice
-   * @param name SLice的方向名称
-   * @param location Slice的某一层
-   */
-    public updateSlice (name: string, location: number) {
+     * 更新Slice
+     * @param name SLice的方向名称
+     * @param location Slice的某一层
+     * @param atlas
+     */
+    public updateSlice (name: string, location: number, atlas:string) {
       if (this.sliceMap.has(name)) {
         const slice = this.sliceMap.get(name)
         slice.location = location
-        slice.update(location, () => {
+        slice.update(location, atlas, () => {
           this.resetRender()
         })
       }
