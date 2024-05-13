@@ -141,6 +141,8 @@ import neuronViewerBaseData from './surf_tree.json'
 import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
 const rootId = neuronViewerBaseData[0].id
 const rootIdFMost = neuronViewerBaseDataFMost[0].id
+const SliceAtlas = 'CCFv3'
+const SliceAtlasfMOST = 'fMOST'
 
 @Component<NeuronInfo>({
   mounted () {
@@ -159,6 +161,7 @@ export default class NeuronInfo extends Vue {
   @Ref('ROI') ROI!: ROI
   public neuronViewerData: any = this.$store.state.atlas === 'CCFv3' ? neuronViewerBaseData : neuronViewerBaseDataFMost // neuronViewerBaseData
   private rootId: number = this.$store.state.atlas === 'CCFv3' ? rootId : rootIdFMost // rootId
+  private sliceAtlas: any = this.$store.state.atlas
   private activeNames: any = ['brain']
   private sagittalMax: number = 11375 // 18.20
   private AxialMax: number = 7975 // 12.76
@@ -229,7 +232,7 @@ export default class NeuronInfo extends Vue {
       if (this.neuronScene.checkLoadSlice(sliceName)) {
         this.neuronScene.setSliceVisible(sliceName, true)
       } else {
-        this.neuronScene.loadSlice(sliceName)
+        this.neuronScene.loadSlice(sliceName, this.sliceAtlas)
       }
     } else {
       this.neuronScene.setSliceVisible(sliceName, false)
@@ -242,7 +245,7 @@ export default class NeuronInfo extends Vue {
    * @param sliceName SLice的方向名称
    */
   public sliderChange (value: number, sliceName: string) {
-    this.neuronScene.updateSlice(sliceName, Math.round(value / 25))
+    this.neuronScene.updateSlice(sliceName, Math.round(value / 25), this.sliceAtlas)
   }
 
   /**
