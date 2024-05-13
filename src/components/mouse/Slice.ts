@@ -28,10 +28,12 @@ export default class Slice {
   public texture: any = null
   public mask: any = null
   public location: number = this.center
+  public atlas:string = 'fMOST'
 
   // eslint-disable-next-line no-useless-constructor
-  public constructor (name: string, func: any = () => {}) {
+  public constructor (name: string, atlas:string, func: any = () => {}) {
     this.name = name
+    this.atlas = atlas
     this.min = 0
     switch (name) {
       case 'Sagittal':
@@ -52,30 +54,52 @@ export default class Slice {
     const material = this.creatSliceMaterial(this.texture, this.mask)
     this.mesh = this.creatSliceMesh(this.name, material)
     this.location = this.center
-    this.update(this.location, func)
+    this.update(this.location, this.atlas, func)
   }
 
+  public setAtlas (atlas:string) {
+    this.atlas = atlas
+  }
   /**
    * 更新Slice
    * @param location Slice的某一层
+   * @param atlas
    * @param func 回调函数，用于slice加载完后渲染
    */
-  public update (location: number, func: any = () => {}) {
+  public update (location: number, atlas:string, func: any = () => {}) {
     this.setLocation(location)
     const textureDir = '/tmp/ft_local/slices/'
-    switch (this.name) {
-      case 'Sagittal':
-        this.src = textureDir + 'brain/sagittal_' + location + '.png'
-        this.maskSrc = textureDir + 'mask/sagittal_' + location + '_mask.png'
-        break
-      case 'Axial':
-        this.src = textureDir + 'brain/axial_' + location + '.png'
-        this.maskSrc = textureDir + 'mask/axial_' + location + '_mask.png'
-        break
-      case 'Coronal':
-        this.src = textureDir + 'brain/coronal_' + location + '.png'
-        this.maskSrc = textureDir + 'mask/coronal_' + location + '_mask.png'
-        break
+    // const textureDir = '/slices/'
+    if (atlas === 'CCFv3') {
+      switch (this.name) {
+        case 'Sagittal':
+          this.src = textureDir + 'CCFv3/brain/sagittal_' + location + '.png'
+          this.maskSrc = textureDir + 'CCFv3/mask/sagittal_' + location + '_mask.png'
+          break
+        case 'Axial':
+          this.src = textureDir + 'CCFv3/brain/axial_' + location + '.png'
+          this.maskSrc = textureDir + 'CCFv3/mask/axial_' + location + '_mask.png'
+          break
+        case 'Coronal':
+          this.src = textureDir + 'CCFv3/brain/coronal_' + location + '.png'
+          this.maskSrc = textureDir + 'CCFv3/mask/coronal_' + location + '_mask.png'
+          break
+      }
+    } else {
+      switch (this.name) {
+        case 'Sagittal':
+          this.src = textureDir + 'fMOST/brain/fmost_sagittal_' + location + '.png'
+          this.maskSrc = textureDir + 'fMOST/mask/fmost_sagittal_' + location + '_mask.png'
+          break
+        case 'Axial':
+          this.src = textureDir + 'fMOST/brain/fmost_axial_' + location + '.png'
+          this.maskSrc = textureDir + 'fMOST/mask/fmost_axial_' + location + '_mask.png'
+          break
+        case 'Coronal':
+          this.src = textureDir + 'fMOST/brain/fmost_coronal_' + location + '.png'
+          this.maskSrc = textureDir + 'fMOST/mask/fmost_coronal_' + location + '_mask.png'
+          break
+      }
     }
     const loader = new THREE.TextureLoader()
     loader.load(

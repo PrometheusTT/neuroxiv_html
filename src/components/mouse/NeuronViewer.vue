@@ -108,6 +108,7 @@ export default class NeuronViewer extends Vue {
   private AxialMax: number = 12.76
   private coronalMax: number = 21.08
   private step: number = 0.04
+  private sliceAtlas: any = this.$store.state.atlas
 
   /**
    * el-tree节点状态改变的回调函数
@@ -174,7 +175,7 @@ export default class NeuronViewer extends Vue {
       if (this.neuronScene.checkLoadSlice(sliceName)) {
         this.neuronScene.setSliceVisible(sliceName, true)
       } else {
-        this.neuronScene.loadSlice(sliceName)
+        this.neuronScene.loadSlice(sliceName, this.sliceAtlas)
       }
     } else {
       this.neuronScene.setSliceVisible(sliceName, false)
@@ -187,7 +188,7 @@ export default class NeuronViewer extends Vue {
    * @param sliceName SLice的方向名称
    */
   public sliderChange (value: number, sliceName: string) {
-    this.neuronScene.updateSlice(sliceName, Math.round(value * 25))
+    this.neuronScene.updateSlice(sliceName, Math.round(value * 25), this.sliceAtlas)
   }
 
   /**
