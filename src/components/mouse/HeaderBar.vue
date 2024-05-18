@@ -57,15 +57,15 @@
         </el-select>
       </slot>
     </div>
+    <span class="partner">
+      <span class="partner-cn">脑科学与智能技术研究院</span><br>
+      <span class="partner-en">Institute for Brain and Intelligence</span>
+    </span>
     <img
       src="@/assets/ailab_logo.png"
       alt="ailab"
       class="ailab-logo"
     >
-    <span class="partner">
-      <span class="partner-cn">东南大学脑科学与智能技术研究院</span><br>
-      <span class="partner-en">Institute for Brain and Intelligence, Southeast University</span>
-    </span>
   </div>
 </template>
 
@@ -160,16 +160,16 @@ export default class HeaderBar extends RouterHelper {
   }
   .ailab-logo {
     width: 105px;
-    margin-left: auto;
+    margin: 0 40px 0 80px;
   }
   .partner {
     color: white;
-    margin: 0 40px 0 80px;
+    margin-left: auto;
     .partner-cn {
       font-size: 17px;
     }
     .partner-en {
-      font-size: 11px;
+      font-size: 17px;
     }
   }
 }
