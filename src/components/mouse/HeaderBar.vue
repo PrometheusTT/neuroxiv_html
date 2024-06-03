@@ -25,7 +25,7 @@
           class="action"
           @click="$emit('clickSearchByLLMButton')"
         >
-          NeuAgent
+          AIPOM
         </el-button>
         <el-upload
           action=""

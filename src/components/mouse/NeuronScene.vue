@@ -294,6 +294,7 @@ export default class NeuronScene extends Vue {
             if (data.hasOwnProperty('rgb_triplet')) {
               material.color = new THREE.Color(`rgb(${data.rgb_triplet[0]}, ${data.rgb_triplet[1]}, ${data.rgb_triplet[2]})`)
             }
+            console.log(material.color)
             if (data.name === 'root') {
               material.opacity = 0.15
               geometry.computeBoundingBox()
@@ -645,7 +646,8 @@ export default class NeuronScene extends Vue {
       this.scene = new THREE.Scene()
       const el = this.$refs.NeuronScene as Element
       /* 二、添加光源 */
-
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+      this.scene.add(directionalLight)
       //  环境光
       const ambient = new THREE.AmbientLight(0x444444)
       this.scene.add(ambient)

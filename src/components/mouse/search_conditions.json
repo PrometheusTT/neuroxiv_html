@@ -697,8 +697,7 @@
                     "structure_tree": "info,brain atlas",
                     "candidates": [
                         "CCFv3",
-                        "fMOST",
-                        "no_reg"
+                        "fMOST"
                     ],
                     "min_value": null,
                     "max_value": null,

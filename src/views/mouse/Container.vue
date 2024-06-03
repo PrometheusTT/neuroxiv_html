@@ -69,11 +69,11 @@
     </el-dialog>
     <!-- AI搜索对话框 -->
     <el-dialog
-      title="NeuAgent"
+      title="AIPOM"
       custom-class="AIWindow"
       :visible.sync="LLMDialogVisible"
       width="50%"
-      top="20vh"
+      top="7vh"
       :close-on-click-modal="false"
     >
       <AISearchWindow
@@ -284,97 +284,170 @@ export default class Container extends Vue {
 
   private async AISearch (func: any = () => {}) {
     this.aiSearchWindow.sendMessage()
-    const question = this.aiSearchWindow.lastInput
+    let question = this.aiSearchWindow.lastInput
     console.log('question is: ' + question)
     let searchIntent = 'unknown intent'
     let searchConditions = {}
-    try {
-      // eslint-disable-next-line camelcase
-      const response = await AIChat(document.body, question).start()
-      // let res = JSON.parse(response)
-      console.log(response)
-      const formattedResponse = response.response.replace(/\n/g, '<br>')
-      this.aiSearchWindow.addResponseFromAPI(formattedResponse)
-      // this.aiSearchWindow.addResponseFromAPI(response.response)
-      // this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
-      func()
-    } catch (e) {
-      console.error(e)
+
+    // 检查用户输入是否为 [Intent]: query 形式并验证意图
+    const intentMatch = question.match(/^\[(search|chat|retrieval|article)\]:\s*(.+)/i)
+    if (intentMatch) {
+      searchIntent = intentMatch[1].trim().toLowerCase()
+      question = question.split(':')[1]
+      console.log('Extracted intent: ' + searchIntent)
+    } else {
+      try {
+        let response = await getSearchIntent(document.body, question).start()
+        searchIntent = response.response.replace(/^'|'$/g, '')
+        console.log(searchIntent)
+        this.aiSearchWindow.addResponseFromAPI('I guess you want to ' + searchIntent + ', is that right?')
+        func()
+      } catch (e) {
+        console.error(e)
+      }
     }
-    try {
-      // eslint-disable-next-line camelcase
-      let response = await getSearchIntent(document.body, question).start()
-      // let res = JSON.parse(response)
-      console.log(response.response)
-      searchIntent = response.response.toString()
-      this.aiSearchWindow.addResponseFromAPI('I guess you want to ' + searchIntent + ', is that right?')
-      func()
-      // if (searchIntent === 'search articles') {
-      //   try {
-      //     // eslint-disable-next-line camelcase
-      //     const response = await ArticleSearch(document.body, question).start()
-      //     // let res = JSON.parse(response)
-      //     console.log(response)
-      //     this.aiSearchWindow.addResponseFromAPI(response.response.articles)
-      //     // this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
-      //
-      //     func()
-      //   } catch (e) {
-      //     console.error(e)
-      //   }
-      // } else if (searchIntent === 'search neuron data') {
-      //   let result = this.aiSearchWindow.GetIntent(question, searchIntent)
-      //   console.log(result)
-      //   const condition = { criteria: result.criteria }
-      //   searchConditions = condition
-      //   console.log(condition)
-      //   try {
-      //     // eslint-disable-next-line camelcase
-      //     const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
-      //     console.log(neurons)
-      //     this.fullMorphNeurons = []
-      //     this.localMorphNeurons = []
-      //     neurons.forEach((neuron: { id: string | string[] }) => {
-      //       if (neuron.id.includes('full')) {
-      //         this.fullMorphNeurons.push(neuron)
-      //       } else if (neuron.id.includes('local')) {
-      //         this.localMorphNeurons.push(neuron)
-      //       }
-      //     })
-      //     this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-      //     // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
-      //     this.neuronDetail.selectedTab = 'neuronStates'
-      //     this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
-      //     await this.$nextTick()
-      //     this.neuronDetail.neuronStates.featurePlot.renderChart()
-      //     this.neuronDetail.neuronStates.histogramBars.renderChart()
-      //     this.LLMDialogVisible = false
-      //     this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please send me more information')
-      //     func()
-      //   } catch (e) {
-      //     console.error(e)
-      //   }
-      // } else if (searchIntent === 'chat with neuroxiv website') {
-      //   try {
-      //     // eslint-disable-next-line camelcase
-      //     const response = await AIChat(document.body, question).start()
-      //     // let res = JSON.parse(response)
-      //     console.log(response)
-      //     const formattedResponse = response.response.replace(/\n/g, '<br>')
-      //     this.aiSearchWindow.addResponseFromAPI(formattedResponse)
-      //     // this.aiSearchWindow.addResponseFromAPI(response.response)
-      //     this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
-      //     func()
-      //   } catch (e) {
-      //     console.error(e)
-      //   }
-      // } else {
-      //   this.aiSearchWindow.addResponseFromAPI('NeuAgent didn\'t understand what you meant, can you ask it differently?')
-      // }
-    } catch (e) {
-      console.error(e)
+    if (searchIntent === 'article') {
+      try {
+        const response = await ArticleSearch(document.body, question).start()
+        console.log(response)
+        this.aiSearchWindow.addResponseFromAPI(response.response.articles)
+        func()
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    if (searchIntent === 'search') {
+      let result = this.aiSearchWindow.GetIntent(question)
+      const condition = { criteria: result }
+      searchConditions = condition
+      console.log(condition)
+      try {
+        // eslint-disable-next-line camelcase
+        const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
+        this.neuronList.setListData(neurons)
+        this.neuronDetail.selectedTab = 'neuronStates'
+        this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+        await this.$nextTick()
+        this.neuronDetail.neuronStates.featurePlot.renderChart()
+        this.neuronDetail.neuronStates.histogramBars.renderChart()
+        this.LLMDialogVisible = false
+        this.aiSearchWindow.addResponseFromAPI('I have found ' + neurons.length + ' neurons')
+        this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please tell me more information')
+        func()
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    if (searchIntent === 'chat') {
+      try {
+        const response = await AIChat(document.body, question).start()
+        console.log(response)
+        const formattedResponse = response.response.replace(/\n/g, '<br>')
+        this.aiSearchWindow.addResponseFromAPI(formattedResponse)
+        this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+        func()
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    if (searchIntent === 'retrieval') {
+      try {
+        const response = await AIChat(document.body, question).start()
+        console.log(response)
+        const formattedResponse = response.response.replace(/\n/g, '<br>')
+        this.aiSearchWindow.addResponseFromAPI(formattedResponse)
+        this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+        func()
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
+
+  // private async AISearch (func: any = () => {}) {
+  //   this.aiSearchWindow.sendMessage()
+  //   const question = this.aiSearchWindow.lastInput
+  //   console.log('question is: ' + question)
+  //   let searchIntent = 'unknown intent'
+  //   let searchConditions = {}
+  //   try {
+  //     let response = await getSearchIntent(document.body, question).start()
+  //     searchIntent = response.response.replace(/^'|'$/g, '')
+  //     console.log(searchIntent)
+  //     this.aiSearchWindow.addResponseFromAPI('I guess you want to ' + searchIntent + ', is that right?')
+  //     func()
+  //     if (searchIntent === 'search articles') {
+  //       try {
+  //         const response = await ArticleSearch(document.body, question).start()
+  //         // let res = JSON.parse(response)
+  //         console.log(response)
+  //         this.aiSearchWindow.addResponseFromAPI(response.response.articles)
+  //         // this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+  //         func()
+  //       } catch (e) {
+  //         console.error(e)
+  //       }
+  //     }
+  //     if (searchIntent === 'search neuron data') {
+  //       let result = this.aiSearchWindow.GetIntent(question)
+  //       const condition = { criteria: result }
+  //       searchConditions = condition
+  //       console.log(condition)
+  //       try {
+  //         // eslint-disable-next-line camelcase
+  //         const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
+  //         this.neuronList.setListData(neurons)
+  //         this.neuronDetail.selectedTab = 'neuronStates'
+  //         this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+  //         await this.$nextTick()
+  //         this.neuronDetail.neuronStates.featurePlot.renderChart()
+  //         this.neuronDetail.neuronStates.histogramBars.renderChart()
+  //         this.LLMDialogVisible = false
+  //         this.aiSearchWindow.addResponseFromAPI('I have found ' + neurons.length + ' neurons')
+  //         this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please tell me more information')
+  //         func()
+  //       } catch (e) {
+  //         console.error(e)
+  //       }
+  //     }
+  //     if (searchIntent === 'chat with neuroxiv website') {
+  //       try {
+  //         // eslint-disable-next-line camelcase
+  //         const response = await AIChat(document.body, question).start()
+  //         // let res = JSON.parse(response)
+  //         console.log(response)
+  //         const formattedResponse = response.response.replace(/\n/g, '<br>')
+  //         this.aiSearchWindow.addResponseFromAPI(formattedResponse)
+  //         // this.aiSearchWindow.addResponseFromAPI(response.response)
+  //         this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+  //         func()
+  //       } catch (e) {
+  //         console.error(e)
+  //       }
+  //     }
+  //     if (searchIntent === 'summary') {
+  //       try {
+  //         // eslint-disable-next-line camelcase
+  //         const response = await AIChat(document.body, question).start()
+  //         // let res = JSON.parse(response)
+  //         console.log(response)
+  //         const formattedResponse = response.response.replace(/\n/g, '<br>')
+  //         this.aiSearchWindow.addResponseFromAPI(formattedResponse)
+  //         // this.aiSearchWindow.addResponseFromAPI(response.response)
+  //         this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+  //         func()
+  //       } catch (e) {
+  //         console.error(e)
+  //       }
+  //       this.aiSearchWindow.addResponseFromAPI('NeuAgent didn\'t understand what you meant, can you ask it differently?')
+  //     }
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }
 
   private async ClearMessage (func: any = () => {}) {
     this.aiSearchWindow.messages = []
@@ -384,6 +457,24 @@ export default class Container extends Vue {
    * 上传神经元并计算神经元特征
    * @param param 通过该参数获得要上传的文件
    */
+  // private async uploadNeuronHandler (param: any) {
+  //   try {
+  //     this.neuronDetail.selectedTab = 'neuronInfo'
+  //     await this.$nextTick()
+  //     const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
+  //     const form = new FormData()
+  //     form.append('file', param.file)
+  //     const neuronInfo = await uploadNeuron(document.body, form).start()
+  //     this.neuronDetail.neuronInfo.clearReconstruction()
+  //     await this.$nextTick()
+  //     this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
+  //     this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
+  //     await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }
+
   private async uploadNeuronHandler (param: any) {
     try {
       this.neuronDetail.selectedTab = 'neuronInfo'
@@ -391,14 +482,29 @@ export default class Container extends Vue {
       const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
       const form = new FormData()
       form.append('file', param.file)
-      const neuronInfo = await uploadNeuron(document.body, form).start()
-      this.neuronDetail.neuronInfo.clearReconstruction()
-      await this.$nextTick()
-      this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
-      this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
-      await this.neuronDetail.neuronInfo.updateReconstruction(needClear)
+
+      // 调用实际的上传函数
+      const loadingTarget = document.body
+      const requestInstance = uploadNeuron(loadingTarget, form)
+
+      // 处理请求结果
+      requestInstance.start().then((neuronInfo) => {
+        this.neuronDetail.neuronInfo.clearReconstruction()
+        this.$nextTick().then(() => {
+          this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
+          this.neuronDetail.neuronInfo.neuronViewerReconstructionData = neuronInfo.viewer_info
+          this.neuronDetail.neuronInfo.updateReconstruction(needClear)
+
+          // 调用成功回调
+          param.onSuccess?.(neuronInfo)
+        })
+      }).catch((error) => {
+        console.error(error)
+        param.onError?.(new ErrorEvent('error', { message: '上传神经元失败' }))
+      })
     } catch (e) {
       console.error(e)
+      param.onError?.(new ErrorEvent('error', { message: '上传神经元失败' }))
     }
   }
 
