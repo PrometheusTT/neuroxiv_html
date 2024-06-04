@@ -189,7 +189,7 @@ export default class AISearchWindow extends Vue {
     if (!node) return
 
     const excludedConditions = ['has_recon_axon', 'has_recon_den', 'has_apical']
-    const containsProjKeyword = words.some(word => word.toLowerCase().includes('projection'))
+    const containsProjKeyword = words.some(word => word.toLowerCase().includes('projection' || 'project'))
 
     if (Array.isArray(node)) {
       node.forEach((child) => this.matchConditions(child, words, criteria, question))

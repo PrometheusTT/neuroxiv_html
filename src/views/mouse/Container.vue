@@ -107,7 +107,19 @@ import HeaderBar from '@/components/mouse/HeaderBar.vue'
 import NeuronList from '@/components/mouse/NeuronList.vue'
 import NeuronDetail from '@/components/mouse/NeuronDetail.vue'
 import NeuronSearch from '@/components/mouse/NeuronSearch.vue'
-import { getNeuronInfo, searchNeurons, searchSimilarNeuron, uploadNeuron, searchROINeuron, AIChat, getSearchIntent, ArticleSearch, CodeGenerator, executeCode } from '@/request/apis/mouse/Neuron'
+import {
+  getNeuronInfo,
+  searchNeurons,
+  searchSimilarNeuron,
+  uploadNeuron,
+  searchROINeuron,
+  AIChat,
+  getSearchIntent,
+  ArticleSearch,
+  CodeGenerator,
+  executeCode,
+  AI_RAG
+} from '@/request/apis/mouse/Neuron'
 import SmallScreenAlert from '@/components/common/SmallScreenAlert.vue'
 import NeuronLLM from '@/components/mouse/NeuronLLM.vue'
 import AISearchWindow from '@/components/mouse/AISearchWindow.vue'
@@ -355,7 +367,7 @@ export default class Container extends Vue {
 
     if (searchIntent === 'retrieval') {
       try {
-        const response = await AIChat(document.body, question).start()
+        const response = await AI_RAG(document.body, question).start()
         console.log(response)
         const formattedResponse = response.response.replace(/\n/g, '<br>')
         this.aiSearchWindow.addResponseFromAPI(formattedResponse)

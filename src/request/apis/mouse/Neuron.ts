@@ -71,7 +71,24 @@ function getNeuronInfo (loadingTarget: HTMLElement | null, id: string, atlas: st
  * @param requestOptions { RequestOptions } 请求选项
  */
 function AIChat (loadingTarget: HTMLElement | null, question: string, requestOptions: RequestOptions = {}) {
-  const url = `${REQUEST_NAME_SPACE}AI/${question}`
+  const url = `${REQUEST_NAME_SPACE}AI_Chat/${question}`
+  const options: RequestInit = {
+    // method: 'post',
+    // body: JSON.stringify(question)
+    body: question
+  }
+  requestOptions.errorMsg = requestOptions.errorMsg || 'get AI advice error'
+  const params = { url, loadingTarget, options, ...requestOptions }
+  let r = request(params)
+  let originR = r.start.bind(r)
+  r.start = () => originR().then((data: any) => {
+    return data
+  })
+  return r
+}
+
+function AI_RAG (loadingTarget: HTMLElement | null, question: string, requestOptions: RequestOptions = {}) {
+  const url = `${REQUEST_NAME_SPACE}AI_RAG/${question}`
   const options: RequestInit = {
     // method: 'post',
     // body: JSON.stringify(question)
@@ -241,4 +258,4 @@ function searchROINeuron (loadingTarget: HTMLElement | null, roiParameter: strin
   return r
 }
 
-export { searchNeurons, getNeuronInfo, uploadNeuron, searchSimilarNeuron, searchROINeuron, AIChat, getSearchIntent, ArticleSearch, CodeGenerator, executeCode }
+export { searchNeurons, getNeuronInfo, uploadNeuron, searchSimilarNeuron, searchROINeuron, AIChat, AI_RAG, getSearchIntent, ArticleSearch, CodeGenerator, executeCode }
