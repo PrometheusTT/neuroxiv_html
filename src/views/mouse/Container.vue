@@ -118,7 +118,8 @@ import {
   ArticleSearch,
   CodeGenerator,
   executeCode,
-  AI_RAG
+  AI_RAG,
+  getSearchCondition
 } from '@/request/apis/mouse/Neuron'
 import SmallScreenAlert from '@/components/common/SmallScreenAlert.vue'
 import NeuronLLM from '@/components/mouse/NeuronLLM.vue'
@@ -330,7 +331,11 @@ export default class Container extends Vue {
     }
 
     if (searchIntent === 'search') {
-      let result = this.aiSearchWindow.GetIntent(question)
+      // let result = this.aiSearchWindow.GetIntent(question)
+      // console.log(result)
+      const response = await getSearchCondition(document.body, question).start()
+      let result = response.response
+      result = JSON.parse(result.replace(/'/g, '"'))
       const condition = { criteria: result }
       searchConditions = condition
       console.log(condition)
