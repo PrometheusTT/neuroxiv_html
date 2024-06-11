@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'vue-property-decorator'
+import { Component, Vue, Ref, Prop } from 'vue-property-decorator'
 import NeuronStatesDesc from '@/components/mouse/NeuronStatesDesc.vue'
 import NeuronFeaturePlots from '@/components/mouse/NeuronFeatureScatter.vue'
 import NeuronFeatureHistogramBars from '@/components/mouse/NeuronFeatureHistogramBars.vue'
@@ -53,6 +53,7 @@ export default class NeuronStates extends Vue {
   @Ref('histogramBars') readonly histogramBars!: NeuronFeatureHistogramBars
   @Ref('featurePlots') readonly featurePlots!: HTMLElement
   @Ref('featurePlot') readonly featurePlot!: NeuronFeaturePlots
+  @Prop({ required: true }) readonly neuronsList!: any[]
 
   public neuronStatesData: any = {
     basic_info: [],
@@ -72,21 +73,18 @@ export default class NeuronStates extends Vue {
    */
   private async downloadData () {
     this.downloading = true
-    await sleep(100) // 先让 loading 动起来
     const zip = new JSZip()
     const folder = zip.folder('neuron_stats')
+    const swcFolder = zip.folder('swc_files') // 创建swc文件夹
+
     try {
       // 左侧的信息 json
-      // @ts-ignore
-      folder.file('neuronStatesData.json', JSON.stringify({
-        basic_info: this.neuronStatesData.basic_info,
-        morpho_info: this.neuronStatesData.morpho_info,
-        proj_info: this.neuronStatesData.proj_info
-      }))
+
       // arbor distribution scatter
       const canvas = await html2canvas(this.featurePlot.$el as HTMLElement)
       // @ts-ignore
       folder.file('arbor_distribution.png', await getBlobFromCanvas(canvas))
+
       // 柱状图
       for (let i = 0; i < this.neuronStatesData.plot.hist_plot.length; i++) {
         let plotItem = this.neuronStatesData.plot.hist_plot[i]
@@ -94,6 +92,47 @@ export default class NeuronStates extends Vue {
         // @ts-ignore
         folder.file(`${plotItem.metric}.png`, await getBlobFromCanvas(plotItemCanvas))
       }
+
+      // 下载swc文件
+      const swcPromises = this.neuronsList.map(async neuron => {
+        try {
+          // 解析 img_src，生成 .swc 文件路径
+          let imgSrc = neuron.img_src.replace(/\\/g, '/')
+          let directoryPath = imgSrc.substring(0, imgSrc.lastIndexOf('/'))
+          let directoryName = directoryPath.split('/').pop()
+          let swcSrc = `${directoryPath}/${directoryName}.swc`
+
+          let response = await fetch(swcSrc)
+          if (response.ok) {
+            let swcBlob = await response.blob()
+            // @ts-ignore
+            swcFolder.file(`${directoryName}.swc`, swcBlob)
+          } else {
+            console.warn(`Failed to fetch SWC file for neuron: ${swcSrc}`)
+          }
+        } catch (error) {
+          console.warn(`Error fetching SWC file for neuron: ${neuron.img_src}`, error)
+        }
+      })
+
+      // 等待所有异步操作完成
+      await Promise.all([...swcPromises])
+
+      // 移除 neuronsList 中的 img_src 和 selected 字段
+      const cleanedNeuronsList = this.neuronsList.map(neuron => {
+        const { img_src, selected, ...rest } = neuron
+        return rest
+      })
+
+      // 左侧的信息 json
+      // @ts-ignore
+      folder.file('neuronStatesData.json', JSON.stringify({
+        neuronsList: cleanedNeuronsList,
+        basic_info: this.neuronStatesData.basic_info,
+        morpho_info: this.neuronStatesData.morpho_info,
+        proj_info: this.neuronStatesData.proj_info
+      }))
+
       const zipBlob = await zip.generateAsync({ type: 'blob' })
       const url = URL.createObjectURL(zipBlob)
       await downloadLink(url, 'neuron_stats.zip')
@@ -103,6 +142,64 @@ export default class NeuronStates extends Vue {
     }
     this.downloading = false
   }
+  // private async downloadData () {
+  //   this.downloading = true
+  //   await sleep(100) // 先让 loading 动起来
+  //   const zip = new JSZip()
+  //   const folder = zip.folder('neuron_stats')
+  //   const swcFolder = zip.folder('swc_files')
+  //   try {
+  //     // 左侧的信息 json
+  //     // @ts-ignore
+  //     folder.file('neuronStatesData.json', JSON.stringify({
+  //       neuronsList: this.neuronsList,
+  //       basic_info: this.neuronStatesData.basic_info,
+  //       morpho_info: this.neuronStatesData.morpho_info,
+  //       proj_info: this.neuronStatesData.proj_info
+  //     }))
+  //     // arbor distribution scatter
+  //     const canvas = await html2canvas(this.featurePlot.$el as HTMLElement)
+  //     // @ts-ignore
+  //     folder.file('arbor_distribution.png', await getBlobFromCanvas(canvas))
+  //     // 柱状图
+  //     for (let i = 0; i < this.neuronStatesData.plot.hist_plot.length; i++) {
+  //       let plotItem = this.neuronStatesData.plot.hist_plot[i]
+  //       let plotItemCanvas = this.histogramBars.histogramItem[i].querySelector('canvas')
+  //       // @ts-ignore
+  //       folder.file(`${plotItem.metric}.png`, await getBlobFromCanvas(plotItemCanvas))
+  //     }
+  //     const swcPromises = this.neuronsList.map(async neuron => {
+  //       try {
+  //         // 解析 img_src，生成 .swc 文件路径
+  //         let imgSrc = neuron.img_src.replace(/\\/g, '/')
+  //         let directoryPath = imgSrc.substring(0, imgSrc.lastIndexOf('/'))
+  //         let directoryName = directoryPath.split('/').pop()
+  //         let swcSrc = `${directoryPath}/${directoryName}.swc`
+  //
+  //         let response = await fetch(swcSrc)
+  //         if (response.ok) {
+  //           let swcBlob = await response.blob()
+  //           // @ts-ignore
+  //           swcFolder.file(`${directoryName}.swc`, swcBlob)
+  //         } else {
+  //           console.warn(`Failed to fetch SWC file for neuron: ${swcSrc}`)
+  //         }
+  //       } catch (error) {
+  //         console.warn(`Error fetching SWC file for neuron: ${neuron.img_src}`, error)
+  //       }
+  //     })
+  //
+  //     // 等待所有异步操作完成
+  //     await Promise.all([...swcPromises])
+  //     const zipBlob = await zip.generateAsync({ type: 'blob' })
+  //     const url = URL.createObjectURL(zipBlob)
+  //     await downloadLink(url, 'neuron_stats.zip')
+  //     URL.revokeObjectURL(url)
+  //   } catch (e) {
+  //     console.warn(e)
+  //   }
+  //   this.downloading = false
+  // }
 }
 </script>
 

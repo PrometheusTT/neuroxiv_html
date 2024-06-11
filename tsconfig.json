@@ -17,7 +17,6 @@
       "webpack-env",
       "jest",
       "webpack",
-      "webpack-env"
     ],
     "paths": {
       "@/*": [

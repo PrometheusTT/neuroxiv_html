@@ -33,7 +33,10 @@
         label="Neurons analysis"
         name="neuronStates"
       >
-        <NeuronStates ref="neuronStates" />
+        <NeuronStates
+          ref="neuronStates"
+          :neurons-list="neuronsList"
+        />
       </el-tab-pane>
       <el-tab-pane
         label="Single neuron info"
@@ -68,6 +71,8 @@ export default class NeuronDetail extends Vue {
   @Ref('neuronInfo') readonly neuronInfo!: NeuronInfo
   @Ref('multiNeuronsViewer') readonly multiNeuronsViewer!: MultiNeuronsViewer
   @Prop({ required: true }) loadFirstNeuron!: any
+  @Prop({ required: true }) readonly neuronsList!: any[]
+
   // 此处如果初始值不为neuronInfo,neuronInfo的scene不会被渲染
   public selectedTab: string = 'multiNeuronsViewer'
 

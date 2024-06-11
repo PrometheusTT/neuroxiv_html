@@ -19,6 +19,7 @@
               v-if="reFresh"
               ref="neuronDetail"
               :load-first-neuron="loadFirstNeuron"
+              :neurons-list="neuronsList"
               @checkConnectedNeurons="updateNeuronAnalysis($event, true)"
               @searchSimilarNeurons="searchSimilarNeurons($event)"
               @searchROINeurons="searchROINeurons($event)"
@@ -152,6 +153,7 @@ export default class Container extends Vue {
   private reFresh: boolean = true
   private fullMorphNeurons:any[] = []
   private localMorphNeurons:any[] = []
+  public neuronsList:any[] = []
 
   /**
    * 更新当前显示的 neuron info 信息
@@ -271,6 +273,7 @@ export default class Container extends Vue {
       this.neuronDetail.neuronStates.histogramBars.renderChart()
       this.searchDialogVisible = false
       this.neuronList.setListData(neurons)
+      this.neuronsList = neurons
       // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       func()
     } catch (e) {
