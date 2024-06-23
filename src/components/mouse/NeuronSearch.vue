@@ -43,6 +43,19 @@
       <h3 class="section-label">
         Current Query
       </h3>
+      <div class="upload-config">
+        <el-upload
+          action=""
+          accept=".csv,.json"
+          :show-file-list="false"
+          :before-upload="beforeUploadFile"
+          :on-change="loadNeuronList"
+        >
+          <el-button type="text">
+            Load Neuron List
+          </el-button>
+        </el-upload>
+      </div>
       <div class="button-config">
         <el-button
           type="text"
@@ -165,7 +178,7 @@
           width="240px"
         >
           <template slot-scope="scope">
-            <i class="el-icon-time"></i>
+            <i class="el-icon-time" />
             <span style="margin-left: 10px">{{ scope.row.configTime }}</span>
           </template>
         </el-table-column>
@@ -207,6 +220,7 @@ import { ElTree } from 'element-ui/types/tree'
 import NeuronSearchConditionPicker from '@/components/mouse/NeuronSearchConditionPicker.vue'
 import moment from 'moment'
 import { debounce } from 'lodash'
+import Papa from 'papaparse'
 
 const searchConditions = require('./search_conditions.json')
 @Component({
@@ -225,6 +239,8 @@ export default class NeuronSearch extends Vue {
   private searchConfigDialogVisible: boolean = false
   // 防抖的filter，只在第一次搜索时赋值
   private debounceAllConditionFilter: any = null
+  public uploadNeuronList:any[] = []
+  public hasNeuronList:boolean = false
 
   // 选中的搜索条件 map, key 为 query_name
   get selectedConditionsMap () {
@@ -438,6 +454,66 @@ export default class NeuronSearch extends Vue {
   selectedConditionFilterChanged () {
     this.filterSelectedConditions()
   }
+
+  private beforeUploadFile (file: any) {
+    const fileSuffix = file.name.substring(file.name.lastIndexOf('.') + 1)
+    if (fileSuffix !== 'csv' && fileSuffix !== 'json') {
+      this.$message('The upload file must be a csv or json file!')
+      return false
+    }
+    return true
+  }
+
+  private async loadNeuronList (param: any) {
+    const file = param.raw
+    const reader = new FileReader()
+    reader.onload = async (e: any) => {
+      const fileContent = e.target.result
+      if (file.name.endsWith('.csv')) {
+        await this.processCsv(fileContent)
+      } else if (file.name.endsWith('.json')) {
+        await this.processJson(fileContent)
+      }
+      this.hasNeuronList = true
+      this.$emit('neuronAnalysis', this.uploadNeuronList, true)
+    }
+    reader.readAsText(file)
+  }
+
+  private async processCsv (csvContent: string) {
+    return new Promise((resolve, reject) => {
+      Papa.parse(csvContent, {
+        complete: (results: any) => {
+          this.uploadNeuronList = results.data.slice(1).map((row: any) => row[0])
+          console.log(this.uploadNeuronList)
+          resolve(true)
+        },
+        error: (error: any) => {
+          console.error(error)
+          reject(error)
+        }
+      })
+    })
+  }
+
+  private async processJson (jsonContent: string) {
+    return new Promise((resolve, reject) => {
+      try {
+        const data = JSON.parse(jsonContent)
+        if (Array.isArray(data.neuronsList)) {
+          this.uploadNeuronList = data.neuronsList.map((item: any) => item.id)
+          console.log(this.uploadNeuronList)
+          resolve(true)
+        } else {
+          this.$message('Invalid JSON format: neuronsList is not an array')
+          reject(new Error('Invalid JSON format'))
+        }
+      } catch (error) {
+        console.error(error)
+        reject(error)
+      }
+    })
+  }
 }
 </script>
 
@@ -457,6 +533,15 @@ export default class NeuronSearch extends Vue {
       position: absolute;
       top: 0;
       right: 0;
+      .el-button {
+        padding: 0;
+        margin-right: 20px;
+      }
+    }
+    .upload-config{
+      position: absolute;
+      top: 0;
+      right: 320px;
       .el-button {
         padding: 0;
         margin-right: 20px;
