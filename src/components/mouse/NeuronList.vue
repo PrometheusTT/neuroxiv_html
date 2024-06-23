@@ -4,13 +4,13 @@
       <div class="batch-select">
         <el-checkbox
           v-model="checkAll"
-          label="Select this page"
+          label="select this page"
           :indeterminate="isIndeterminate"
           @change="batchSelectHandler"
         />
         <el-checkbox
           v-model="checkAllPages"
-          label="Select All Pages"
+          label="select all pages"
           :indeterminate="isIndeterminate"
           @change="batchSelectHandlerAll"
         />
@@ -226,6 +226,7 @@ export default class NeuronList extends Vue {
    */
   private neuronAnalysisHandler () {
     const selectedNeuronIds = this.data.filter((item: any) => item.selected).map((item: any) => item.id)
+    console.log(selectedNeuronIds)
     if (selectedNeuronIds.length === 0) {
       this.$message.warning('No neuron selected')
       return
