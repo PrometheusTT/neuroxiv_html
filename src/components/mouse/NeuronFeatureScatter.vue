@@ -155,13 +155,14 @@ export default class NeuronFeatureScatter extends Vue {
         min: 0,
         max: yTicks.length - 1,
         axisLabel: {
+          interval: 0,
           formatter: function (value: number) {
             return yTicks[value]
           }
         }
       },
       grid: {
-        left: 'left',
+        left: '10px',
         right: 20,
         bottom: 20,
         containLabel: true
