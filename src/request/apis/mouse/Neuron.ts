@@ -15,6 +15,11 @@ function searchNeurons (loadingTarget: HTMLElement | null, { id_list, criteria }
   const url = `${REQUEST_NAME_SPACE}search`
   console.log(arguments[1])
   const options: RequestInit = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept-Encoding': 'gzip' // 添加gzip支持
+    },
     body: JSON.stringify(arguments[1])
   }
   console.log(options.body)
@@ -139,7 +144,7 @@ function CodeGenerator (loadingTarget: HTMLElement | null, question: string, req
 }
 
 function executeCode (loadingTarget: HTMLElement | null, requestOptions: RequestOptions = {}) {
-  const url = `${REQUEST_NAME_SPACE}executeCode`
+  const url = `${REQUEST_NAME_SPACE}save_code`
   const options: RequestInit = {
     // method: 'post',
     // body: JSON.stringify(question)
