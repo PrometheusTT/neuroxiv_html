@@ -152,8 +152,8 @@ export default class NeuronFeatureScatter extends Vue {
       yAxis: {
         type: 'value',
         splitNumber: yTicks.length,
-        min: 0, // 确保第一个标签显示
-        max: yTicks.length - 1, // 确保最后一个标签显示
+        min: -0.1, // 确保第一个标签显示
+        max: yTicks.length - 0.9, // 确保最后一个标签显示
         axisLabel: {
           interval: 0,
           formatter: function (value: number) {
@@ -165,7 +165,7 @@ export default class NeuronFeatureScatter extends Vue {
         left: '1%', // 增加左边距，确保y轴标签显示
         right: '1%', // 增加右边距
         bottom: 20, // 增加底部间距，确保x轴标签显示
-        top: 20, // 增加顶部间距，确保标题显示
+        top: 50, // 增加顶部间距，确保标题显示
         containLabel: true
       },
       visualMap: [{
@@ -212,7 +212,6 @@ export default class NeuronFeatureScatter extends Vue {
   flex-flow: column nowrap;
   .neuron-scatter-plot {
     width: 100%;
-    height: 100%;  // 确保scatter plot填充容器，并留出一些空间避免溢出
     flex: 1;
   }
   .legends {
