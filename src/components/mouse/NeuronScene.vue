@@ -298,14 +298,51 @@ export default class NeuronScene extends Vue {
             if (data.name === 'root') {
               material.opacity = 0.15
               geometry.computeBoundingBox()
-              // console.log('bounding box', geometry.boundingBox)
               geometry.boundingBox.getCenter(this.centerShift).negate()
               geometry.center()
-              let axesHelper = new THREE.AxesHelper(100)
-              axesHelper.rotateX(Math.PI)
-              axesHelper.translateOnAxis(new THREE.Vector3().copy(this.centerShift).normalize(), this.centerShift.length() * 0.85)
-              this.scene.add(axesHelper)
-            // console.log('center shift: ', this.centerShift)
+
+              // 获取 VTK 对象的边界
+              const boundingBox = geometry.boundingBox
+              const min = boundingBox.min
+              const max = boundingBox.max
+
+              // 计算 VTK 对象左上角的位置
+              const vtkTopLeft = new THREE.Vector3(min.x + Math.abs(min.x) / 5, max.y + Math.abs(min.y) / 15, max.z + Math.abs(min.z) / 5)
+
+              // 创建并调整箭头
+              const arrowLength = 45
+              const arrowHeadLength = 10
+              const arrowHeadWidth = 5
+
+              const arrowP = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), vtkTopLeft, arrowLength, 0xff0000, arrowHeadLength, arrowHeadWidth) // X轴，红色
+              const arrowV = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), vtkTopLeft, arrowLength, 0x00ff00, arrowHeadLength, arrowHeadWidth) // Y轴，绿色
+              const arrowR = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), vtkTopLeft, arrowLength, 0x0000ff, arrowHeadLength, arrowHeadWidth) // Z轴，蓝色
+              arrowV.rotateX(Math.PI)
+              arrowR.rotateX(Math.PI)
+
+              this.scene.add(arrowP)
+              this.scene.add(arrowV)
+              this.scene.add(arrowR)
+
+              // 创建标识文本
+              const labels = this.addAxisLabels()
+              const offset = 55
+              // 设置标识文本的位置
+              labels[0].position.set(vtkTopLeft.x + offset, vtkTopLeft.y, vtkTopLeft.z) // P
+              labels[1].position.set(vtkTopLeft.x - offset, vtkTopLeft.y, vtkTopLeft.z) // A
+              labels[2].position.set(vtkTopLeft.x, vtkTopLeft.y - offset, vtkTopLeft.z) // V
+              labels[3].position.set(vtkTopLeft.x, vtkTopLeft.y + offset, vtkTopLeft.z) // D
+              labels[4].position.set(vtkTopLeft.x, vtkTopLeft.y, vtkTopLeft.z - offset) // R
+              labels[5].position.set(vtkTopLeft.x, vtkTopLeft.y, vtkTopLeft.z + offset) // L
+
+              // 确保箭头和标识文本相对 VTK 对象的左上角位置保持固定
+              this.renderer.setAnimationLoop(() => {
+                arrowP.position.copy(vtkTopLeft)
+                arrowV.position.copy(vtkTopLeft)
+                arrowR.position.copy(vtkTopLeft)
+
+                this.renderer.render(this.scene, this.camera)
+              })
             } else {
               geometry.translate(this.centerShift.x, this.centerShift.y, this.centerShift.z)
             }
@@ -318,7 +355,6 @@ export default class NeuronScene extends Vue {
               this.unloadVtk(data.id)
             }
             this.brainComponentMap.set(data.id, mesh)
-            // this.storeInitialState(mesh)
             this.scene.add(mesh)
             this.resetRender()
             resolve(true)
@@ -328,6 +364,188 @@ export default class NeuronScene extends Vue {
         )
       })
     }
+
+    // 创建标识文本的函数
+    private createLabel (text: string): THREE.Sprite {
+      const canvas = document.createElement('canvas')
+      canvas.width = 512 // 增加画布大小以提高分辨率
+      canvas.height = 256
+      const context = canvas.getContext('2d')
+      if (context) {
+        context.font = 'bold 100px Arial'
+        context.fillStyle = 'black'
+        context.fillText(text, 100, 150) // 调整位置使文本居中
+
+        const texture = new THREE.CanvasTexture(canvas)
+        const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true })
+        const sprite = new THREE.Sprite(spriteMaterial)
+        sprite.scale.set(20, 10, 1) // 调整大小以适应画布
+        return sprite
+      }
+      throw new Error('Canvas context is null')
+    }
+
+    // 添加标识文本
+    private addAxisLabels (): THREE.Sprite[] {
+      const labels = [
+        this.createLabel('P'),
+        this.createLabel('A'),
+        this.createLabel('V'),
+        this.createLabel('D'),
+        this.createLabel('R'),
+        this.createLabel('L')
+      ]
+      labels.forEach(label => this.scene.add(label))
+      return labels
+    }
+
+    // public async loadVtk (data: neuronSceneComponent) {
+    //   console.log('loadVTK')
+    //   console.log(data.src)
+    //   return new Promise((resolve, reject) => {
+    //     const loader = new VTKLoader()
+    //     loader.load(
+    //       data.src,
+    //       (geometry: any) => {
+    //         let material = new THREE.MeshPhongMaterial()
+    //         // 开启透明属性
+    //         material.transparent = true
+    //         material.opacity = 0.3
+    //         // 使外面的模型不遮挡里面的模型
+    //         material.depthWrite = false
+    //         if (data.hasOwnProperty('rgb_triplet')) {
+    //           material.color = new THREE.Color(`rgb(${data.rgb_triplet[0]}, ${data.rgb_triplet[1]}, ${data.rgb_triplet[2]})`)
+    //         }
+    //         console.log(material.color)
+    //         if (data.name === 'root') {
+    //           material.opacity = 0.15
+    //           geometry.computeBoundingBox()
+    //           geometry.boundingBox.getCenter(this.centerShift).negate()
+    //           geometry.center()
+    //
+    //           // 创建并调整坐标轴
+    //           let axesHelper = new THREE.AxesHelper(45) // 设置坐标轴大小
+    //           axesHelper.rotateY(Math.PI) // Y轴旋转180度，使得X轴指向P，背侧是A
+    //           axesHelper.rotateZ(Math.PI)
+    //           this.scene.add(axesHelper)
+    //
+    //           // 将坐标轴移动到左下角
+    //           axesHelper.position.set(-this.renderer.domElement.width / 2 + 650, -this.renderer.domElement.height / 2 + 700, this.renderer.domElement.height / 2 - 300)
+    //
+    //           // 添加标识文本
+    //           this.addAxisLabels(axesHelper.position)
+    //         } else {
+    //           geometry.translate(this.centerShift.x, this.centerShift.y, this.centerShift.z)
+    //         }
+    //         geometry.computeVertexNormals()
+    //         // 绕x轴翻转180度，使得一开始脑为正方向
+    //         geometry.rotateX(Math.PI)
+    //         let mesh = new THREE.Mesh(geometry, material)
+    //         mesh.name = data.name
+    //         if (this.brainComponentMap.has(data.id)) {
+    //           this.unloadVtk(data.id)
+    //         }
+    //         this.brainComponentMap.set(data.id, mesh)
+    //         this.scene.add(mesh)
+    //         this.resetRender()
+    //         resolve(true)
+    //       },
+    //       () => {},
+    //       (err: any) => { reject(err) }
+    //     )
+    //   })
+    // }
+    //
+    // // 创建标识文本的函数
+    // private createLabel (text: string, position: THREE.Vector3): THREE.Sprite {
+    //   const canvas = document.createElement('canvas')
+    //   canvas.width = 512 // 增加画布大小以提高分辨率
+    //   canvas.height = 256
+    //   const context = canvas.getContext('2d')
+    //   if (context) {
+    //     context.font = 'bold 100px Arial'
+    //     context.fillStyle = 'black'
+    //     context.fillText(text, 100, 150) // 调整位置使文本居中
+    //
+    //     const texture = new THREE.CanvasTexture(canvas)
+    //     const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true })
+    //     const sprite = new THREE.Sprite(spriteMaterial)
+    //     sprite.scale.set(20, 10, 1) // 调整大小以适应画布
+    //     sprite.position.copy(position)
+    //     return sprite
+    //   }
+    //   throw new Error('Canvas context is null')
+    // }
+    //
+    // // 添加标识文本
+    // private addAxisLabels (axesPosition: THREE.Vector3) {
+    //   const offset = 45 // 控制标识与坐标轴的距离，适应缩小后的坐标轴
+    //   const labels = [
+    //     { text: 'A', position: new THREE.Vector3(axesPosition.x - offset, axesPosition.y, axesPosition.z) }, // x轴正方向
+    //     { text: 'P', position: new THREE.Vector3(axesPosition.x + offset, axesPosition.y, axesPosition.z) }, // x轴负方向
+    //     { text: 'V', position: new THREE.Vector3(axesPosition.x, axesPosition.y - offset, axesPosition.z) }, // y轴正方向
+    //     { text: 'D', position: new THREE.Vector3(axesPosition.x, axesPosition.y + offset, axesPosition.z) }, // y轴负方向
+    //     { text: 'L', position: new THREE.Vector3(axesPosition.x, axesPosition.y, axesPosition.z + offset) }, // z轴负方向
+    //     { text: 'R', position: new THREE.Vector3(axesPosition.x, axesPosition.y, axesPosition.z - offset) } // z轴正方向
+    //   ]
+    //
+    //   labels.forEach(label => {
+    //     const sprite = this.createLabel(label.text, label.position)
+    //     this.scene.add(sprite)
+    //   })
+    // }
+
+    // public async loadVtk (data: neuronSceneComponent) {
+    //   console.log('loadVTK')
+    //   console.log(data.src)
+    //   return new Promise((resolve, reject) => {
+    //     const loader = new VTKLoader()
+    //     loader.load(
+    //       data.src,
+    //       (geometry: any) => {
+    //         let material = new THREE.MeshPhongMaterial()
+    //         // 开启透明属性
+    //         material.transparent = true
+    //         material.opacity = 0.3
+    //         // 使外面的模型不遮挡里面的模型
+    //         material.depthWrite = false
+    //         if (data.hasOwnProperty('rgb_triplet')) {
+    //           material.color = new THREE.Color(`rgb(${data.rgb_triplet[0]}, ${data.rgb_triplet[1]}, ${data.rgb_triplet[2]})`)
+    //         }
+    //         console.log(material.color)
+    //         if (data.name === 'root') {
+    //           material.opacity = 0.15
+    //           geometry.computeBoundingBox()
+    //           // console.log('bounding box', geometry.boundingBox)
+    //           geometry.boundingBox.getCenter(this.centerShift).negate()
+    //           geometry.center()
+    //           let axesHelper = new THREE.AxesHelper(100)
+    //           axesHelper.rotateX(Math.PI)
+    //           axesHelper.translateOnAxis(new THREE.Vector3().copy(this.centerShift).normalize(), this.centerShift.length())
+    //           this.scene.add(axesHelper)
+    //         // console.log('center shift: ', this.centerShift)
+    //         } else {
+    //           geometry.translate(this.centerShift.x, this.centerShift.y, this.centerShift.z)
+    //         }
+    //         geometry.computeVertexNormals()
+    //         // 绕x轴翻转180度，使得一开始脑为正方向
+    //         geometry.rotateX(Math.PI)
+    //         let mesh = new THREE.Mesh(geometry, material)
+    //         mesh.name = data.name
+    //         if (this.brainComponentMap.has(data.id)) {
+    //           this.unloadVtk(data.id)
+    //         }
+    //         this.brainComponentMap.set(data.id, mesh)
+    //         // this.storeInitialState(mesh)
+    //         this.scene.add(mesh)
+    //         this.resetRender()
+    //         resolve(true)
+    //       },
+    //       () => {},
+    //       (err: any) => { reject(err) }
+    //     )
+    //   })
+    // }
 
     /**
    * 卸载vtk文件
@@ -657,7 +875,7 @@ export default class NeuronScene extends Vue {
       this.camera.lookAt(this.scene.position)
       this.camera.zoom = 1.2
       /* 四、渲染设置 */
-      this.renderer = new THREE.WebGLRenderer()
+      this.renderer = new THREE.WebGLRenderer({ antialias: true })
       this.renderer.setSize(el.clientWidth, el.clientHeight)
       // this.renderer.setClearColor(0xeeeeee, 1)
       this.renderer.setClearColor(this.selectedColor, 1)
