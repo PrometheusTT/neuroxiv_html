@@ -25,6 +25,15 @@
     </section>
     <el-button
       icon="el-icon-download"
+      class="downloadList-btn"
+      size="mini"
+      :loading="downloading"
+      @click="downloadNeuronList"
+    >
+      Download Neuron List
+    </el-button>
+    <el-button
+      icon="el-icon-download"
       class="download-btn"
       size="mini"
       :loading="downloading"
@@ -67,6 +76,34 @@ export default class NeuronStates extends Vue {
 
   private downloading: boolean = false
 
+  private async downloadNeuronList () {
+    this.downloading = true
+
+    try {
+      // 移除 neuronsList 中的 img_src 和 selected 字段
+      const cleanedNeuronsList = this.neuronsList.map(neuron => {
+        // eslint-disable-next-line camelcase
+        const { img_src, selected, ...rest } = neuron
+        return rest
+      })
+
+      // 准备 JSON 数据
+      const neuronStatesData = {
+        neuronsList: cleanedNeuronsList
+      }
+
+      // 创建 Blob 并生成 URL
+      const jsonBlob = new Blob([JSON.stringify(neuronStatesData)], { type: 'application/json' })
+      const url = URL.createObjectURL(jsonBlob)
+
+      // 下载 JSON 文件
+      await downloadLink(url, 'neuronStatesData.json')
+      URL.revokeObjectURL(url)
+    } catch (e) {
+      console.warn(e)
+    }
+    this.downloading = false
+  }
   /**
    * 下载 neuron info json, 散点图, 柱状图
    * @private
@@ -120,6 +157,7 @@ export default class NeuronStates extends Vue {
 
       // 移除 neuronsList 中的 img_src 和 selected 字段
       const cleanedNeuronsList = this.neuronsList.map(neuron => {
+        // eslint-disable-next-line camelcase
         const { img_src, selected, ...rest } = neuron
         return rest
       })
@@ -252,7 +290,12 @@ export default class NeuronStates extends Vue {
   .download-btn {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 20px;
+  }
+  .downloadList-btn {
+    position: absolute;
+    top: 0;
+    right:130px;
   }
 }
 </style>
