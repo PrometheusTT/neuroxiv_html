@@ -237,6 +237,7 @@ export default class Container extends Vue {
     try {
       // eslint-disable-next-line camelcase
       const { basic_info, morpho_info, plot, proj_info, neurons } = await searchNeurons(document.body, { id_list: neuronIds }).start()
+      this.neuronsList = neurons
       this.neuronDetail.selectedTab = 'neuronStates'
       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
       await this.$nextTick()
@@ -296,7 +297,7 @@ export default class Container extends Vue {
     const cacheKey = ids ? `neurons_ids_${ids.join('_')}` : `neurons_criteria_${JSON.stringify(criteria)}`
 
     // 设置缓存有效期为1小时
-    const CACHE_DURATION = 3600000
+    const CACHE_DURATION = 604800000
 
     // 检查缓存
     const cachedData = await getCachedData(cacheKey)
