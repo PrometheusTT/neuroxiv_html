@@ -62,6 +62,7 @@ export default class NeuronStates extends Vue {
   @Ref('histogramBars') readonly histogramBars!: NeuronFeatureHistogramBars
   @Ref('featurePlots') readonly featurePlots!: HTMLElement
   @Ref('featurePlot') readonly featurePlot!: NeuronFeaturePlots
+  @Ref('NeuronStatesDesc') readonly neuronStatesDesc!: NeuronStatesDesc
   @Prop({ required: true }) readonly neuronsList!: any[]
 
   public neuronStatesData: any = {
