@@ -255,6 +255,29 @@ export default class Container extends Vue {
     }
   }
 
+  // eslint-disable-next-line camelcase
+  // private sendData (basic_info: any, morpho_info: any, proj_info: any) {
+  //   const data = {
+  //     basic_info: basic_info, // Replace with actual data
+  //     morpho_info: morpho_info, // Replace with actual data
+  //     proj_info: proj_info // Replace with actual data
+  //   }
+  //
+  //   fetch('http://10.192.40.36:5000/api/stream', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify(data)
+  //   }).then(response => {
+  //     console.log('Data sent successfully')
+  //     // this.neuronDetail.neuronStates.neuronStatesDesc.restartSSE() // Start receiving stream data
+  //     // this.neuronDetail.neuronStates.neuronStatesDesc.hasStartedSSE = true
+  //   }).catch(error => {
+  //     console.error('Error sending data:', error)
+  //   })
+  // }
+
   /**
    * 搜索神经元
    * @param criteria 搜索条件
@@ -371,6 +394,7 @@ export default class Container extends Vue {
   }
 
   private async AISearch (func: any = () => {}) {
+    console.time('startSearchTime')
     this.aiSearchWindow.sendMessage()
     let question = this.aiSearchWindow.lastInput
     console.log('question is: ' + question)
@@ -466,6 +490,7 @@ export default class Container extends Vue {
         console.error(e)
       }
     }
+    console.timeEnd('startSearchTime')
   }
 
   // private async AISearch (func: any = () => {}) {
@@ -744,6 +769,7 @@ export default class Container extends Vue {
         console.log(neuronInfo)
         this.neuronDetail.multiNeuronsViewer.neuronScene.multiViewerSomaPos.set(neuronDetail.id, neuronInfo.soma)
         dendriteData.src = neuronInfo.viewer_info[0].children[0].src
+        console.log(dendriteData.src)
         axonData.src = neuronInfo.viewer_info[0].children[1].src
         apicalData.src = neuronInfo.viewer_info[0].children[2].src
         localData.src = neuronInfo.viewer_info[0].children[3].src
