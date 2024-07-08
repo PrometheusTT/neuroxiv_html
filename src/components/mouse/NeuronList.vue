@@ -183,6 +183,8 @@ export default class NeuronList extends Vue {
    * 获取列表中勾选的数据
    */
   public getSelectedItems () {
+    console.log('getSelectedItems-----------------')
+    console.log(this.data.filter((item: any) => item.selected))
     return this.data.filter((item: any) => item.selected)
   }
 
@@ -214,6 +216,7 @@ export default class NeuronList extends Vue {
   }
 
   private batchSelectHandlerAll (val: boolean) {
+    console.log(val)
     this.data.forEach((item: any) => {
       item.selected = val
       this.$emit('checkNeuron', item)
