@@ -1,4 +1,5 @@
 const APP_CONFIG = require('./config')
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 module.exports = {
   lintOnSave: false,
@@ -108,10 +109,28 @@ module.exports = {
       .loader('@kazupon/vue-i18n-loader')
       .end()
   },
-
   configureWebpack: {
-    plugins: process.env.NODE_ENV === 'production' ? [
-      require('./prerender.config')
-    ] : []
+    plugins: [
+      require('./prerender.config'),
+      new CompressionWebpackPlugin({
+        filename: '[path].gz[query]',
+        algorithm: 'gzip',
+        test: /\.(js|css|html|svg)$/,
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    ]
   }
+  // configureWebpack: {
+  //   plugins: process.env.NODE_ENV === 'production' ? [
+  //     require('./prerender.config'),
+  //     new CompressionWebpackPlugin({
+  //       filename: '[path].gz[query]',
+  //       algorithm: 'gzip',
+  //       test: /\.(js|css|html|svg)$/,
+  //       threshold: 10240,
+  //       minRatio: 0.8
+  //     })
+  //   ] : []
+  // }
 }
