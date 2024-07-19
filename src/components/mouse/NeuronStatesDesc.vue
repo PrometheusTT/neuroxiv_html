@@ -1,6 +1,9 @@
 <template>
   <section class="feature-desc">
-    <el-collapse v-model="activeSection">
+    <el-collapse
+      v-model="activeSection"
+      @change="handleCollapseChange"
+    >
       <el-collapse-item
         title="AIPOM data report"
         name="dataSummary"
@@ -74,7 +77,7 @@ export default class NeuronStatesDesc extends Vue {
   @Prop({ required: true }) basicInfo!: any
   @Prop({ required: true }) morphoInfo!: any
   @Prop({ required: true }) projInfo!: any
-  private activeSection: string[] = ['dataSummary', 'basicInfo']
+  private activeSection: string[] = ['basicInfo']
   private basicInfoSummary: string = ''
   private morphologySummaries: string = ''
   private projectionInfoSummary: string = ''
@@ -89,7 +92,10 @@ export default class NeuronStatesDesc extends Vue {
   @Watch('projInfo', { immediate: true, deep: true })
   onDataChange () {
     this.generateDataSummary()
-    this.restartSSE()
+    if (this.activeSection.includes('dataSummary')) {
+      console.log('onDataChange-generate')
+      this.restartSSE()
+    }
   }
 
   private generateDataSummary () {
@@ -140,9 +146,9 @@ export default class NeuronStatesDesc extends Vue {
     if (this.eventSource) {
       this.eventSource.close() // 确保之前的连接已关闭
     }
-
-    this.eventSource = new EventSource('http://10.192.40.36:5000/api/stream', { withCredentials: true }) // 替换为你的后端域名
-
+    console.log('startSSE')
+    this.eventSource = new EventSource('http://10.192.53.107:5000/api/stream', { withCredentials: true }) // 替换为你的后端域名
+    console.log('eventSource connected')
     this.eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data)
       if (data.type === 'basicInfo') {
@@ -174,8 +180,7 @@ export default class NeuronStatesDesc extends Vue {
   mounted () {
     this.$nextTick(() => {
       if (!this.hasStartedSSE) {
-        this.startSSE()
-        this.hasStartedSSE = true
+        this.hasStartedSSE = false
       }
     })
   }
@@ -188,6 +193,10 @@ export default class NeuronStatesDesc extends Vue {
 
   private handleCollapseChange (val: string[]) {
     this.activeSection = val
+    if (val.includes('dataSummary') && !this.hasStartedSSE) {
+      this.startSSE()
+      this.hasStartedSSE = true
+    }
   }
 }
 </script>

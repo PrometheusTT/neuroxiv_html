@@ -27,6 +27,27 @@
                 </p>
               </el-collapse-item>
               <el-collapse-item
+                title="similar neurons"
+                name="similarInfo"
+              >
+                <ul class="connect-item-list">
+                  <li
+                    v-for="(item, i) in neuronInfoData.simi_info"
+                    :key="i"
+                    class="connect-item"
+                  >
+                    <span class="connect-label">{{ item.type }} similar cells: {{ item.id_list.length }}</span>
+                    <el-button
+                      type="text"
+                      :disabled="!item.id_list || item.id_list.length === 0"
+                      @click="$emit('checkConnectedNeurons', item.id_list)"
+                    >
+                      View
+                    </el-button>
+                  </li>
+                </ul>
+              </el-collapse-item>
+              <el-collapse-item
                 title="nearby neurons"
                 name="connectInfo"
               >
@@ -71,6 +92,32 @@
         >
           <div>
             <el-collapse v-model="activeNames2">
+              <el-collapse-item
+                v-if="isUploadData"
+                title="AIPOM data report"
+                name="dataSummary"
+              >
+                <div class="summary-container">
+                  <p><strong>Soma Region:</strong></p>
+                  <ul>
+                    <li>{{ somaRegion }}</li>
+                  </ul>
+                  <p><strong>Morphology Features:</strong></p>
+                  <ul>
+                    <li>
+                      {{ morphologyFeature }}
+                    </li>
+                  </ul>
+                  <p><strong>Projection:</strong></p>
+                  <ul>
+                    <li>{{ projectionInfo }}</li>
+                  </ul>
+                  <p><strong>Neurons in Same Brain Region:</strong></p>
+                  <ul>
+                    <li>{{ sameRegionInfo }}</li>
+                  </ul>
+                </div>
+              </el-collapse-item>
               <el-collapse-item
                 title="brain"
                 name="brain"
@@ -209,14 +256,14 @@
       >
         {{ ifSoma }}
       </el-button>
-      <el-button
-        v-show="neuronInfoData.id"
-        icon="el-icon-search"
-        size="mini"
-        @click="searchSimilarNeurons"
-      >
-        Search similar neurons
-      </el-button>
+      <!--      <el-button-->
+      <!--        v-show="neuronInfoData.id"-->
+      <!--        icon="el-icon-search"-->
+      <!--        size="mini"-->
+      <!--        @click="searchSimilarNeurons"-->
+      <!--      >-->
+      <!--        Search similar neurons-->
+      <!--      </el-button>-->
       <el-button
         v-show="neuronInfoData.id"
         icon="el-icon-download"
@@ -284,7 +331,7 @@ export default class NeuronInfo extends Vue {
   public neuronViewerReconstructionData: any = []
   public neuronViewerData: any = this.$store.state.atlas === 'CCFv3' ? neuronViewerBaseData : neuronViewerBaseDataFMost // neuronViewerBaseData
   private rootId: number = this.$store.state.atlas === 'CCFv3' ? rootId : rootIdFMost // rootId
-  private activeNames2: any = ['brain']
+  private activeNames2: any = ['brain', 'dataSummary']
   private sagittalMax: number = 11375 // 18.20
   private AxialMax: number = 7975 // 12.76
   private coronalMax: number = 13175 // 21.08
@@ -304,6 +351,11 @@ export default class NeuronInfo extends Vue {
   private somaZ: number = 100
   private somaR: number = 100
   public sliceAtlas:string = this.$store.state.atlas
+  public isUploadData:boolean = false
+  private somaRegion: string = ''
+  private morphologyFeature: string = ''
+  private projectionInfo: string = ''
+  private sameRegionInfo:string = ''
 
   private opSoma () {
     if (this.ifSoma === 'Show Soma Area') {
@@ -398,12 +450,12 @@ export default class NeuronInfo extends Vue {
         } else {
           // @ts-ignore
           let node = this.$refs.reconstructionTree.getNode(data.id)
-          NeuronInfo.setLoadingForNode(node, true)
+          // NeuronInfo.setLoadingForNode(node, true)
           let loadingInstance = showLoading(document.body)
-          increaseLoadingCount()
+          // increaseLoadingCount()
           await this.neuronScene.loadComponent(data)
           NeuronInfo.setLoadingForNode(node, false)
-          decreaseLoadingCount()
+          // decreaseLoadingCount()
           if (LoadingZero()) {
             loadingInstance.close()
           }
@@ -614,6 +666,7 @@ export default class NeuronInfo extends Vue {
     console.log('this.neuronInfoData.soma')
     console.log(this.neuronInfoData.soma)
     this.somaShown = true
+    this.ifSoma = 'Hide Soma Area'
   }
 
   /**
@@ -627,6 +680,7 @@ export default class NeuronInfo extends Vue {
 
   public hideSoma () {
     this.somaShown = false
+    this.ifSoma = 'Show Soma Area'
     this.neuronScene.setSomaBallVisible(false)
   }
 
@@ -735,5 +789,29 @@ export default class NeuronInfo extends Vue {
     left: 370px;
     z-index: 2;
   }
+}
+.summary-container {
+  padding: 15px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.summary-container p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.summary-container ul {
+  padding-left: 20px;
+  list-style-type: disc;
+}
+
+.summary-container ul li {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #555;
 }
 </style>

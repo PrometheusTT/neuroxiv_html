@@ -55,6 +55,14 @@
             :value="item.name"
           />
         </el-select>
+        <el-button
+          type="primary"
+          plain
+          class="action"
+          @click="openJupyterNotebook"
+        >
+          Open Jupyter Notebook
+        </el-button>
       </slot>
     </div>
     <span class="partner">
@@ -98,6 +106,9 @@ export default class HeaderBar extends RouterHelper {
    */
   private uploadNeuron (param: any) {
     this.$emit('clickUploadNeuron', param)
+  }
+  openJupyterNotebook () {
+    window.open('http://localhost:8888/?token=d28243d27c934d3abec200befb5fca9b05eaa58b18d0ff04/C:/Users/user/Desktop/notebooks/generated_notebook.ipynb')
   }
 
   /**

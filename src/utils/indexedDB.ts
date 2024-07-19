@@ -1,12 +1,14 @@
 // src/utils/indexedDB.ts
+// @ts-ignore
 import { openDB } from 'idb'
 
 const DB_NAME = 'NeuronCacheDB'
 const STORE_NAME = 'neuronCache'
 
 const initDB = async () => {
+  // @ts-ignore
   return openDB(DB_NAME, 1, {
-    upgrade (db) {
+    upgrade (db: { objectStoreNames: { contains: (arg0: string) => any }; createObjectStore: (arg0: string, arg1: { keyPath: string }) => void }) {
       if (!db.objectStoreNames.contains(STORE_NAME)) {
         db.createObjectStore(STORE_NAME, { keyPath: 'key' })
       }
