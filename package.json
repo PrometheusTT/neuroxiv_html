@@ -47,7 +47,6 @@
   "devDependencies": {
     "@kazupon/vue-i18n-loader": "^0.5.0",
     "@types/jest": "^24.0.19",
-    "@types/papaparse": "^5.3.14",
     "@types/webpack": "^4.41.29",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-e2e-cypress": "^4.5.13",
@@ -61,7 +60,7 @@
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/eslint-config-typescript": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
-    "compression-webpack-plugin": "^6.1.1",
+    "compression-webpack-plugin": "^6.1.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "less": "^3.13.1",
