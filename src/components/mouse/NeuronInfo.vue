@@ -290,7 +290,8 @@ import { showLoading, increaseLoadingCount, decreaseLoadingCount, LoadingZero } 
 
 import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
 
-import neuronViewerBaseData from './surf_tree.json'
+// import neuronViewerBaseData from './surf_tree.json'
+import neuronViewerBaseData from './surf_tree_ccf-me.json'
 import Soma from '@/components/mouse/Soma.vue'
 const rootId = neuronViewerBaseData[0].id
 const rootIdFMost = neuronViewerBaseDataFMost[0].id

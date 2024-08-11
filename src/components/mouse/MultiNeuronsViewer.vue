@@ -16,9 +16,15 @@
                 title="brain"
                 name="brain"
               >
+                <el-input
+                  v-model="searchKeyword"
+                  placeholder="Search"
+                  style="margin-bottom: 10px;"
+                  @input="filterTree"
+                />
                 <el-tree
                   ref="brainTree"
-                  :data="neuronViewerData"
+                  :data="filteredData"
                   :render-after-expand="false"
                   show-checkbox
                   node-key="id"
@@ -136,7 +142,7 @@ import SliceSection from '@/components/mouse/SliceSection.vue'
 import ROI from '@/components/mouse/ROI.vue'
 import { showLoading, increaseLoadingCount, decreaseLoadingCount, LoadingZero } from '@/request/RequestWrapper'
 
-import neuronViewerBaseData from './surf_tree.json'
+import neuronViewerBaseData from './surf_tree_ccf-me.json'
 
 import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
 const rootId = neuronViewerBaseData[0].id
@@ -159,6 +165,7 @@ const SliceAtlasfMOST = 'fMOST'
 export default class NeuronInfo extends Vue {
   @Ref('neuronScene') neuronScene!: NeuronScene
   @Ref('ROI') ROI!: ROI
+  @Ref('brainTree') brainTree!: any
   public neuronViewerData: any = this.$store.state.atlas === 'CCFv3' ? neuronViewerBaseData : neuronViewerBaseDataFMost // neuronViewerBaseData
   private rootId: number = this.$store.state.atlas === 'CCFv3' ? rootId : rootIdFMost // rootId
   private sliceAtlas: any = this.$store.state.atlas
@@ -172,6 +179,8 @@ export default class NeuronInfo extends Vue {
   public showAllAxon:boolean = true
   public showAllBasal:boolean = true
   public showAllApical:boolean = true
+  public searchKeyword: string = ''
+  public filteredData: any = this.neuronViewerData
 
   private Rotate () {
     this.neuronScene.toggleRotation()
@@ -253,11 +262,13 @@ export default class NeuronInfo extends Vue {
    * @private
    */
   private loadRootComponent () {
-    // @ts-ignore
-    let rootNode = this.$refs.brainTree.getNode(this.rootId)
-    rootNode.expanded = true
-    // @ts-ignore
-    this.$refs.brainTree.setChecked(this.rootId, true)
+    this.$nextTick(() => {
+      // @ts-ignore
+      let rootNode = this.$refs.brainTree.getNode(this.rootId)
+      rootNode.expanded = true
+      // @ts-ignore
+      this.$refs.brainTree.setChecked(this.rootId, true)
+    })
   }
 
   /**
@@ -300,6 +311,76 @@ export default class NeuronInfo extends Vue {
    */
   private updateROIBall (x: number, y: number, z: number, r: number) {
     this.neuronScene.updateROIBall(x, y, z, r)
+  }
+
+  private filterTree () {
+    const checkedNodes = this.brainTree.getCheckedNodes() // 获取当前选中节点
+    if (this.searchKeyword.trim() === '') {
+      this.filteredData = this.neuronViewerData
+      this.restoreCheckedNodes(checkedNodes) // 恢复选中节点状态
+    } else {
+      const keyword = this.searchKeyword.toLowerCase()
+      const filtered: { acronym: string; name: string; children: any[] }[] = []
+      this.neuronViewerData.forEach((node: { acronym: string; name: string; children: any[] }) => {
+        const result = this.filterNode(node, keyword)
+        if (result) {
+          filtered.push(result)
+        }
+      })
+      this.filteredData = filtered
+      this.expandToMatch(this.filteredData, keyword)
+      this.restoreCheckedNodes(checkedNodes) // 恢复选中节点状态
+    }
+  }
+
+  private restoreCheckedNodes (checkedNodes: any[]) {
+    checkedNodes.forEach(node => {
+      this.brainTree.setChecked(node.id, true, true) // 恢复选中状态
+    })
+  }
+
+  private filterNode (node: { acronym: string; name: string; children: any[] }, keyword: string) {
+    if (node.acronym.toLowerCase() === keyword || node.name.toLowerCase() === keyword) {
+      return node
+    }
+    if (node.children) {
+      const filteredChildren: any[] = []
+      node.children.forEach((child: any) => {
+        const result = this.filterNode(child, keyword)
+        if (result) {
+          filteredChildren.push(result)
+        }
+      })
+      if (filteredChildren.length > 0) {
+        return { ...node, children: filteredChildren }
+      }
+    }
+    return null
+  }
+
+  private expandToMatch (nodes: any[], keyword: string) {
+    nodes.forEach(node => {
+      if (node.acronym.toLowerCase() === keyword || node.name.toLowerCase() === keyword) {
+        this.$nextTick(() => {
+          this.brainTree.setCurrentKey(node.id) // 设置当前节点
+          this.expandParentNodes(node.id) // 展开父节点
+        })
+      }
+      if (node.children) {
+        this.expandToMatch(node.children, keyword)
+      }
+    })
+  }
+
+  private expandParentNodes (nodeId: any) {
+    let currentNode = this.brainTree.getNode(nodeId)
+    while (currentNode && currentNode.parent) {
+      const parentNode = this.brainTree.getNode(currentNode.parent.data.id)
+      if (parentNode) {
+        parentNode.expanded = true
+      }
+      currentNode = currentNode.parent
+    }
   }
 }
 </script>
