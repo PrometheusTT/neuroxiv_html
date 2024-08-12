@@ -21,7 +21,8 @@ export default new Vuex.Store({
     // 即使真的没有登录也没问题, 只是多发送一次请求而已, 之后马上就会更新这个变量
     isLogin: true,
     // 当前atlas
-    atlas: 'fMOST'
+    // atlas: 'fMOST'
+    atlas: 'CCF-thin'
   },
   mutations: {
     /**

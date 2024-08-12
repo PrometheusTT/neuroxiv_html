@@ -148,7 +148,7 @@ import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
 const rootId = neuronViewerBaseData[0].id
 const rootIdFMost = neuronViewerBaseDataFMost[0].id
 const SliceAtlas = 'CCFv3'
-const SliceAtlasfMOST = 'fMOST'
+const SliceAtlasfMOST = 'CCF-thin'
 
 @Component<NeuronInfo>({
   mounted () {
