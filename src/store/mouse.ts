@@ -22,7 +22,7 @@ export default new Vuex.Store({
     isLogin: true,
     // 当前atlas
     // atlas: 'fMOST'
-    atlas: 'CCF-thin'
+    atlas: 'CCFv3'
   },
   mutations: {
     /**

@@ -98,7 +98,7 @@ export default class HeaderBar extends RouterHelper {
       name: 'CCF-thin'
     }
   ]
-  private selectedAtlas: string = 'CCF-thin'
+  private selectedAtlas: string = 'CCFv3'
 
   /**
    * 触发clickUploadNeuron事件，并传参到Container组件
