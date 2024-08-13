@@ -2,7 +2,7 @@
   <div class="home">
     <section class="mouse-content">
       <NeuronLogo class="neuron-logo" />
-      <p>Atlas Is Not Enough: Open-Databasing Brain-Wide Neuron Morphometry.</p>
+      <p>Beyond Static Brain Atlases: Open-Databasing and Dynamic Mining of Brain-Wide Neuron Morphometry</p>
       <div class="mouse-features-container">
         <img
           class="dendrite-img"

@@ -13,8 +13,8 @@
     </h1>
     <div class="content">
       <ul>
+        <li>Institute for Brain and Intelligence</li>
         <li>Tencent AI Lab</li>
-        <li>Institute for Brain and Intelligence, Southeast University</li>
         <li>Other collaboration organizations are being updated</li>
       </ul>
     </div>
@@ -35,18 +35,10 @@
       </p>
       <ul class="contact-email-list">
         <li class="email-item">
-          <a
-            href="mailto:hanbochen@tencent.com"
-          >
-            hanbochen@tencent.com
-          </a>
+          <a href="mailto:shengdianjiang@seu.edu.cn">shengdianjiang@seu.edu.cn</a> or <a href="mailto:lijunwang@seu.edu.cn">lijunwang@seu.edu.cn</a>
         </li>
         <li class="email-item">
-          <a
-            href="mailto:ljliu@braintell.org"
-          >
-            ljliu@braintell.org
-          </a>
+          <a href="mailto:h@braintell.org">h@braintell.org</a> or <a href="mailto:ljliu@braintell.org">ljliu@braintell.org</a>
         </li>
       </ul>
     </div>
