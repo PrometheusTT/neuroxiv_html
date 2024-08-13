@@ -122,6 +122,20 @@
                 title="brain"
                 name="brain"
               >
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                  <el-input
+                    v-model="searchKeyword"
+                    placeholder="brain regions"
+                    style="width: 80%; margin-right: 10px;"
+                    @keyup.enter.native="onSearch"
+                  />
+                  <el-button
+                    type="primary"
+                    @click="onSearch"
+                  >
+                    Search
+                  </el-button>
+                </div>
                 <el-tree
                   ref="brainTree"
                   :data="neuronViewerData"
@@ -130,6 +144,7 @@
                   node-key="id"
                   :props="{ label: 'acronym' }"
                   :check-strictly="true"
+                  :render-content="renderTreeNode"
                   @check-change="checkBrainTreeCallback"
                 >
                   <template
@@ -293,6 +308,7 @@ import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
 // import neuronViewerBaseData from './surf_tree.json'
 import neuronViewerBaseData from './surf_tree_ccf-me.json'
 import Soma from '@/components/mouse/Soma.vue'
+import ColorPicker from '@/components/mouse/ColorPicker.vue'
 const rootId = neuronViewerBaseData[0].id
 const rootIdFMost = neuronViewerBaseDataFMost[0].id
 
@@ -329,6 +345,7 @@ export default class NeuronInfo extends Vue {
   @Ref('apicalScene') apicalScene!: NeuronScene
   @Ref('ROI') ROI!: ROI
   @Ref('Soma') Soma!: Soma
+  @Ref('brainTree') brainTree!: any
   public neuronViewerReconstructionData: any = []
   public neuronViewerData: any = this.$store.state.atlas === 'CCFv3' ? neuronViewerBaseData : neuronViewerBaseDataFMost // neuronViewerBaseData
   private rootId: number = this.$store.state.atlas === 'CCFv3' ? rootId : rootIdFMost // rootId
@@ -357,7 +374,136 @@ export default class NeuronInfo extends Vue {
   private morphologyFeature: string = ''
   private projectionInfo: string = ''
   private sameRegionInfo:string = ''
+  public searchKeyword: string = ''
+  public filteredData: any = this.neuronViewerData
+  public checkedNodes: [] = [] // 用于保存已选中的节点
 
+  onSearch () {
+    const keyword = this.searchKeyword.toLowerCase()
+    this.checkedNodes = this.brainTree.getCheckedNodes() // 保存当前选中的节点
+
+    if (keyword) {
+      // 遍历节点以匹配关键字并展开相应节点
+      this.expandToMatch(this.neuronViewerData, keyword)
+    } else {
+      // 如果关键字为空，不做处理
+      this.collapseAllNodes() // 清空检索条件时，收起所有节点
+    }
+
+    this.$nextTick(() => {
+      this.restoreCheckedNodes(this.checkedNodes) // 恢复选中状态
+      this.selectRootNode() // 确保根节点始终选中
+    })
+  }
+
+  collapseAllNodes () {
+    const nodes = this.brainTree.getNodes()
+    nodes.forEach((node: { id: any }) => {
+      const treeNode = this.brainTree.getNode(node.id)
+      if (treeNode) {
+        treeNode.expanded = false
+      }
+    })
+  }
+
+  expandToMatch (nodes: any[], keyword: string) {
+    nodes.forEach(node => {
+      const treeNode = this.brainTree.getNode(node.id)
+      if (treeNode) {
+        if (node.acronym.toLowerCase().includes(keyword) || node.name.toLowerCase().includes(keyword)) {
+          treeNode.expanded = false // 展开到匹配的节点，但不展开其子节点
+          this.expandParentNodes(node.id) // 展开父节点
+        } else {
+          treeNode.expanded = false // 收起不匹配的节点
+        }
+      }
+      if (!treeNode.expanded && node.children) {
+        this.expandToMatch(node.children, keyword) // 继续递归匹配
+      }
+    })
+  }
+
+  expandParentNodes (nodeId: any) {
+    let currentNode = this.brainTree.getNode(nodeId)
+    while (currentNode && currentNode.parent) {
+      const parentNode = this.brainTree.getNode(currentNode.parent.data.id)
+      if (parentNode) {
+        parentNode.expanded = true // 展开父节点
+      }
+      currentNode = currentNode.parent
+    }
+  }
+
+  selectRootNode () {
+    const rootNode = this.brainTree.getNode(this.neuronViewerData[0].id)
+    if (rootNode) {
+      this.brainTree.setChecked(rootNode.data.id, true, true) // 确保根节点选中
+    }
+  }
+
+  restoreCheckedNodes (checkedNodes: any[]) {
+    checkedNodes.forEach(node => {
+      this.brainTree.setChecked(node.id, true, true) // 恢复选中状态
+    })
+  }
+
+  renderTreeNode (createElement: any, { node, data }: any) {
+    return createElement('span', {
+      style: {
+        display: 'flex',
+        alignItems: 'center'
+      },
+      on: {
+        click: (event: MouseEvent) => {
+          event.stopPropagation() // 阻止父容器的点击事件冒泡
+        }
+      }
+    }, [
+      // 在节点前面加上颜色选择器，并调整大小和样式
+      createElement(ColorPicker, {
+        ref: 'colorPicker_' + data.id, // 为每个节点的颜色选择器设置一个唯一的 ref
+        style: {
+          marginRight: '8px', // 设置与文字的间距
+          pointerEvents: 'auto' // 确保颜色选择器可以捕获点击事件
+        },
+        on: {
+          'color-selected': (color: string) => this.neuronScene.updateVtkColor(data.id, this.hexToRgb(color)),
+          'mousedown': (event: MouseEvent) => {
+            event.stopPropagation() // 阻止 mousedown 事件的冒泡
+          },
+          'click': (event: MouseEvent) => {
+            event.stopPropagation() // 阻止 click 事件的冒泡
+          }
+        },
+        hook: {
+          insert: (vnode: { componentInstance: any }) => {
+            const colorPicker = vnode.componentInstance as any
+            colorPicker.updateSize(25, 25) // 调整大小为 25x25 px
+            colorPicker.setColor(this.rgbToHex([data.rgb_triplet[0], data.rgb_triplet[1], data.rgb_triplet[2]]))
+          }
+        }
+      }),
+      // 渲染节点的标签
+      createElement('span', {
+        style: {
+          pointerEvents: 'none' // 禁止标签文本部分处理点击事件
+        }
+      }, node.label)
+    ])
+  }
+
+  hexToRgb (hex: string): [number, number, number] {
+    const bigint = parseInt(hex.slice(1), 16)
+    const r = (bigint >> 16) & 255
+    const g = (bigint >> 8) & 255
+    const b = bigint & 255
+    return [r, g, b]
+  }
+
+  rgbToHex (rgb: any[]) {
+    console.log(`#${rgb.map(x => x.toString(16).padStart(2, '0')).join('')}`)
+    return `#${rgb.map(x => x.toString(16).padStart(2, '0')).join('')}`
+  }
   private opSoma () {
     if (this.ifSoma === 'Show Soma Area') {
       this.showSoma(this.somaR)

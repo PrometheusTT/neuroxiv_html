@@ -365,6 +365,24 @@ export default class NeuronScene extends Vue {
       })
     }
 
+    // eslint-disable-next-line camelcase
+    public updateVtkColor (id: string, rgb_triplet: [number, number, number]) {
+      if (this.brainComponentMap.has(id)) {
+        const mesh = this.brainComponentMap.get(id)
+        if (mesh) {
+          const newColor = new THREE.Color(`rgb(${rgb_triplet[0]}, ${rgb_triplet[1]}, ${rgb_triplet[2]})`)
+          mesh.material.color = newColor
+          mesh.material.needsUpdate = true // Ensure the material updates
+          console.log(`Updated color of ${id} to ${newColor.getStyle()}`)
+          this.resetRender() // Optional: re-render the scene if needed
+        } else {
+          console.error(`Mesh not found for ID: ${id}`)
+        }
+      } else {
+        console.error(`No component found with ID: ${id}`)
+      }
+    }
+
     // 创建标识文本的函数
     private createLabel (text: string): THREE.Sprite {
       const canvas = document.createElement('canvas')
