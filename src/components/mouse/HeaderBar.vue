@@ -27,21 +27,21 @@
         >
           AIPOM
         </el-button>
-        <el-upload
-          action=""
-          accept=".swc,.eswc"
-          :show-file-list="false"
-          :before-upload="beforeUpload"
-          :http-request="uploadNeuron"
-          class="action"
-        >
-          <el-button
-            type="primary"
-            plain
-          >
-            Upload neuron
-          </el-button>
-        </el-upload>
+        <!--        <el-upload-->
+        <!--          action=""-->
+        <!--          accept=".swc,.eswc"-->
+        <!--          :show-file-list="false"-->
+        <!--          :before-upload="beforeUpload"-->
+        <!--          :http-request="uploadNeuron"-->
+        <!--          class="action"-->
+        <!--        >-->
+        <!--          <el-button-->
+        <!--            type="primary"-->
+        <!--            plain-->
+        <!--          >-->
+        <!--            Upload neuron-->
+        <!--          </el-button>-->
+        <!--        </el-upload>-->
         <el-select
           v-model="selectedAtlas"
           placeholder="Please Select Atlas"
