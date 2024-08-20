@@ -4,6 +4,7 @@
       :basic-info="neuronStatesData.basic_info"
       :morpho-info="neuronStatesData.morpho_info"
       :proj-info="neuronStatesData.proj_info"
+      :neurons-list="neuronsList"
     />
     <div class="separator" />
     <section

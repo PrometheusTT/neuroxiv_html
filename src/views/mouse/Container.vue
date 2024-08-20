@@ -331,6 +331,7 @@ export default class Container extends Vue {
         console.log('use cache')
         // eslint-disable-next-line camelcase
         const { neurons, basic_info, morpho_info, plot, proj_info } = cachedData
+        this.neuronsList = neurons
         await this.useNeuronData(neurons, basic_info, morpho_info, plot, proj_info)
         func()
         return
@@ -344,6 +345,7 @@ export default class Container extends Vue {
       const response = await searchNeurons(document.body, condition).start()
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = response as any
+      this.neuronsList = neurons
       await this.useNeuronData(neurons, basic_info, morpho_info, plot, proj_info)
 
       // 缓存数据，附带时间戳

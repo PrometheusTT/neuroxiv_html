@@ -11,23 +11,35 @@
         >
         <div class="mouse-features-list">
           <h3 class="list-title">
-            Mouse Brain Pan-neuron Table
+            Mouse Brain Neuron Atlases
           </h3>
           <ul class="feature-list">
             <li class="feature-item">
-              14k whole brain neuron reconstructions
+              #neurons: 177,186 unique neurons
             </li>
             <li class="feature-item">
-              Dictionary of neuron morphology and connectivity
+              #reconstructions: 349,777
             </li>
             <li class="feature-item">
-              Search neuron by features
+              #cell-types: 294+
             </li>
             <li class="feature-item">
-              Analyze neuron features
+              #morphological features: 32+
             </li>
             <li class="feature-item">
-              Registered to common space via mBrainAligner
+              Atlas 1: CCFv3 (all)
+            </li>
+            <li class="feature-item">
+              Atlas 2: CCF-thin (for fMOST-like serial thin sections)
+            </li>
+            <li class="feature-item">
+              Atlas 3: CCF-ME (dendrite microenv based atlas)
+            </li>
+            <li class="feature-item">
+              #brain areas with neurite arbors: 316
+            </li>
+            <li class="feature-item">
+              #CCF-ME subregions: 628
             </li>
           </ul>
           <div class="actions">

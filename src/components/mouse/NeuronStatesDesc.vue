@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { Component, Prop, Vue, Watch, Ref } from 'vue-property-decorator'
 import MorphologyFeaturesTable from '@/components/mouse/MorphologyFeaturesTable.vue'
 import ProjectionInfoTable from '@/components/mouse/ProjectionInfoTable.vue'
 
@@ -77,6 +77,7 @@ export default class NeuronStatesDesc extends Vue {
   @Prop({ required: true }) basicInfo!: any
   @Prop({ required: true }) morphoInfo!: any
   @Prop({ required: true }) projInfo!: any
+  @Prop({ required: true }) readonly neuronsList!: any[]
   private activeSection: string[] = ['basicInfo']
   private basicInfoSummary: string = ''
   private morphologySummaries: string = ''
@@ -86,11 +87,14 @@ export default class NeuronStatesDesc extends Vue {
   private isProcessing: boolean = false; // 标志是否正在处理消息
   public hasStartedSSE: boolean = false;
   private eventSource: EventSource | null = null;
+  // eslint-disable-next-line camelcase
+  private id_list : any[] = this.neuronsList
 
   @Watch('basicInfo', { immediate: true, deep: true })
   @Watch('morphoInfo', { immediate: true, deep: true })
   @Watch('projInfo', { immediate: true, deep: true })
   onDataChange () {
+    this.id_list = this.neuronsList.map(neuron => neuron.id)
     this.generateDataSummary()
     if (this.activeSection.includes('dataSummary')) {
       console.log('onDataChange-generate')
@@ -142,32 +146,69 @@ export default class NeuronStatesDesc extends Vue {
     }, 5) // 控制字符显示速度，可以调整时间间隔
   }
 
-  public startSSE () {
-    if (this.eventSource) {
-      this.eventSource.close() // 确保之前的连接已关闭
-    }
-    console.log('startSSE')
-    this.eventSource = new EventSource('http://10.192.53.107:5000/api/stream', { withCredentials: true }) // 替换为你的后端域名
-    console.log('eventSource connected')
-    this.eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data)
-      if (data.type === 'basicInfo') {
-        this.appendTextGradually('basicInfoSummary', data.content)
-      } else if (data.type === 'morphologyFeatures') {
-        this.appendTextGradually(`morphologySummaries`, data.content)
-      } else if (data.type === 'projectionInfo') {
-        this.appendTextGradually('projectionInfoSummary', data.content)
-      }
-    }
-
-    this.eventSource.onerror = (error) => {
-      console.error('EventSource failed:', error)
-      this.eventSource!.close()
-    }
-
-    this.eventSource.addEventListener('end', () => {
-      this.eventSource!.close()
+  public startSSE (): void {
+    // 假设 this.id_list 是之前生成的数据
+    fetch('http://10.192.0.176:5000/api/start_stream', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id_list: this.id_list }),
+      credentials: 'include'
     })
+      .then(response => response.json())
+      .then(() => {
+        if (this.eventSource) {
+          this.eventSource.close() // 确保之前的连接已关闭
+        }
+        console.log('startSSE')
+
+        this.eventSource = new EventSource('http://10.192.0.176:5000/api/stream', { withCredentials: true })
+        console.log('eventSource connected')
+
+        this.eventSource.onmessage = (event: MessageEvent) => {
+          const data = JSON.parse(event.data)
+          if (data.type === 'basicInfo') {
+            this.appendTextGradually('basicInfoSummary', data.content)
+          } else if (data.type === 'morphologyFeatures') {
+            this.appendTextGradually('morphologySummaries', data.content)
+          } else if (data.type === 'projectionInfo') {
+            this.appendTextGradually('projectionInfoSummary', data.content)
+          }
+        }
+
+        this.eventSource.onerror = (error: Event) => {
+          console.error('EventSource failed:', error)
+          this.eventSource!.close()
+        }
+
+        this.eventSource.addEventListener('end', () => {
+          this.eventSource!.close()
+        })
+      })
+      .catch((error) => {
+        console.error('Error starting stream:', error)
+      })
+  }
+
+  public stopSSE (): void {
+    // 通知后端终止任务
+    fetch('http://10.192.0.176:5000/api/stop_stream', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
+    })
+      .then(response => {
+        if (this.eventSource) {
+          this.eventSource.close() // 确保关闭当前的 SSE 连接
+          console.log('SSE connection closed')
+        }
+      })
+      .catch(error => {
+        console.error('Error stopping SSE:', error)
+      })
   }
 
   public restartSSE () {
@@ -196,6 +237,10 @@ export default class NeuronStatesDesc extends Vue {
     if (val.includes('dataSummary') && !this.hasStartedSSE) {
       this.startSSE()
       this.hasStartedSSE = true
+    }
+    if (!val.includes('dataSummary') && this.hasStartedSSE) {
+      this.stopSSE()
+      this.hasStartedSSE = false
     }
   }
 }
