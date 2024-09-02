@@ -49,38 +49,38 @@
             >
               <el-button
                 type="primary"
-                size="mini"
+                size="large"
                 plain
               >
                 Enter
               </el-button>
             </a>
-            <a
-              href="/neuroXiv_user_instruction.pdf"
-              class="action-item"
-              target="_blank"
-            >
-              <el-button
-                type="primary"
-                size="mini"
-                plain
-              >
-                How to use
-              </el-button>
-            </a>
-            <a
-              href="/neuroXiv_Mousebrain_Data.pdf"
-              class="action-item"
-              target="_blank"
-            >
-              <el-button
-                type="primary"
-                size="mini"
-                plain
-              >
-                Documentation
-              </el-button>
-            </a>
+            <!--                        <a-->
+            <!--                          href="/neuroXiv_user_instruction.pdf"-->
+            <!--                          class="action-item"-->
+            <!--                          target="_blank"-->
+            <!--                        >-->
+            <!--                          <el-button-->
+            <!--                            type="primary"-->
+            <!--                            size="mini"-->
+            <!--                            plain-->
+            <!--                          >-->
+            <!--                            How to use-->
+            <!--                          </el-button>-->
+            <!--                        </a>-->
+            <!--                        <a-->
+            <!--                          href="/neuroXiv_Mousebrain_Data.pdf"-->
+            <!--                          class="action-item"-->
+            <!--                          target="_blank"-->
+            <!--                        >-->
+            <!--                          <el-button-->
+            <!--                            type="primary"-->
+            <!--                            size="mini"-->
+            <!--                            plain-->
+            <!--                          >-->
+            <!--                            Documentation-->
+            <!--                          </el-button>-->
+            <!--                        </a>-->
           </div>
         </div>
       </div>
