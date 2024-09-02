@@ -65,6 +65,7 @@ export default class NeuronStates extends Vue {
   @Ref('featurePlot') readonly featurePlot!: NeuronFeaturePlots
   @Ref('NeuronStatesDesc') readonly neuronStatesDesc!: NeuronStatesDesc
   @Prop({ required: true }) readonly neuronsList!: any[]
+  private nl : any[] = this.neuronsList
 
   public neuronStatesData: any = {
     basic_info: [],
@@ -83,7 +84,7 @@ export default class NeuronStates extends Vue {
 
     try {
       // 移除 neuronsList 中的 img_src 和 selected 字段
-      const cleanedNeuronsList = this.neuronsList.map(neuron => {
+      const cleanedNeuronsList = this.nl.map(neuron => {
         // eslint-disable-next-line camelcase
         const { img_src, selected, ...rest } = neuron
         return rest
@@ -133,7 +134,7 @@ export default class NeuronStates extends Vue {
       }
 
       // 下载swc文件
-      const swcPromises = this.neuronsList.map(async neuron => {
+      const swcPromises = this.nl.map(async neuron => {
         try {
           // 解析 img_src，生成 .swc 文件路径
           let imgSrc = neuron.img_src.replace(/\\/g, '/')
@@ -158,7 +159,7 @@ export default class NeuronStates extends Vue {
       await Promise.all([...swcPromises])
 
       // 移除 neuronsList 中的 img_src 和 selected 字段
-      const cleanedNeuronsList = this.neuronsList.map(neuron => {
+      const cleanedNeuronsList = this.nl.map(neuron => {
         // eslint-disable-next-line camelcase
         const { img_src, selected, ...rest } = neuron
         return rest

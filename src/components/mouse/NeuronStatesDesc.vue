@@ -2,28 +2,45 @@
   <section class="feature-desc">
     <el-collapse
       v-model="activeSection"
-      @change="handleCollapseChange"
     >
       <el-collapse-item
         title="AIPOM data report"
         name="dataSummary"
       >
+        <template #title>
+          AIPOM data report
+          <!-- 加载指示器 -->
+          <el-tooltip
+            content="Generating summary..."
+            placement="top"
+          >
+            <i
+              v-if="isLoading"
+              class="el-icon-loading"
+              style="margin-left: 10px; font-size: 16px;"
+            />
+          </el-tooltip>
+        </template>
         <div class="summary-container">
-          <p><strong>Basic Information:</strong></p>
-          <ul>
-            <li>{{ basicInfoSummary }}</li>
+          <p><strong>Overview:</strong></p>
+          <ul class="no-bullets">
+            <li class="no-bullets">
+              {{ basicInfoSummary }}
+            </li>
           </ul>
           <p><strong>Morphology Features:</strong></p>
-          <ul>
-            <li>
+          <ul class="no-bullets">
+            <li class="no-bullets">
               {{ morphologySummaries }}
               <!--              v-for="(summary, index) in morphologySummaries"-->
               <!--              :key="index"-->
             </li>
           </ul>
-          <p><strong>Projection Info:</strong></p>
-          <ul>
-            <li>{{ projectionInfoSummary }}</li>
+          <p><strong>Projection Patterns:</strong></p>
+          <ul class="no-bullets">
+            <li class="no-bullets">
+              {{ projectionInfoSummary }}
+            </li>
           </ul>
         </div>
       </el-collapse-item>
@@ -79,33 +96,49 @@ export default class NeuronStatesDesc extends Vue {
   @Prop({ required: true }) projInfo!: any
   @Prop({ required: true }) readonly neuronsList!: any[]
   private activeSection: string[] = ['basicInfo']
-  private basicInfoSummary: string = ''
-  private morphologySummaries: string = ''
-  private projectionInfoSummary: string = ''
 
   private messageQueue: any[] = []; // 队列来保存消息
   private isProcessing: boolean = false; // 标志是否正在处理消息
   public hasStartedSSE: boolean = false;
   private eventSource: EventSource | null = null;
+  private bs : string = 'The full morphological dataset consists of 19,406 neurons obtained from three sources: ION (16,380 neurons), SEU-ALLEN (1,876 neurons), and MouseLight (1,150 neurons). These neurons are distributed across both hemispheres of the brain, with 6,354 in the left and 13,052 in the right. The data spans 327 brain regions, prominently featuring CA1 with 3,691 neurons, DG-sg with 2,630, and SUB with 1,008 neurons. In terms of cortical layer distribution, neurons are mainly found in an unspecified layer (12,026 neurons), L5 (4,179 neurons), L2/3 (1,991 neurons), L6a (817 neurons), L1 (308 neurons), L4 (74 neurons), and L6b (11 neurons). This dataset provides valuable insights into the distribution of neurons across various brain regions and cortical layers.'
+  private ms : string = 'The analysis of neuronal morphology data from multiple sources reveals significant insights into the complexity and spatial arrangements of CA1 and DG-sg neurons. CA1 neurons, particularly from the MouseLight source, exhibit extensive axonal networks, with a mean total length surpassing 52,000 μm and an average of over 170 bifurcations, reflecting their intricate connectivity patterns. In contrast, DG-sg neurons display less complexity, with lower mean values for total length and number of bifurcations, though high standard deviations indicate variability within this population. \'Max Path Distance\' highlights the projection range, with CA1 neurons from the ION source showing the highest mean of approximately 8,800 μm. The \'Center Shift\' metric provides insights into the balance of spatial distribution, where CA1 neurons generally exhibit higher values, suggesting broader spatial coverage compared to DG-sg neurons. Overall, the data underscores the importance of \'Total Length\' and \'Number of Bifurcations\' in defining neuronal complexity and reach, while \'Max Path Distance\' and \'Center Shift\' offer additional perspectives on the spatial extension and balance of neuronal structures. These findings collectively enhance our understanding of neuronal morphology and its functional implications.'
+  private ps : string = 'The neuronal projection data reveals differential patterns of connectivity for dendrite and axon projections in CA1 and DG-sg neurons across various sources (ION, SEU-ALLEN, MouseLight), emphasizing the structure and connectivity strength within the brain. Dendritic arbor data for CA1 neurons shows high intraregional connectivity, with proportions of arborized lengths in CA1 ranging from 72.1% to 87.7% across different sources. SEU-ALLEN reports the lowest proportion (84.0%) compared to ION (87.7%) and MouseLight (72.1%). DG-sg neurons exhibit similar trends, with over 90% of the dendritic lengths within the DG region (ION: 90.1%, MouseLight: 92.8%). Axonal arbor data for CA1 neurons reveal a broader distribution. ION data indicates significant lengths within CA1 (28.1%), but also other regions like LSr (7.6%) and SUB (5.7%). SEU-ALLEN shows notable projections to DG, CA3, and SUB, with MouseLight highlighting extensive CA1 projections (30.6%) and noteworthy connections to SUB and ProS. For DG-sg neurons, ION data reveals nearly balanced projections to CA3 (44.8%) and DG (44.1%), while MouseLight shows a pronounced focus on DG (50.7%) and substantial CA3 connectivity (42.0%). In summary, dendritic arbor data underscores intraregional dominance within CA1 and DG, critical for local processing. Axonal projections from CA1 neurons suggest extensive interregional communication, while DG-sg neurons reinforce hippocampal circuitry, especially between DG and CA3. These patterns reflect the structural basis of neuronal communication and connectivity strength in these brain regions.'
+  private basicInfoSummary: string = this.bs
+  private morphologySummaries: string = this.ms
+  private projectionInfoSummary: string = this.ps
   // eslint-disable-next-line camelcase
   private id_list : any[] = this.neuronsList
+    .filter(neuron => !neuron.id.includes('local'))
+    .map(neuron => neuron.id)
+  private hasInitialized : boolean = false
+  private isLoading: boolean = false;
+  private completedSegments: number = 0;
 
-  @Watch('basicInfo', { immediate: true, deep: true })
-  @Watch('morphoInfo', { immediate: true, deep: true })
-  @Watch('projInfo', { immediate: true, deep: true })
+  @Watch('basicInfo', { deep: true })
   onDataChange () {
-    this.id_list = this.neuronsList.map(neuron => neuron.id)
-    this.generateDataSummary()
-    if (this.activeSection.includes('dataSummary')) {
-      console.log('onDataChange-generate')
-      this.restartSSE()
+    if (!this.hasInitialized) {
+      // 初次加载时跳过执行
+      this.hasInitialized = true
+      return
     }
+
+    console.log('onDataChange')
+    this.id_list = this.neuronsList
+      .filter(neuron => !neuron.id.includes('local'))
+      .map(neuron => neuron.id)
+    this.generateDataSummary()
+    this.restartSSE()
   }
 
   private generateDataSummary () {
+    this.isLoading = true
     this.basicInfoSummary = ''
     this.morphologySummaries = ''
     this.projectionInfoSummary = ''
+    this.completedSegments = 0 // 重置计数器
+    this.messageQueue = [] // 重置消息队列
+    this.isProcessing = false // 重置处理状态
   }
 
   private appendTextGradually (target: 'basicInfoSummary' | 'projectionInfoSummary' | 'morphologySummaries' |string, text: string) {
@@ -141,57 +174,92 @@ export default class NeuronStatesDesc extends Vue {
       } else {
         clearInterval(intervalId)
         this.isProcessing = false
+        if (['basicInfoSummary', 'projectionInfoSummary', 'morphologySummaries'].includes(target)) {
+          this.completedSegments += 1 // 增加计数器
+          if (this.completedSegments === 3) {
+            this.isLoading = false // 只有所有段完成后，才取消加载状态
+          }
+        }
         this.processQueue() // 处理下一个消息
       }
     }, 5) // 控制字符显示速度，可以调整时间间隔
   }
 
   public startSSE (): void {
-    // 假设 this.id_list 是之前生成的数据
+    console.log('startSSE')
+    const neuronlists = {
+      id_list: this.id_list
+    }
+
     fetch('http://10.192.0.176:5000/api/start_stream', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Content-Encoding': 'gzip'
       },
-      body: JSON.stringify({ id_list: this.id_list }),
+      body: JSON.stringify(neuronlists),
       credentials: 'include'
     })
-      .then(response => response.json())
-      .then(() => {
-        if (this.eventSource) {
-          this.eventSource.close() // 确保之前的连接已关闭
-        }
-        console.log('startSSE')
+      .then((response) => {
+        const reader = response.body?.getReader()
+        const decoder = new TextDecoder()
+        let stopReading = false // 控制流读取的变量
 
-        this.eventSource = new EventSource('http://10.192.0.176:5000/api/stream', { withCredentials: true })
-        console.log('eventSource connected')
-
-        this.eventSource.onmessage = (event: MessageEvent) => {
-          const data = JSON.parse(event.data)
-          if (data.type === 'basicInfo') {
-            this.appendTextGradually('basicInfoSummary', data.content)
-          } else if (data.type === 'morphologyFeatures') {
-            this.appendTextGradually('morphologySummaries', data.content)
-          } else if (data.type === 'projectionInfo') {
-            this.appendTextGradually('projectionInfoSummary', data.content)
+        const readStream = (): Promise<void> => {
+          if (stopReading) {
+            console.log('Stream stopped')
+            return Promise.resolve()
           }
+
+          return reader?.read().then(({ done, value }) => {
+            if (done) {
+              console.log('Stream complete')
+              return
+            }
+
+            const text = decoder.decode(value, { stream: true })
+            text.split('\n\n').forEach(eventString => {
+              if (eventString.trim() !== '') {
+                const event = eventString.replace(/^data: /, '')
+                const data = JSON.parse(event)
+
+                if (data.type === 'end') {
+                  console.log('Streaming finished')
+                  stopReading = true
+                  this.messageQueue = []
+                } else if (data.type === 'ping') {
+                  console.log('keep Streaming')
+                } else if (data.type === 'basicInfo') {
+                  this.appendTextGradually('basicInfoSummary', data.content)
+                } else if (data.type === 'morphologyFeatures') {
+                  this.appendTextGradually('morphologySummaries', data.content)
+                } else if (data.type === 'projectionInfo') {
+                  this.appendTextGradually('projectionInfoSummary', data.content)
+                }
+              }
+            })
+
+            return readStream() // Continue reading the stream
+          }) as Promise<void>
         }
 
-        this.eventSource.onerror = (error: Event) => {
-          console.error('EventSource failed:', error)
-          this.eventSource!.close()
-        }
-
-        this.eventSource.addEventListener('end', () => {
-          this.eventSource!.close()
-        })
+        return readStream()
       })
       .catch((error) => {
-        console.error('Error starting stream:', error)
+        console.error('Error in SSE fetch:', error)
+        this.isLoading = false
       })
   }
 
   public stopSSE (): void {
+    // 检查 eventSource 是否已初始化
+    if (this.eventSource) {
+      this.eventSource.close() // 确保关闭当前的 SSE 连接
+      console.log('SSE connection closed')
+    } else {
+      console.warn('No SSE connection to close')
+    }
+
     // 通知后端终止任务
     fetch('http://10.192.0.176:5000/api/stop_stream', {
       method: 'POST',
@@ -201,10 +269,13 @@ export default class NeuronStatesDesc extends Vue {
       credentials: 'include'
     })
       .then(response => {
-        if (this.eventSource) {
-          this.eventSource.close() // 确保关闭当前的 SSE 连接
-          console.log('SSE connection closed')
+        if (!response.ok) {
+          throw new Error('Failed to stop the stream on the server')
         }
+        return response.json()
+      })
+      .then(data => {
+        console.log('Server response:', data)
       })
       .catch(error => {
         console.error('Error stopping SSE:', error)
@@ -230,19 +301,22 @@ export default class NeuronStatesDesc extends Vue {
     if (this.eventSource) {
       this.eventSource.close()
     }
+    this.hasInitialized = true
   }
 
-  private handleCollapseChange (val: string[]) {
-    this.activeSection = val
-    if (val.includes('dataSummary') && !this.hasStartedSSE) {
-      this.startSSE()
-      this.hasStartedSSE = true
-    }
-    if (!val.includes('dataSummary') && this.hasStartedSSE) {
-      this.stopSSE()
-      this.hasStartedSSE = false
-    }
-  }
+  // private handleCollapseChange (val: string[]) {
+  //   this.activeSection = val
+  //   if (val.includes('dataSummary') && !this.hasStartedSSE) {
+  //     this.startSSE()
+  //     this.hasStartedSSE = true
+  //     this.messageQueue = []
+  //   }
+  //   // if (!val.includes('dataSummary') && this.hasStartedSSE) {
+  //   //   this.stopSSE()
+  //   //   this.hasStartedSSE = false
+  //   //   this.messageQueue = []
+  //   // }
+  // }
 }
 </script>
 
@@ -271,6 +345,10 @@ export default class NeuronStatesDesc extends Vue {
   margin: 5px 0;
   font-size: 14px;
   color: #555;
+}
+.no-bullets {
+  list-style-type: none;
+  padding-left: 0;
 }
 
 </style>

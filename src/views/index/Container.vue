@@ -2,7 +2,7 @@
   <div class="home">
     <section class="mouse-content">
       <NeuronLogo class="neuron-logo" />
-      <p>Beyond Static Brain Atlases: Open-Databasing and Dynamic Mining of Brain-Wide Neuron Morphometry</p>
+      <p>Beyond Static Brain Atlases: AI Powered Open Databasing and Dynamic Mining of Brain-Wide Neuron Morphometry</p>
       <div class="mouse-features-container">
         <img
           class="dendrite-img"
@@ -39,7 +39,7 @@
               #brain areas with neurite arbors: 316
             </li>
             <li class="feature-item">
-              #CCF-ME subregions: 628
+              #CCF-ME subregions: 388
             </li>
           </ul>
           <div class="actions">

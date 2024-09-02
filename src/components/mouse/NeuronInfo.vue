@@ -13,7 +13,7 @@
           <section class="feature-desc">
             <el-collapse v-model="activeNames1">
               <el-collapse-item
-                title="basic information"
+                title="neuron information"
                 name="basicInfo"
               >
                 <p>{{ neuronInfoData.id }}</p>
@@ -293,7 +293,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref, Vue, Watch } from 'vue-property-decorator'
+import { Component, Prop, Ref, Vue, Watch } from 'vue-property-decorator'
 import MorphologyFeaturesTable from '@/components/mouse/MorphologyFeaturesTable.vue'
 import ProjectionInfoTable from '@/components/mouse/ProjectionInfoTable.vue'
 import { downloadLink, sleep } from '@/utils/util'
@@ -346,6 +346,7 @@ export default class NeuronInfo extends Vue {
   @Ref('ROI') ROI!: ROI
   @Ref('Soma') Soma!: Soma
   @Ref('brainTree') brainTree!: any
+  @Prop({ required: true }) readonly neuronsList!: any[]
   public neuronViewerReconstructionData: any = []
   public neuronViewerData: any = this.$store.state.atlas === 'CCFv3' ? neuronViewerBaseData : neuronViewerBaseDataFMost // neuronViewerBaseData
   private rootId: number = this.$store.state.atlas === 'CCFv3' ? rootId : rootIdFMost // rootId
@@ -527,20 +528,45 @@ export default class NeuronInfo extends Vue {
       // @ts-ignore
       folder.file('neuronInfoData.json', JSON.stringify(this.neuronInfoData))
       // 轮播图片
-      let loadImgPromisesList = []
-      let imgNames: string[] = []
-      for (let i = 0; i < this.neuronInfoData.img_src.length; i++) {
-        let imgSlides = this.neuronInfoData.img_src[i]
-        for (let j = 0; j < imgSlides.slides.length; j++) {
-          let imgItem = imgSlides.slides[j]
-          loadImgPromisesList.push(fetch(imgItem.src).then(res => res.blob()))
-          imgNames.push(`${imgSlides.title}_${imgItem.view}.png`)
-        }
-      }
-      const imgBlobs = await Promise.all(loadImgPromisesList)
-      imgBlobs.forEach((blob: Blob, i: number) => {
-        folder!.file(imgNames[i], blob)
-      })
+      // let loadImgPromisesList = []
+      // let imgNames: string[] = []
+      // console.log(this.neuronInfoData)
+      // for (let i = 0; i < this.neuronInfoData.img_src.length; i++) {
+      //   let imgSlides = this.neuronInfoData.img_src[i]
+      //   for (let j = 0; j < imgSlides.slides.length; j++) {
+      //     let imgItem = imgSlides.slides[j]
+      //     loadImgPromisesList.push(fetch(imgItem.src).then(res => res.blob()))
+      //     imgNames.push(`${imgSlides.title}_${imgItem.view}.png`)
+      //   }
+      // }
+      // const imgBlobs = await Promise.all(loadImgPromisesList)
+      // imgBlobs.forEach((blob: Blob, i: number) => {
+      //   folder!.file(imgNames[i], blob)
+      // })
+
+      // const swcPromises = this.neuronInfoData(neuron => {
+      //   try {
+      //     // 解析 img_src，生成 .swc 文件路径
+      //     let imgSrc = neuron.img_src.replace(/\\/g, '/')
+      //     let directoryPath = imgSrc.substring(0, imgSrc.lastIndexOf('/'))
+      //     let directoryName = directoryPath.split('/').pop()
+      //     let swcSrc = `${directoryPath}/${directoryName}.swc`
+      //
+      //     let response = await fetch(swcSrc)
+      //     if (response.ok) {
+      //       let swcBlob = await response.blob()
+      //       // @ts-ignore
+      //       swcFolder.file(`${directoryName}.swc`, swcBlob)
+      //     } else {
+      //       console.warn(`Failed to fetch SWC file for neuron: ${swcSrc}`)
+      //     }
+      //   } catch (error) {
+      //     console.warn(`Error fetching SWC file for neuron: ${neuron.img_src}`, error)
+      //   }
+      // })
+      //
+      // // 等待所有异步操作完成
+      // await Promise.all([...swcPromises])
       const zipBlob = await zip.generateAsync({ type: 'blob' })
       const url = URL.createObjectURL(zipBlob)
       await downloadLink(url, 'neuron_info.zip')

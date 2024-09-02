@@ -45,9 +45,9 @@
       >
         <NeuronInfo
           ref="neuronInfo"
+          :neurons-list="neuronsList"
           @checkConnectedNeurons="$emit('checkConnectedNeurons', $event)"
           @searchSimilarNeurons="$emit('searchSimilarNeurons', $event)"
-          @searchROINeurons="$emit('searchROINeurons', $event)"
         />
       </el-tab-pane>
     </el-tabs>

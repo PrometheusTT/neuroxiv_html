@@ -80,6 +80,12 @@
       top="7vh"
       :close-on-click-modal="false"
     >
+      <template #title>
+        AIPOM
+        <div style="font-size: 14px; margin-top: 14px; color: gray;">
+          This module currently only supports neuron search based on natural language, such as [search]: search neurons from SEU-ALLEN. More powerful AI features are under development, stay tuned!
+        </div>
+      </template>
       <AISearchWindow
         ref="aiSearchWindow"
         @AISearch="AISearch"
@@ -173,7 +179,6 @@ export default class Container extends Vue {
     await this.$nextTick()
     const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
     const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
-    console.log(neuronInfo.viewer_info)
     this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
     if (this.neuronDetail.neuronInfo.roiShown) {
       this.neuronDetail.neuronInfo.ROI.setROI(Math.round(neuronInfo.soma[0]), Math.round(neuronInfo.soma[1]), Math.round(neuronInfo.soma[2]))
@@ -413,33 +418,33 @@ export default class Container extends Vue {
     // }
 
     // 检查用户输入是否为 [Intent]: query 形式并验证意图
-    const intentMatch = question.match(/^\[(search|chat|retrieval|article)\]:\s*(.+)/i)
-    if (intentMatch) {
-      searchIntent = intentMatch[1].trim().toLowerCase()
-      question = question.split(':')[1]
-      console.log('Extracted intent: ' + searchIntent)
-    } else {
-      try {
-        let response = await getSearchIntent(document.body, question).start()
-        searchIntent = response.response.replace(/^'|'$/g, '')
-        console.log(searchIntent)
-        this.aiSearchWindow.addResponseFromAPI('I guess you want to ' + searchIntent + ', is that right?')
-        func()
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    if (searchIntent === 'article') {
-      try {
-        const response = await ArticleSearch(document.body, question).start()
-        console.log(response)
-        this.aiSearchWindow.addResponseFromAPI(response.response.articles)
-        func()
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
+    // const intentMatch = question.match(/^\[(search|chat|retrieval|article)\]:\s*(.+)/i)
+    // if (intentMatch) {
+    //   searchIntent = intentMatch[1].trim().toLowerCase()
+    //   question = question.split(':')[1]
+    //   console.log('Extracted intent: ' + searchIntent)
+    // } else {
+    //   try {
+    //     let response = await getSearchIntent(document.body, question).start()
+    //     searchIntent = response.response.replace(/^'|'$/g, '')
+    //     console.log(searchIntent)
+    //     this.aiSearchWindow.addResponseFromAPI('I guess you want to ' + searchIntent + ', is that right?')
+    //     func()
+    //   } catch (e) {
+    //     console.error(e)
+    //   }
+    // }
+    // if (searchIntent === 'article') {
+    //   try {
+    //     const response = await ArticleSearch(document.body, question).start()
+    //     console.log(response)
+    //     this.aiSearchWindow.addResponseFromAPI(response.response.articles)
+    //     func()
+    //   } catch (e) {
+    //     console.error(e)
+    //   }
+    // }
+    searchIntent = 'search'
     if (searchIntent === 'search') {
       // let result = this.aiSearchWindow.GetIntent(question)
       // console.log(result)
@@ -460,39 +465,40 @@ export default class Container extends Vue {
         this.neuronDetail.neuronStates.histogramBars.renderChart()
         this.LLMDialogVisible = false
         this.aiSearchWindow.addResponseFromAPI('I have found ' + neurons.length + ' neurons')
-        this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please tell me more information')
+        // this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please tell me more information')
         func()
       } catch (e) {
+        this.aiSearchWindow.addResponseFromAPI('There are some issues, please try again later.')
         console.error(e)
       }
     }
 
-    if (searchIntent === 'chat') {
-      try {
-        const response = await AIChat(document.body, question).start()
-        console.log(response)
-        const formattedResponse = response.response.replace(/\n/g, '<br>')
-        this.aiSearchWindow.addResponseFromAPI(formattedResponse)
-        this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
-        func()
-      } catch (e) {
-        console.error(e)
-      }
-    }
+    // if (searchIntent === 'chat') {
+    //   try {
+    //     const response = await AIChat(document.body, question).start()
+    //     console.log(response)
+    //     const formattedResponse = response.response.replace(/\n/g, '<br>')
+    //     this.aiSearchWindow.addResponseFromAPI(formattedResponse)
+    //     this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+    //     func()
+    //   } catch (e) {
+    //     console.error(e)
+    //   }
+    // }
 
-    if (searchIntent === 'retrieval') {
-      try {
-        const response = await AI_RAG(document.body, question).start()
-        console.log(response)
-        const formattedResponse = response.response.replace(/\n/g, '<br>')
-        this.aiSearchWindow.addResponseFromAPI(formattedResponse)
-        this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
-        func()
-      } catch (e) {
-        console.error(e)
-      }
-    }
-    console.timeEnd('startSearchTime')
+    // if (searchIntent === 'retrieval') {
+    //   try {
+    //     const response = await AI_RAG(document.body, question).start()
+    //     console.log(response)
+    //     const formattedResponse = response.response.replace(/\n/g, '<br>')
+    //     this.aiSearchWindow.addResponseFromAPI(formattedResponse)
+    //     this.aiSearchWindow.addResponseFromAPI('Did you get the results you wanted? If not please enrich your question!')
+    //     func()
+    //   } catch (e) {
+    //     console.error(e)
+    //   }
+    // }
+    // console.timeEnd('startSearchTime')
   }
 
   // private async AISearch (func: any = () => {}) {

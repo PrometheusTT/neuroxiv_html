@@ -50,7 +50,7 @@
     </div>
     <input
       v-model="userInput"
-      placeholder="Type a message..."
+      placeholder="[search]:<your query>"
       class="input-box"
       @keyup.enter="$emit('AISearch')"
     >

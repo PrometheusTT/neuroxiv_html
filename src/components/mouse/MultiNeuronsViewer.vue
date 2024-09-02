@@ -16,15 +16,16 @@
                 title="brain"
                 name="brain"
               >
-                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px">
                   <el-input
                     v-model="searchKeyword"
                     placeholder="brain regions"
-                    style="width: 80%; margin-right: 10px;"
+                    style="width: 100%; margin-right: 3px;padding: 0 6px 0 6px;"
                     @keyup.enter.native="onSearch"
                   />
                   <el-button
                     type="primary"
+                    style="font-size: 12px;padding:11px 6px 11px 6px"
                     @click="onSearch"
                   >
                     Search
