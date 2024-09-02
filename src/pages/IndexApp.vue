@@ -2,21 +2,70 @@
   <div id="app">
     <SmallScreenAlert />
     <header-bar>
-      <router-link :to="getCompleteRouteByPathString('about')">
-        <el-button
-          type="primary"
-          plain
+      <!-- 按钮区域 -->
+      <div class="action-buttons">
+        <router-link
+          :to="getCompleteRouteByPathString('about')"
+          class="button-link"
         >
-          About
-        </el-button>
-      </router-link>
+          <el-button
+            type="primary"
+            plain
+            class="equal-button"
+          >
+            About
+          </el-button>
+        </router-link>
+
+        <a
+          href="/neuroXiv_user_instruction.pdf"
+          class="button-link"
+          target="_blank"
+        >
+          <el-button
+            type="primary"
+            plain
+            class="equal-button"
+          >
+            Help
+          </el-button>
+        </a>
+
+        <!-- Modified Button: Download -->
+        <a
+          href="https://download.neuroxiv.org"
+          class="button-link"
+          target="_blank"
+        >
+          <el-button
+            type="primary"
+            plain
+            class="equal-button"
+          >
+            Download
+          </el-button>
+        </a>
+
+        <router-link
+          :to="getCompleteRouteByPathString('news')"
+          class="button-link"
+        >
+          <el-button
+            type="primary"
+            plain
+            class="equal-button"
+          >
+            News
+          </el-button>
+        </router-link>
+      </div>
     </header-bar>
     <transition name="slide-fade">
       <router-view />
     </transition>
     <ThemeSwitcher v-show="false" />
     <footer>
-      Ver 1.0. Copyright 2021.
+      Ver 2.0. Copyright 2024.
       <a
         href="https://beian.miit.gov.cn"
         target="_blank"
@@ -55,6 +104,7 @@ export default class IndexApp extends RouterHelper {}
   background-color: var(--page-background-color);
   position: relative;
   min-width: 1300px;
+
   footer {
     position: absolute;
     color: grey;
@@ -64,7 +114,54 @@ export default class IndexApp extends RouterHelper {}
     text-align: center;
   }
 }
+
+header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 确保按钮容器居中 */
+  padding: 20px; /* 加大顶部和底部的内边距 */
+  background-color: #003366; /* 背景颜色 */
+}
+
+.action-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around; /* 在按钮之间均匀分布空间 */
+  flex-wrap: wrap; /* 允许按钮在小屏幕时换行 */
+  width: 100%; /* 宽度自动调整 */
+  max-width: 1000px; /* 根据需要调整最大宽度 */
+  margin: 0 auto; /* 确保容器在页面上居中 */
+  gap: 20px; /* 使用 gap 控制按钮之间的间距 */
+}
+
+.button-link {
+  display: flex; /* 设置为flex，使链接容器表现为块级元素 */
+}
+
+.equal-button {
+  min-width: 140px;
+  max-width: 200px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient background */
+  border: none;
+  border-radius: 8px; /* Rounded corners */
+  color: #fff; /* Text color */
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transitions */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.equal-button:hover {
+  transform: translateY(-2px); /* Slight lift effect on hover */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
+  background: linear-gradient(135deg, #2575fc, #6a11cb); /* Reversed gradient on hover */
+}
 </style>
+
 <style lang="less">
 body {
   overflow: auto;
