@@ -65,20 +65,53 @@
         </el-button>
       </slot>
     </div>
-    <span class="partner">
-      <span class="partner-cn">脑科学与智能技术研究院</span><br>
-      <span class="partner-en">Institute for Brain and Intelligence</span>
-    </span>
-    <img
-      src="@/assets/ailab_logo.png"
-      alt="ailab"
-      class="ailab-logo"
+    <div class="right-container">
+      <!-- New Button to Open Video Tutorial near logos -->
+      <slot name="video_button">
+        <el-button
+          v-if="showVideoButton"
+          type="primary"
+          plain
+          class="tutorial-button"
+          @click="showVideoDialog = true"
+        >
+          Tutorial video
+        </el-button>
+      </slot>
+
+      <!-- Logos -->
+      <span class="partner">
+        <span class="partner-cn">脑科学与智能技术研究院</span><br>
+        <span class="partner-en">Institute for Brain and Intelligence</span>
+      </span>
+      <img
+        src="@/assets/ailab_logo.png"
+        alt="ailab"
+        class="ailab-logo"
+      >
+    </div>
+
+    <el-dialog
+      title="Tutorial video"
+      :visible.sync="showVideoDialog"
+      width="50%"
     >
+      <video
+        controls
+        width="100%"
+      >
+        <source
+          src="https://d36ajqhpoeuszk.cloudfront.net/tutorial.mp4"
+          type="video/mp4"
+        >
+        Your browser does not support video playback.
+      </video>
+    </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import RouterHelper from '@/mixins/RouterHelper.vue'
 import { mapState } from 'vuex'
 import NeuronLogo from '@/components/common/NeuronLogo.vue'
@@ -90,6 +123,7 @@ import NeuronLogo from '@/components/common/NeuronLogo.vue'
   components: { NeuronLogo }
 })
 export default class HeaderBar extends RouterHelper {
+  @Prop({ default: true }) private showVideoButton!: boolean; // 新增prop，用来控制按钮显示
   private atlases = [
     {
       name: 'CCFv3'
@@ -99,6 +133,7 @@ export default class HeaderBar extends RouterHelper {
     }
   ]
   private selectedAtlas: string = 'CCFv3'
+  private showVideoDialog: boolean = false
 
   /**
    * 触发clickUploadNeuron事件，并传参到Container组件
@@ -150,36 +185,43 @@ export default class HeaderBar extends RouterHelper {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  justify-content: space-between; /* Spread out items across the header */
+  position: relative;
+  padding: 0 20px; /* Add padding to prevent elements from touching the edges */
+
   .neuron-logo {
     margin: 0 50px 0 30px;
     color: white;
   }
+
   .actions {
     white-space: nowrap;
-    // .el-button + .el-button {
-    //   margin-left: 20px;
-    // }
+    display: flex; /* Flex to arrange action buttons horizontally */
     .action {
       margin-left: 20px;
-      display: inline-block;
-    }
-    .el-button:focus {
-      color: #023793;
-      background: #e6ebf4;
-      border-color: #9aafd4;
     }
   }
+
+  .right-container {
+    display: flex; /* Flex to align button and logos */
+    align-items: center; /* Align items vertically centered */
+    margin-left: auto; /* Push container to the right */
+    margin-right: 20px; /* Add margin to control how far from the right it is */
+  }
+
+  .tutorial-button {
+    margin-right: 20px; /* Adjust margin to fine-tune the button position */
+  }
+
   .ailab-logo {
     width: 105px;
-    margin: 0 40px 0 80px;
+    margin-left: 20px; /* Adjust this margin to control the space between the button and the logo */
   }
+
   .partner {
     color: white;
-    margin-left: auto;
-    .partner-cn {
-      font-size: 17px;
-    }
-    .partner-en {
+    margin-left: 10px; /* Ensure the text is close to the button and logo */
+    .partner-cn, .partner-en {
       font-size: 17px;
     }
   }
