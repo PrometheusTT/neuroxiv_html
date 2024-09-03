@@ -274,8 +274,8 @@ export default class NeuronList extends Vue {
      */
     public setListData (listData: any[]) {
       listData.forEach((item: any) => {
-        item.selected = false
-
+        // item.selected = false
+        this.$set(item, 'selected', false)
         // 初始化 axon, dendrite, apical 的颜色
         item.customTagColors = {
           axon: 'rgb(255, 0, 0)', // 初始颜色
@@ -341,6 +341,7 @@ export default class NeuronList extends Vue {
      * @param neuronDetail 神经元信息
      */
     private checkNeuronCallback (neuronDetail: any) {
+      console.log('Checkbox changed:', neuronDetail.selected)
       this.$emit('checkNeuron', neuronDetail)
     }
 
