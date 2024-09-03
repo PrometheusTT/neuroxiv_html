@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <SmallScreenAlert />
-    <header-bar>
+    <header-bar :show-video-button="false">
       <!-- 按钮区域 -->
       <div class="action-buttons">
         <router-link
