@@ -250,9 +250,6 @@ export default class Container extends Vue {
       this.neuronDetail.neuronStates.histogramBars.renderChart()
       if (updateNeuronList) {
         this.neuronList.setListData(neurons)
-        // console.log(neurons)
-        // this.neuronLists.neuronList.setListData(this.fullMorphNeurons)
-        // this.neuronLists.neuronListLocal.setListData(this.localMorphNeurons)
       }
       this.searchDialogVisible = false
     } catch (e) {
@@ -337,6 +334,8 @@ export default class Container extends Vue {
         // eslint-disable-next-line camelcase
         const { neurons, basic_info, morpho_info, plot, proj_info } = cachedData
         this.neuronsList = neurons
+        console.log('cache neurons')
+        console.log(neurons)
         await this.useNeuronData(neurons, basic_info, morpho_info, plot, proj_info)
         func()
         return
@@ -351,6 +350,8 @@ export default class Container extends Vue {
       // eslint-disable-next-line camelcase
       const { neurons, basic_info, morpho_info, plot, proj_info } = response as any
       this.neuronsList = neurons
+      console.log('no cache neurons')
+      console.log(neurons)
       await this.useNeuronData(neurons, basic_info, morpho_info, plot, proj_info)
 
       // 缓存数据，附带时间戳
