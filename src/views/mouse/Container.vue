@@ -7,7 +7,7 @@
           ref="headBar"
           @clickSearchButton="searchDialogVisible = true"
           @clickSearchByIDButton="searchByIDHandler"
-          @clickSearchByLLMButton="LLMDialogVisible = true"
+          @clickSearchByLLMButton="openAIDialog"
           @clickUploadNeuron="uploadNeuronHandler"
           @switchAtlas="switchAtlas($event)"
         />
@@ -86,10 +86,16 @@
           This module currently only supports neuron search based on natural language, such as [search]: search neurons from SEU-ALLEN. More powerful AI features are under development, stay tuned!
         </div>
       </template>
+      <div
+        v-if="isModelLoading"
+        class="inline-loading"
+      >
+        <i class="el-icon-loading" />
+        <p>Model is loading, please wait...</p>
+      </div>
       <AISearchWindow
         ref="aiSearchWindow"
         @AISearch="AISearch"
-        @executeCode="executeCode"
       />
       <span
         slot="footer"
@@ -137,6 +143,7 @@ import AISearchWindow from '@/components/mouse/AISearchWindow.vue'
 import { getCachedData, setCachedData, deleteCachedData } from '@/utils/indexedDB'
 import { result } from 'lodash'
 import NeuronLists from '@/components/mouse/NeuronLists.vue'
+import NlpHelper from '@/utils/nlpHelper'
 
 @Component({
   components: {
@@ -164,6 +171,9 @@ export default class Container extends Vue {
   private fullMorphNeurons:any[] = []
   private localMorphNeurons:any[] = []
   public neuronsList:any[] = []
+  private nlpHelper: NlpHelper = new NlpHelper();
+  private isModelLoading: boolean = true;
+  private isModelLoaded: boolean = false;
 
   /**
    * 更新当前显示的 neuron info 信息
@@ -408,6 +418,50 @@ export default class Container extends Vue {
     console.log('question is: ' + question)
     let searchIntent = 'unknown intent'
     let searchConditions = {}
+    searchIntent = 'search'
+    if (searchIntent === 'search') {
+      const result = await this.nlpHelper.processQuery(question)
+      console.log('decision tree:')
+      console.log(result)
+      const condition: Record<string, string[]> = {}
+
+      // 遍历结果数组，将值添加到相应的键中
+      result.value.forEach((item: { [x: string]: any }) => {
+        const key = Object.keys(item)[0] // 获取对象中的键
+        const value = item[key] // 获取对象中的值
+
+        // 如果条件对象中已经存在该键，则将值添加到数组中；否则，创建一个新的数组
+        if (condition[key]) {
+          condition[key].push(value)
+        } else {
+          condition[key] = [value]
+        }
+      })
+
+      // 添加其他查询条件（例如，brain_atlas）并初始化为空数组
+      if (!condition['brain_atlas']) {
+        condition['brain_atlas'] = [this.$store.state.atlas.toString()] // 你可以根据需求添加默认值或其他逻辑
+      }
+      searchConditions = { criteria: condition }
+      console.log(searchConditions)
+      try {
+        // eslint-disable-next-line camelcase
+        const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
+        this.neuronList.setListData(neurons)
+        this.neuronDetail.selectedTab = 'neuronStates'
+        this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+        await this.$nextTick()
+        this.neuronDetail.neuronStates.featurePlot.renderChart()
+        this.neuronDetail.neuronStates.histogramBars.renderChart()
+        this.LLMDialogVisible = false
+        this.aiSearchWindow.addResponseFromAPI('I have found ' + neurons.length + ' neurons')
+        // this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please tell me more information')
+        func()
+      } catch (e) {
+        this.aiSearchWindow.addResponseFromAPI('There are some issues, please try again later.')
+        console.error(e)
+      }
+    }
 
     // try {
     //   const response = await CodeGenerator(document.body, question).start()
@@ -445,34 +499,34 @@ export default class Container extends Vue {
     //     console.error(e)
     //   }
     // }
-    searchIntent = 'search'
-    if (searchIntent === 'search') {
-      // let result = this.aiSearchWindow.GetIntent(question)
-      // console.log(result)
-      const response = await getSearchCondition(document.body, question).start()
-      let result = response.response
-      result = JSON.parse(result.replace(/'/g, '"'))
-      const condition = { criteria: result }
-      searchConditions = condition
-      console.log(condition)
-      try {
-        // eslint-disable-next-line camelcase
-        const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
-        this.neuronList.setListData(neurons)
-        this.neuronDetail.selectedTab = 'neuronStates'
-        this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
-        await this.$nextTick()
-        this.neuronDetail.neuronStates.featurePlot.renderChart()
-        this.neuronDetail.neuronStates.histogramBars.renderChart()
-        this.LLMDialogVisible = false
-        this.aiSearchWindow.addResponseFromAPI('I have found ' + neurons.length + ' neurons')
-        // this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please tell me more information')
-        func()
-      } catch (e) {
-        this.aiSearchWindow.addResponseFromAPI('There are some issues, please try again later.')
-        console.error(e)
-      }
-    }
+    // searchIntent = 'search'
+    // if (searchIntent === 'search') {
+    //   // let result = this.aiSearchWindow.GetIntent(question)
+    //   // console.log(result)
+    //   const response = await getSearchCondition(document.body, question).start()
+    //   let result = response.response
+    //   result = JSON.parse(result.replace(/'/g, '"'))
+    //   const condition = { criteria: result }
+    //   searchConditions = condition
+    //   console.log(condition)
+    //   try {
+    //     // eslint-disable-next-line camelcase
+    //     const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
+    //     this.neuronList.setListData(neurons)
+    //     this.neuronDetail.selectedTab = 'neuronStates'
+    //     this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+    //     await this.$nextTick()
+    //     this.neuronDetail.neuronStates.featurePlot.renderChart()
+    //     this.neuronDetail.neuronStates.histogramBars.renderChart()
+    //     this.LLMDialogVisible = false
+    //     this.aiSearchWindow.addResponseFromAPI('I have found ' + neurons.length + ' neurons')
+    //     // this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please tell me more information')
+    //     func()
+    //   } catch (e) {
+    //     this.aiSearchWindow.addResponseFromAPI('There are some issues, please try again later.')
+    //     console.error(e)
+    //   }
+    // }
 
     // if (searchIntent === 'chat') {
     //   try {
@@ -1015,6 +1069,55 @@ export default class Container extends Vue {
       })
     })
   }
+  openAIDialog () {
+    this.LLMDialogVisible = true // 1. 设置对话框可见
+
+    this.$nextTick(() => { // 2. 确保DOM已更新
+      if (!this.isModelLoaded) {
+        // 3. 显示加载动画
+        const loadingInstance = this.$loading({
+          lock: true,
+          text: 'Model is loading, please wait...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        })
+
+        // 4. 使用 requestAnimationFrame 确保渲染完成后再异步加载模型
+        requestAnimationFrame(() => {
+          setTimeout(() => { // 确保异步加载模型
+            this.loadModelIfNeeded()
+              .then(() => {
+                loadingInstance.close() // 模型加载完后关闭加载动画
+                this.isModelLoaded = true // 更新状态
+              })
+              .catch((error) => {
+                loadingInstance.close() // 错误处理
+                console.error('Error loading model:', error)
+              })
+          }, 10) // 延迟10毫秒，确保加载模型的操作在动画之后
+        })
+      }
+    })
+  }
+
+  async loadModelIfNeeded () {
+    if (!this.isModelLoaded) {
+      this.isModelLoading = true
+      await this.loadNlpModelAsync()
+      this.isModelLoaded = true // Mark model as loaded
+      this.isModelLoading = false // Hide loading spinner
+    }
+  }
+
+  async loadNlpModelAsync () {
+    try {
+      await this.nlpHelper.initializeNlp()
+      console.log('NLP Helper initialized successfully.')
+    } catch (error) {
+      console.error('Error initializing NLP Helper:', error)
+    }
+  }
+
   mounted () {
     setTimeout(() => {
       console.log('----------route----------', this.$route.query)
@@ -1188,5 +1291,22 @@ export default class Container extends Vue {
 
 .AIWindow .dialog-footer .el-button:first-child:hover {
   background: rgba(0, 123, 255, 0.1); /* 悬浮时的背景颜色 */
+}
+.inline-loading {
+  display: flex; /* Flexbox to align spinner and text */
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  margin-top: 20px; /* Space from the top */
+  color: #333; /* Text color */
+  font-size: 14px; /* Font size for text */
+}
+
+.inline-loading i {
+  margin-right: 10px; /* Space between spinner and text */
+  font-size: 20px; /* Size of the spinner icon */
+}
+
+.inline-loading p {
+  margin: 0; /* No margin around text */
 }
 </style>
