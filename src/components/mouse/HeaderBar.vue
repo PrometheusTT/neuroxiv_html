@@ -42,19 +42,19 @@
             Upload neuron
           </el-button>
         </el-upload>
-        <el-select
-          v-model="selectedAtlas"
-          placeholder="Please Select Atlas"
-          class="action"
-          @change="switchAtlas"
-        >
-          <el-option
-            v-for="item in atlases"
-            :key="item.name"
-            :label="item.name"
-            :value="item.name"
-          />
-        </el-select>
+        <!--        <el-select-->
+        <!--          v-model="selectedAtlas"-->
+        <!--          placeholder="Please Select Atlas"-->
+        <!--          class="action"-->
+        <!--          @change="switchAtlas"-->
+        <!--        >-->
+        <!--          <el-option-->
+        <!--            v-for="item in atlases"-->
+        <!--            :key="item.name"-->
+        <!--            :label="item.name"-->
+        <!--            :value="item.name"-->
+        <!--          />-->
+        <!--        </el-select>-->
         <el-button
           type="primary"
           plain

@@ -66,12 +66,12 @@
     <ThemeSwitcher v-show="false" />
     <footer>
       Ver 2.0. Copyright 2024.
-      <a
-        href="https://beian.miit.gov.cn"
-        target="_blank"
-      >
-        【备案号：粤B2-20090059】
-      </a>
+      <!--      <a-->
+      <!--        href="https://beian.miit.gov.cn"-->
+      <!--        target="_blank"-->
+      <!--      >-->
+      <!--        【备案号：粤B2-20090059】-->
+      <!--      </a>-->
     </footer>
   </div>
 </template>
@@ -120,7 +120,6 @@ header-bar {
   align-items: center;
   justify-content: center; /* 确保按钮容器居中 */
   padding: 20px; /* 加大顶部和底部的内边距 */
-  background-color: #003366; /* 背景颜色 */
 }
 
 .action-buttons {
@@ -136,6 +135,7 @@ header-bar {
 
 .button-link {
   display: flex; /* 设置为flex，使链接容器表现为块级元素 */
+  text-decoration: none; /* 去掉下划线 */
 }
 
 .equal-button {
@@ -146,7 +146,6 @@ header-bar {
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(135deg, #6a11cb, #2575fc); /* Gradient background */
   border: none;
   border-radius: 8px; /* Rounded corners */
   color: #fff; /* Text color */
@@ -158,7 +157,6 @@ header-bar {
 .equal-button:hover {
   transform: translateY(-2px); /* Slight lift effect on hover */
   box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow on hover */
-  background: linear-gradient(135deg, #2575fc, #6a11cb); /* Reversed gradient on hover */
 }
 </style>
 
