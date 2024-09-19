@@ -101,6 +101,7 @@ export default class NeuronStatesDesc extends Vue {
   private isProcessing: boolean = false; // 标志是否正在处理消息
   public hasStartedSSE: boolean = false;
   private eventSource: EventSource | null = null;
+  private currentConnectionId: string | null = null;
   private bs : string = 'The full morphological dataset consists of 19,406 neurons obtained from three sources: ION (16,380 neurons), SEU-ALLEN (1,876 neurons), and MouseLight (1,150 neurons). These neurons are distributed across both hemispheres of the brain, with 6,354 in the left and 13,052 in the right. The data spans 327 brain regions, prominently featuring CA1 with 3,691 neurons, DG-sg with 2,630, and SUB with 1,008 neurons. In terms of cortical layer distribution, neurons are mainly found in an unspecified layer (12,026 neurons), L5 (4,179 neurons), L2/3 (1,991 neurons), L6a (817 neurons), L1 (308 neurons), L4 (74 neurons), and L6b (11 neurons). This dataset provides valuable insights into the distribution of neurons across various brain regions and cortical layers.'
   private ms : string = 'The analysis of neuronal morphology data from multiple sources reveals significant insights into the complexity and spatial arrangements of CA1 and DG-sg neurons. CA1 neurons, particularly from the MouseLight source, exhibit extensive axonal networks, with a mean total length surpassing 52,000 μm and an average of over 170 bifurcations, reflecting their intricate connectivity patterns. In contrast, DG-sg neurons display less complexity, with lower mean values for total length and number of bifurcations, though high standard deviations indicate variability within this population. \'Max Path Distance\' highlights the projection range, with CA1 neurons from the ION source showing the highest mean of approximately 8,800 μm. The \'Center Shift\' metric provides insights into the balance of spatial distribution, where CA1 neurons generally exhibit higher values, suggesting broader spatial coverage compared to DG-sg neurons. Overall, the data underscores the importance of \'Total Length\' and \'Number of Bifurcations\' in defining neuronal complexity and reach, while \'Max Path Distance\' and \'Center Shift\' offer additional perspectives on the spatial extension and balance of neuronal structures. These findings collectively enhance our understanding of neuronal morphology and its functional implications.'
   private ps : string = 'The neuronal projection data reveals differential patterns of connectivity for dendrite and axon projections in CA1 and DG-sg neurons across various sources (ION, SEU-ALLEN, MouseLight), emphasizing the structure and connectivity strength within the brain. Dendritic arbor data for CA1 neurons shows high intraregional connectivity, with proportions of arborized lengths in CA1 ranging from 72.1% to 87.7% across different sources. SEU-ALLEN reports the lowest proportion (84.0%) compared to ION (87.7%) and MouseLight (72.1%). DG-sg neurons exhibit similar trends, with over 90% of the dendritic lengths within the DG region (ION: 90.1%, MouseLight: 92.8%). Axonal arbor data for CA1 neurons reveal a broader distribution. ION data indicates significant lengths within CA1 (28.1%), but also other regions like LSr (7.6%) and SUB (5.7%). SEU-ALLEN shows notable projections to DG, CA3, and SUB, with MouseLight highlighting extensive CA1 projections (30.6%) and noteworthy connections to SUB and ProS. For DG-sg neurons, ION data reveals nearly balanced projections to CA3 (44.8%) and DG (44.1%), while MouseLight shows a pronounced focus on DG (50.7%) and substantial CA3 connectivity (42.0%). In summary, dendritic arbor data underscores intraregional dominance within CA1 and DG, critical for local processing. Axonal projections from CA1 neurons suggest extensive interregional communication, while DG-sg neurons reinforce hippocampal circuitry, especially between DG and CA3. These patterns reflect the structural basis of neuronal communication and connectivity strength in these brain regions.'
@@ -114,6 +115,7 @@ export default class NeuronStatesDesc extends Vue {
   private hasInitialized : boolean = false
   private isLoading: boolean = false;
   private completedSegments: number = 0;
+  private initialNeuronIds: string[] = [];
 
   @Watch('basicInfo', { deep: true })
   onDataChange () {
@@ -122,13 +124,25 @@ export default class NeuronStatesDesc extends Vue {
       this.hasInitialized = true
       return
     }
-
+    const currentNeuronIds = this.neuronsList.filter(neuron => !neuron.id.includes('local')).map(neuron => neuron.id)
+    console.log(currentNeuronIds)
+    // 简单比较两个ID列表是否一致
+    if (JSON.stringify(this.initialNeuronIds) === JSON.stringify(currentNeuronIds)) {
+      this.basicInfoSummary = this.bs
+      this.morphologySummaries = this.ms
+      this.projectionInfoSummary = this.ps
+      console.log('Neuron IDs have not changed.')
+      return // 如果ID没有变化，直接返回
+    }
     console.log('onDataChange')
     this.id_list = this.neuronsList
       .filter(neuron => !neuron.id.includes('local'))
       .map(neuron => neuron.id)
+    this.stopSSE()
     this.generateDataSummary()
-    this.restartSSE()
+    this.$nextTick(() => {
+      this.restartSSE() // 启动新的 SSE 流
+    })
   }
 
   private generateDataSummary () {
@@ -139,6 +153,9 @@ export default class NeuronStatesDesc extends Vue {
     this.completedSegments = 0 // 重置计数器
     this.messageQueue = [] // 重置消息队列
     this.isProcessing = false // 重置处理状态
+    this.$nextTick(() => {
+      console.log('Data summary has been reset and UI is updated')
+    })
   }
 
   private appendTextGradually (target: 'basicInfoSummary' | 'projectionInfoSummary' | 'morphologySummaries' |string, text: string) {
@@ -185,13 +202,21 @@ export default class NeuronStatesDesc extends Vue {
     }, 5) // 控制字符显示速度，可以调整时间间隔
   }
 
-  public startSSE (): void {
-    console.log('startSSE')
-    const neuronlists = {
-      id_list: this.id_list
-    }
+  // 生成唯一的 connectionId
+  private generateConnectionId (): string {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      // eslint-disable-next-line eqeqeq
+      const r = Math.random() * 16 | 0; const v = c == 'x' ? r : (r & 0x3 | 0x8)
+      return v.toString(16)
+    })
+  }
 
-    fetch('http://10.192.0.176:5000/api/start_stream', {
+  // 启动 SSE
+  public startSSE (): void {
+    this.currentConnectionId = this.generateConnectionId() // 生成唯一的 connectionId
+    const neuronlists = { id_list: this.id_list }
+
+    fetch(`http://10.192.0.176:5000/api/start_stream?connectionId=${this.currentConnectionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -200,10 +225,10 @@ export default class NeuronStatesDesc extends Vue {
       body: JSON.stringify(neuronlists),
       credentials: 'include'
     })
-      .then((response) => {
+      .then(response => {
         const reader = response.body?.getReader()
         const decoder = new TextDecoder()
-        let stopReading = false // 控制流读取的变量
+        let stopReading = false
 
         const readStream = (): Promise<void> => {
           if (stopReading) {
@@ -223,45 +248,41 @@ export default class NeuronStatesDesc extends Vue {
                 const event = eventString.replace(/^data: /, '')
                 const data = JSON.parse(event)
 
-                if (data.type === 'end') {
-                  console.log('Streaming finished')
-                  stopReading = true
-                  this.messageQueue = []
-                } else if (data.type === 'ping') {
-                  console.log('keep Streaming')
-                } else if (data.type === 'basicInfo') {
-                  this.appendTextGradually('basicInfoSummary', data.content)
-                } else if (data.type === 'morphologyFeatures') {
-                  this.appendTextGradually('morphologySummaries', data.content)
-                } else if (data.type === 'projectionInfo') {
-                  this.appendTextGradually('projectionInfoSummary', data.content)
+                // 只处理当前 connectionId 的消息
+                if (data.connectionId === this.currentConnectionId) {
+                  if (data.type === 'basicInfo') {
+                    this.appendTextGradually('basicInfoSummary', data.content)
+                  } else if (data.type === 'morphologyFeatures') {
+                    this.appendTextGradually('morphologySummaries', data.content)
+                  } else if (data.type === 'projectionInfo') {
+                    this.appendTextGradually('projectionInfoSummary', data.content)
+                  } else if (data.type === 'end') {
+                    stopReading = true // 结束流读取
+                  }
                 }
               }
             })
 
-            return readStream() // Continue reading the stream
+            return readStream() // 继续读取流
           }) as Promise<void>
         }
 
         return readStream()
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error in SSE fetch:', error)
         this.isLoading = false
       })
   }
 
   public stopSSE (): void {
-    // 检查 eventSource 是否已初始化
     if (this.eventSource) {
-      this.eventSource.close() // 确保关闭当前的 SSE 连接
+      this.eventSource.close()
       console.log('SSE connection closed')
-    } else {
-      console.warn('No SSE connection to close')
     }
 
-    // 通知后端终止任务
-    fetch('http://10.192.0.176:5000/api/stop_stream', {
+    // 通知后端停止 SSE 连接
+    fetch(`http://10.192.0.176:5000/api/stop_stream?connectionId=${this.currentConnectionId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -295,6 +316,7 @@ export default class NeuronStatesDesc extends Vue {
         this.hasStartedSSE = false
       }
     })
+    this.initialNeuronIds = this.neuronsList.filter(neuron => !neuron.id.includes('local')).map(neuron => neuron.id)
   }
 
   beforeDestroy () {
