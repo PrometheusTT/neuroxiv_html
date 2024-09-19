@@ -73,17 +73,26 @@
     </el-dialog>
     <!-- AI搜索对话框 -->
     <el-dialog
+      ref="AIWindowDialog"
       title="AIPOM"
       custom-class="AIWindow"
       :visible.sync="LLMDialogVisible"
       width="50%"
       top="7vh"
       :close-on-click-modal="false"
+      :modal="false"
+      :append-to-body="true"
     >
       <template #title>
-        AIPOM
-        <div style="font-size: 14px; margin-top: 14px; color: gray;">
-          This module currently only supports neuron search based on natural language, such as [search]: search neurons from SEU-ALLEN. More powerful AI features are under development, stay tuned!
+        <div
+          id="draggable-dialog-title"
+          class="draggable-dialog-title"
+          style="cursor: move;"
+        >
+          AIPOM
+          <div style="font-size: 14px; margin-top: 14px; color: gray;">
+            This module currently only supports neuron search based on natural language, such as [search]: search neurons from SEU-ALLEN. More powerful AI features are under development, stay tuned!
+          </div>
         </div>
       </template>
       <div
@@ -118,7 +127,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref } from 'vue-property-decorator'
+import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
 import HeaderBar from '@/components/mouse/HeaderBar.vue'
 import NeuronList from '@/components/mouse/NeuronList.vue'
 import NeuronDetail from '@/components/mouse/NeuronDetail.vue'
@@ -165,6 +174,7 @@ export default class Container extends Vue {
   @Ref('neuronLLM') readonly neuronLLM!: NeuronLLM
   @Ref('headBar') readonly headBar!: HeaderBar
   @Ref('aiSearchWindow') readonly aiSearchWindow!: AISearchWindow
+  @Ref('AIWindowDialog') readonly AIWindowDialog!: any;
   private searchDialogVisible: boolean = false
   private LLMDialogVisible: boolean = false
   private reFresh: boolean = true
@@ -174,7 +184,6 @@ export default class Container extends Vue {
   private nlpHelper: NlpHelper = new NlpHelper();
   private isModelLoading: boolean = true;
   private isModelLoaded: boolean = false;
-
   /**
    * 更新当前显示的 neuron info 信息
    * @param neuronDetail neuron detail
@@ -330,7 +339,7 @@ export default class Container extends Vue {
     const condition = ids ? { id_list: ids } : { criteria: criteria }
 
     const cacheKey = ids ? `neurons_ids_${ids.join('_')}` : `neurons_criteria_${JSON.stringify(criteria)}`
-
+    console.log(criteria)
     // 设置缓存有效期为1小时
     const CACHE_DURATION = 604800000
 
@@ -410,7 +419,71 @@ export default class Container extends Vue {
       console.error(e)
     }
   }
-
+  // private async AISearch (func: any = () => {}) {
+  //   console.time('startSearchTime')
+  //   this.aiSearchWindow.sendMessage()
+  //   let question = this.aiSearchWindow.lastInput
+  //   console.log('question is: ' + question)
+  //   let searchIntent = 'unknown intent'
+  //   let searchConditions = {}
+  //
+  //   // try {
+  //   //   const response = await CodeGenerator(document.body, question).start()
+  //   //   console.log(response)
+  //   //   this.aiSearchWindow.addResponseFromAPI(response.response)
+  //   //   func()
+  //   // } catch (e) {
+  //   //   console.error(e)
+  //   // }
+  //   const intentMatch = question.match(/^\[(search|chat|retrieval|article)\]:\s*(.+)/i)
+  //   if (intentMatch) {
+  //     searchIntent = intentMatch[1].trim().toLowerCase()
+  //     question = question.split(':')[1]
+  //     console.log('Extracted intent: ' + searchIntent)
+  //   } else {
+  //     try {
+  //       let response = await getSearchIntent(document.body, question).start()
+  //       searchIntent = response.response.replace(/^'|'$/g, '')
+  //       console.log(searchIntent)
+  //       this.aiSearchWindow.addResponseFromAPI('I guess you want to ' + searchIntent + ', is that right?')
+  //       func()
+  //     } catch (e) {
+  //       console.error(e)
+  //     }
+  //   }
+  //   searchIntent = 'search'
+  //   if (searchIntent === 'search') {
+  //     // let result = this.aiSearchWindow.GetIntent(question)
+  //     // console.log(result)
+  //     const response = await getSearchCondition(document.body, question).start()
+  //     console.log(response)
+  //     let result = response.response
+  //     result = JSON.parse(result.replace(/'/g, '"'))
+  //     const condition = { criteria: result }
+  //     console.log(result)
+  //     searchConditions = condition
+  //     console.log(condition)
+  //     try {
+  //       // eslint-disable-next-line camelcase
+  //       const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
+  //       this.neuronList.setListData(neurons)
+  //       this.neuronDetail.selectedTab = 'neuronStates'
+  //       this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
+  //       await this.$nextTick()
+  //       this.neuronDetail.neuronStates.featurePlot.renderChart()
+  //       this.neuronDetail.neuronStates.histogramBars.renderChart()
+  //       this.LLMDialogVisible = false
+  //       this.aiSearchWindow.addResponseFromAPI('I have found ' + neurons.length + ' neurons')
+  //       // this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please tell me more information')
+  //       func()
+  //     } catch (e) {
+  //       this.aiSearchWindow.addResponseFromAPI('There are some issues, please try again later.')
+  //       console.error(e)
+  //     }
+  //   }
+  //   console.log('SearchTime')
+  //   console.timeEnd('startSearchTime')
+  // }
   private async AISearch (func: any = () => {}) {
     console.time('startSearchTime')
     this.aiSearchWindow.sendMessage()
@@ -432,9 +505,14 @@ export default class Container extends Vue {
 
         // 如果条件对象中已经存在该键，则将值添加到数组中；否则，创建一个新的数组
         if (condition[key]) {
-          condition[key].push(value)
+          if (Array.isArray(value)) {
+            // If the value is an array (e.g., range [min, max]), spread it into the array
+            condition[key].push(...value)
+          } else {
+            condition[key].push(value)
+          }
         } else {
-          condition[key] = [value]
+          condition[key] = Array.isArray(value) ? [...value] : [value] // Initialize with value or spread array
         }
       })
 
@@ -446,16 +524,17 @@ export default class Container extends Vue {
       console.log(searchConditions)
       try {
         // eslint-disable-next-line camelcase
-        const { neurons, basic_info, morpho_info, plot, proj_info } = await searchNeurons(document.body, searchConditions).start()
+        const { neurons, basic_info, morpho_info, plot, proj_info, overview } = await searchNeurons(document.body, searchConditions).start()
         this.neuronList.setListData(neurons)
+        this.neuronsList = neurons
         this.neuronDetail.selectedTab = 'neuronStates'
         this.neuronDetail.neuronStates.neuronStatesData = { basic_info: basic_info.counts, morpho_info, plot, proj_info }
         await this.$nextTick()
         this.neuronDetail.neuronStates.featurePlot.renderChart()
         this.neuronDetail.neuronStates.histogramBars.renderChart()
-        this.LLMDialogVisible = false
+        // this.LLMDialogVisible = false
         this.aiSearchWindow.addResponseFromAPI('I have found ' + neurons.length + ' neurons')
-        // this.aiSearchWindow.addResponseFromAPI('Are these the results you are looking for? If not please tell me more information')
+        this.aiSearchWindow.addResponseFromAPI('Data Overview: \n' + overview)
         func()
       } catch (e) {
         this.aiSearchWindow.addResponseFromAPI('There are some issues, please try again later.')
@@ -706,7 +785,7 @@ export default class Container extends Vue {
    * @constructor
    * @private
    */
-  private Reset () {
+  private async Reset () {
     this.neuronSearch.selectedConditions = []
   }
 
@@ -1056,7 +1135,7 @@ export default class Container extends Vue {
    */
   public async switchAtlas (atlas: string) {
     // location.reload()
-    this.headBar.setAtlas(atlas)
+    // this.headBar.setAtlas(atlas)
     this.$store.commit('updateAtlas', atlas)
     this.reFresh = false
     this.$nextTick(() => {
@@ -1118,33 +1197,108 @@ export default class Container extends Vue {
     }
   }
 
-  mounted () {
-    setTimeout(() => {
-      console.log('----------route----------', this.$route.query)
-      if (this.$route.query.hasOwnProperty('brainRegion') && this.$route.query.hasOwnProperty('atlasName')) {
+    @Watch('LLMDialogVisible') // 监听对话框的可见性变化
+  onDialogVisibleChange (visible: boolean) {
+    if (visible) {
+      this.centerDialog() // 重置对话框位置
+    }
+  }
+
+    centerDialog () {
+      const dialogRef = this.$refs.AIWindowDialog as any
+      if (!dialogRef || !dialogRef.$el) return
+
+      const dialogEl = dialogRef.$el.querySelector('.el-dialog')
+      if (dialogEl) {
+        // 使用 fixed 定位使其相对于视口定位
+        dialogEl.style.position = 'fixed'
+        dialogEl.style.margin = '0' // 移除默认 margin
+
+        // 获取窗口和对话框的宽度和高度
+        const viewportWidth = window.innerWidth
+        const viewportHeight = window.innerHeight
+        const dialogWidth = dialogEl.offsetWidth
+        const dialogHeight = dialogEl.offsetHeight
+
+        // 计算对话框的中心点位置
+        const centerX = (viewportWidth - dialogWidth) / 2
+        const centerY = (viewportHeight - dialogHeight) / 2
+
+        // 设置对话框位置并让其中心对齐页面中心
+        dialogEl.style.left = `${centerX}px`
+        dialogEl.style.top = `${centerY}px`
+        dialogEl.style.transform = 'translate(-50%, -50%)' // 确保对话框的中心对齐到页面中心
+      }
+    }
+
+    initializeDraggableDialog () {
+      const dialogRef = this.$refs.AIWindowDialog as any // 获取对话框 ref
+      if (!dialogRef || !dialogRef.$el) return
+
+      const dialogEl = dialogRef.$el.querySelector('.el-dialog') // 获取对话框的 DOM 元素
+      const headerEl = dialogEl?.querySelector('#draggable-dialog-title') // 获取标题部分
+
+      if (headerEl && dialogEl) {
+        // 设置初始位置
+        this.centerDialog()
+
+        headerEl.onmousedown = (e: MouseEvent) => {
+          e.preventDefault() // 阻止默认事件以避免选中文本
+
+          // 获取对话框的当前矩形位置
+          const dialogRect = dialogEl.getBoundingClientRect()
+          // 计算鼠标点击点和对话框左上角的偏移
+          const offsetX = e.clientX - dialogRect.left
+          const offsetY = e.clientY - dialogRect.top
+
+          const onMouseMove = (e: MouseEvent) => {
+            // 鼠标移动时，计算新的对话框位置
+            const left = e.clientX - offsetX
+            const top = e.clientY - offsetY
+            dialogEl.style.left = `${left}px`
+            dialogEl.style.top = `${top}px`
+            dialogEl.style.transform = 'translate(0, 0)' // 清除 transform 使其平滑移动
+          }
+
+          const onMouseUp = () => {
+            document.removeEventListener('mousemove', onMouseMove)
+            document.removeEventListener('mouseup', onMouseUp)
+          }
+
+          document.addEventListener('mousemove', onMouseMove)
+          document.addEventListener('mouseup', onMouseUp)
+        }
+      }
+    }
+
+    mounted () {
+      setTimeout(() => {
+        console.log('----------route----------', this.$route.query)
+        if (this.$route.query.hasOwnProperty('brainRegion') && this.$route.query.hasOwnProperty('atlasName')) {
         // @ts-ignore
         // this.switchAtlas(this.$route.query['atlasName'])
-        this.headBar.setAtlas(this.$route.query['atlasName'])
-        // @ts-ignore
-        this.$store.commit('updateAtlas', this.$route.query['atlasName'])
-        this.$nextTick(() => {
-          let criteria = {
-            brain_atlas: [this.$store.state.atlas],
-            celltype: [this.$route.query['brainRegion']]
-          }
-          this.searchNeurons(criteria)
-        })
-      } else {
+          this.headBar.setAtlas(this.$route.query['atlasName'])
+          // @ts-ignore
+          this.$store.commit('updateAtlas', this.$route.query['atlasName'])
+          this.$nextTick(() => {
+            let criteria = {
+              brain_atlas: [this.$store.state.atlas],
+              celltype: [this.$route.query['brainRegion']]
+            }
+            this.searchNeurons(criteria)
+          })
+        } else {
         // console.log('mounted atlas', this.$store.state.atlas)
-        let criteria = {
-          brain_atlas: [this.$store.state.atlas]
+          let criteria = {
+            brain_atlas: [this.$store.state.atlas]
+          }
+          this.searchNeurons(criteria, undefined, () => {
+            this.neuronDetail.selectedTab = 'multiNeuronsViewer'
+          })
         }
-        this.searchNeurons(criteria, undefined, () => {
-          this.neuronDetail.selectedTab = 'multiNeuronsViewer'
-        })
-      }
-    }, 2000, {})
-  }
+      }, 2000, {})
+      this.initializeDraggableDialog()
+    }
 }
 </script>
 
@@ -1176,10 +1330,13 @@ export default class Container extends Vue {
   width: 50%;
   /* 可以调整对话框顶部的位置 */
   top: 20vh;
-  /* 如果您想要对话框宽度自适应，可以设置为 auto */
-  /* width: auto; */
+  z-index: 1050 !important;
 }
 
+/* 确保只有这个对话框的 wrapper 不会阻挡点击 */
+.AIWindow .el-dialog__wrapper {
+  pointer-events: auto;  /* 确保点击事件可以传递 */
+}
 .AIWindow .el-dialog__header {
   /* 对话框头部的样式，如果需要的话 */
   text-align: center;

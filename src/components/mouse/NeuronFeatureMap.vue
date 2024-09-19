@@ -24,7 +24,7 @@ import NeuronScene from '@/components/mouse/NeuronScene.vue'
 import SliceSection from '@/components/mouse/SliceSection.vue'
 import ROI from '@/components/mouse/ROI.vue'
 
-import neuronViewerBaseData from './surf_tree_ccf-me.json'
+import neuronViewerBaseData from './surf_tree.json'
 import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
 const rootId = neuronViewerBaseData[0].id
 const rootIdFMost = neuronViewerBaseDataFMost[0].id

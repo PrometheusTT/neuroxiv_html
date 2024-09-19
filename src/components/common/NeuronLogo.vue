@@ -3,7 +3,7 @@
     href="/"
     class="logo"
   >
-    <span>neuro</span>
+    <span>Neuro</span>
     <span class="logo-img-container">
       <img
         src="@/assets/neuroxiv_logo_white.png"

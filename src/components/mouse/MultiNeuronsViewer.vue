@@ -152,7 +152,7 @@ import SliceSection from '@/components/mouse/SliceSection.vue'
 import ROI from '@/components/mouse/ROI.vue'
 import { showLoading, increaseLoadingCount, decreaseLoadingCount, LoadingZero } from '@/request/RequestWrapper'
 
-import neuronViewerBaseData from './surf_tree_ccf-me.json'
+import neuronViewerBaseData from './surf_tree.json'
 
 import neuronViewerBaseDataFMost from './surf_tree_fmost.json'
 

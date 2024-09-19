@@ -85,67 +85,24 @@
               :key="i"
               class="condition-item"
             >
+              <!-- 显示条件名称 -->
               <span
                 class="condition-name text-ellipsis"
                 :title="item.display_name"
               >
                 {{ item.display_name }}
               </span>
-              <span
-                v-if="item.type === 'category'"
-                class="condition-value category-value"
-              >
-                <span
-                  class="selected-category text-ellipsis"
-                  :title="item.selectedCategory"
-                >
-                  {{ item.selectedCategory }}
-                </span>
-                <el-button
-                  type="text"
-                  size="mini"
-                  class="category-edit-button"
-                  @click="editCategory(item)"
-                >
-                  Edit
-                </el-button>
-              </span>
+              <!-- 根据条件类型显示不同的输入控件 -->
               <span
                 v-if="item.type === 'binary'"
                 class="condition-value binary-value"
               >
-                <el-radio
-                  v-model="item.selectedBinary"
-                  :label="true"
-                >True</el-radio>
-                <el-radio
-                  v-model="item.selectedBinary"
-                  :label="false"
-                >False</el-radio>
+                <el-radio-group v-model="item.selectedBinary">
+                  <el-radio :label="true">True</el-radio>
+                  <el-radio :label="false">False</el-radio>
+                </el-radio-group>
               </span>
-              <span
-                v-if="item.type === 'range'"
-                class="condition-value range-value"
-              >
-                min:
-                <el-input-number
-                  v-model="item.default_min"
-                  :step="0.1"
-                  :min="item.min_value"
-                  :max="item.max_value === null ? Infinity : item.max_value"
-                  size="mini"
-                  class="range-item"
-                />
-                max:
-                <el-input-number
-                  v-model="item.default_max"
-                  :step="0.1"
-                  :min="item.min_value"
-                  :max="item.max_value === null ? Infinity : item.max_value"
-                  size="mini"
-                  class="range-item"
-                />
-              </span>
+              <!-- 其他条件类型的输入控件保持不变 -->
               <el-button
                 type="text"
                 size="mini"
@@ -156,6 +113,84 @@
             </li>
           </template>
         </ul>
+        <!--        <ul class="conditions-list">-->
+        <!--          <template v-for="(item, i) in selectedConditions">-->
+        <!--            <li-->
+        <!--              v-if="item.visible"-->
+        <!--              :key="i"-->
+        <!--              class="condition-item"-->
+        <!--            >-->
+        <!--              <span-->
+        <!--                class="condition-name text-ellipsis"-->
+        <!--                :title="item.display_name"-->
+        <!--              >-->
+        <!--                {{ item.display_name }}-->
+        <!--              </span>-->
+        <!--              <span-->
+        <!--                v-if="item.type === 'category'"-->
+        <!--                class="condition-value category-value"-->
+        <!--              >-->
+        <!--                <span-->
+        <!--                  class="selected-category text-ellipsis"-->
+        <!--                  :title="item.selectedCategory"-->
+        <!--                >-->
+        <!--                  {{ item.selectedCategory }}-->
+        <!--                </span>-->
+        <!--                <el-button-->
+        <!--                  type="text"-->
+        <!--                  size="mini"-->
+        <!--                  class="category-edit-button"-->
+        <!--                  @click="editCategory(item)"-->
+        <!--                >-->
+        <!--                  Edit-->
+        <!--                </el-button>-->
+        <!--              </span>-->
+        <!--              <span-->
+        <!--                v-if="item.type === 'binary'"-->
+        <!--                class="condition-value binary-value"-->
+        <!--              >-->
+        <!--                <el-radio-->
+        <!--                  v-model="item.selectedBinary"-->
+        <!--                  :label="true"-->
+        <!--                >True</el-radio>-->
+        <!--                <el-radio-->
+        <!--                  v-model="item.selectedBinary"-->
+        <!--                  :label="false"-->
+        <!--                >False</el-radio>-->
+        <!--              </span>-->
+        <!--              <span-->
+        <!--                v-if="item.type === 'range'"-->
+        <!--                class="condition-value range-value"-->
+        <!--              >-->
+        <!--                min:-->
+        <!--                <el-input-number-->
+        <!--                  v-model="item.default_min"-->
+        <!--                  :step="0.1"-->
+        <!--                  :min="item.min_value"-->
+        <!--                  :max="item.max_value === null ? Infinity : item.max_value"-->
+        <!--                  size="mini"-->
+        <!--                  class="range-item"-->
+        <!--                />-->
+        <!--                max:-->
+        <!--                <el-input-number-->
+        <!--                  v-model="item.default_max"-->
+        <!--                  :step="0.1"-->
+        <!--                  :min="item.min_value"-->
+        <!--                  :max="item.max_value === null ? Infinity : item.max_value"-->
+        <!--                  size="mini"-->
+        <!--                  class="range-item"-->
+        <!--                />-->
+        <!--              </span>-->
+        <!--              <el-button-->
+        <!--                type="text"-->
+        <!--                size="mini"-->
+        <!--                @click="removeCondition(i)"-->
+        <!--              >-->
+        <!--                Delete-->
+        <!--              </el-button>-->
+        <!--            </li>-->
+        <!--          </template>-->
+        <!--        </ul>-->
       </div>
     </section>
     <!-- category 类型的搜索条件类别选择穿梭框 -->
