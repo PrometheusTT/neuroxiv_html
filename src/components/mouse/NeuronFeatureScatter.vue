@@ -147,6 +147,13 @@ export default class NeuronFeatureScatter extends Vue {
           formatter: function (value: number) {
             return xTicks[value]
           }
+        },
+        name: 'Target Region', // 添加x轴的label
+        nameLocation: 'middle',
+        nameGap: 50,
+        nameTextStyle: {
+          fontSize: 20, // 调整字体大小
+          fontWeight: 'bold' // 字体加粗
         }
       },
       yAxis: {
@@ -159,6 +166,14 @@ export default class NeuronFeatureScatter extends Vue {
           formatter: function (value: number) {
             return yTicks[value]
           }
+        },
+        name: 'Source Region', // 添加y轴的label
+        nameLocation: 'middle',
+        nameRotate: 90, // 旋转y轴label
+        nameGap: 50,
+        nameTextStyle: {
+          fontSize: 20, // 调整字体大小
+          fontWeight: 'bold' // 字体加粗
         }
       },
       grid: {
