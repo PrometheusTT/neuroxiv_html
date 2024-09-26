@@ -31,9 +31,12 @@ export default {
   data () {
     return {
       updates: [
-        { date: '2024-04-27', description: 'Release Version 2.0 of NeuroXiv.' },
-        { date: '2024-04-27', description: 'Release Version 2.0 of neuron dataset.' }
-        // Add more updates here...
+        { date: '2023-11-14', description: 'Introduced a sophisticated AI-Powered data open mining engine enabling natural language queries and contextual data retrieval from a vast knowledge base.' },
+        { date: '2023-12-23', description: 'Deployed an advanced chatbot module with real-time streaming responses, providing an interactive user experience akin to ChatGPT.' },
+        { date: '2024-03-25', description: 'Implemented a cutting-edge Mixture of Experts (MoE) architecture for neuron data summarization, enabling multi-model integration for refined outputs.' },
+        { date: '2024-04-23', description: 'Expanded AI capabilities by integrating client-side inference computation, optimizing resource utilization for on-device processing.' },
+        { date: '2024-08-31', description: 'Launched NeuroXiv Version 2.0, significantly enhancing performance and data accessibility.' },
+        { date: '2024-07-28', description: 'Released Version 2.0 of the neuron dataset, expanding the repository with 175149 unique neurons.' }
       ]
     }
   },

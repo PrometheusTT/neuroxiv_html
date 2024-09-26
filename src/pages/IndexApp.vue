@@ -103,7 +103,7 @@ export default class IndexApp extends RouterHelper {}
   min-width: 1300px;
 
   footer {
-    position: absolute;
+    position: fixed;
     color: grey;
     font-size: 0.8em;
     bottom: 30px;
