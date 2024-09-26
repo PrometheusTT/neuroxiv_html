@@ -20,6 +20,7 @@
               ref="neuronDetail"
               :load-first-neuron="loadFirstNeuron"
               :neurons-list="neuronsList"
+              :is-initial-state="isInitialState"
               @checkConnectedNeurons="updateNeuronAnalysis($event, true)"
               @searchSimilarNeurons="searchSimilarNeurons($event)"
               @searchROINeurons="searchROINeurons($event)"
@@ -55,6 +56,7 @@
       <NeuronSearch
         ref="neuronSearch"
         @neuronAnalysis="updateNeuronAnalysis"
+        @criteriaEmpty="handleCriteriaEmpty"
       />
       <span
         slot="footer"
@@ -127,7 +129,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Ref, Watch } from 'vue-property-decorator'
+import { Component, Vue, Ref, Watch, Prop } from 'vue-property-decorator'
 import HeaderBar from '@/components/mouse/HeaderBar.vue'
 import NeuronList from '@/components/mouse/NeuronList.vue'
 import NeuronDetail from '@/components/mouse/NeuronDetail.vue'
@@ -184,6 +186,12 @@ export default class Container extends Vue {
   private nlpHelper: NlpHelper = new NlpHelper();
   private isModelLoading: boolean = true;
   private isModelLoaded: boolean = false;
+  public isInitialState: boolean = false;
+
+  public handleCriteriaEmpty () {
+    console.log('handleCriteriaEmpty')
+    this.isInitialState = true
+  }
   /**
    * 更新当前显示的 neuron info 信息
    * @param neuronDetail neuron detail
