@@ -95,6 +95,7 @@ export default class NeuronStatesDesc extends Vue {
   @Prop({ required: true }) morphoInfo!: any
   @Prop({ required: true }) projInfo!: any
   @Prop({ required: true }) readonly neuronsList!: any[]
+  @Prop({ required: true }) readonly isInitialState!: boolean
   private activeSection: string[] = ['basicInfo']
 
   private messageQueue: any[] = []; // 队列来保存消息
@@ -124,17 +125,19 @@ export default class NeuronStatesDesc extends Vue {
       this.hasInitialized = true
       return
     }
-    const currentNeuronIds = this.neuronsList.filter(neuron => !neuron.id.includes('local')).map(neuron => neuron.id)
-    console.log(currentNeuronIds)
     // 简单比较两个ID列表是否一致
-    if (JSON.stringify(this.initialNeuronIds) === JSON.stringify(currentNeuronIds)) {
+    if (this.neuronsList.length === 175149) {
+      console.log('NeuronStatesDesc: isInitialState')
+      console.log(this.isInitialState)
+      this.stopSSE()
       this.basicInfoSummary = this.bs
       this.morphologySummaries = this.ms
       this.projectionInfoSummary = this.ps
-      console.log('Neuron IDs have not changed.')
+      this.isLoading = false
+      console.log('Initial state.')
       return // 如果ID没有变化，直接返回
     }
-    console.log('onDataChange')
+    // console.log('onDataChange')
     this.id_list = this.neuronsList
       .filter(neuron => !neuron.id.includes('local'))
       .map(neuron => neuron.id)
@@ -278,6 +281,7 @@ export default class NeuronStatesDesc extends Vue {
   public stopSSE (): void {
     if (this.eventSource) {
       this.eventSource.close()
+      this.eventSource = null
       console.log('SSE connection closed')
     }
 
@@ -301,6 +305,7 @@ export default class NeuronStatesDesc extends Vue {
       .catch(error => {
         console.error('Error stopping SSE:', error)
       })
+    this.currentConnectionId = null
   }
 
   public restartSSE () {
@@ -313,10 +318,9 @@ export default class NeuronStatesDesc extends Vue {
   mounted () {
     this.$nextTick(() => {
       if (!this.hasStartedSSE) {
-        this.hasStartedSSE = false
+        this.hasStartedSSE = true
       }
     })
-    this.initialNeuronIds = this.neuronsList.filter(neuron => !neuron.id.includes('local')).map(neuron => neuron.id)
   }
 
   beforeDestroy () {
