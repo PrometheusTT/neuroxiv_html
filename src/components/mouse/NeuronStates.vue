@@ -5,6 +5,7 @@
       :morpho-info="neuronStatesData.morpho_info"
       :proj-info="neuronStatesData.proj_info"
       :neurons-list="neuronsList"
+      :is-initial-state="isInitialState"
     />
     <div class="separator" />
     <section
@@ -65,6 +66,7 @@ export default class NeuronStates extends Vue {
   @Ref('featurePlot') readonly featurePlot!: NeuronFeaturePlots
   @Ref('NeuronStatesDesc') readonly neuronStatesDesc!: NeuronStatesDesc
   @Prop({ required: true }) readonly neuronsList!: any[]
+  @Prop({ required: true }) readonly isInitialState!: boolean
   private nl : any[] = this.neuronsList
 
   public neuronStatesData: any = {
