@@ -288,10 +288,25 @@ export default class NeuronSearch extends Vue {
   /**
    * 获取当前选中的搜索条件参数
    */
+  // public getSearchCriteria () {
+  //   return this.selectedConditions.reduce((prev: any, current: any) => {
+  //     let type = current.type
+  //     let query = current.querry_name
+  //     if (type === 'category') {
+  //       prev[query] = current.selectedCategory
+  //     } else if (type === 'binary') {
+  //       prev[query] = current.selectedBinary
+  //     } else if (type === 'range') {
+  //       prev[query] = [current.default_min, current.default_max]
+  //     }
+  //     return prev
+  //   }, {})
+  // }
   public getSearchCriteria () {
-    return this.selectedConditions.reduce((prev: any, current: any) => {
+    const criteria = this.selectedConditions.reduce((prev: any, current: any) => {
       let type = current.type
       let query = current.querry_name
+
       if (type === 'category') {
         prev[query] = current.selectedCategory
       } else if (type === 'binary') {
@@ -301,6 +316,15 @@ export default class NeuronSearch extends Vue {
       }
       return prev
     }, {})
+
+    // 检查 criteria 是否为空
+    if (Object.keys(criteria).length === 0) {
+      console.log(' criteria empty')
+      // 向父组件发送 emit 事件
+      this.$emit('criteriaEmpty')
+    }
+
+    return criteria
   }
 
   /**
