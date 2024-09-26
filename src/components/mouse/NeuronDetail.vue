@@ -36,6 +36,7 @@
         <NeuronStates
           ref="neuronStates"
           :neurons-list="neuronsList"
+          :is-initial-state="isInitialState"
         />
       </el-tab-pane>
       <el-tab-pane
@@ -72,6 +73,7 @@ export default class NeuronDetail extends Vue {
   @Ref('multiNeuronsViewer') readonly multiNeuronsViewer!: MultiNeuronsViewer
   @Prop({ required: true }) loadFirstNeuron!: any
   @Prop({ required: true }) readonly neuronsList!: any[]
+  @Prop({ required: true }) readonly isInitialState!: boolean;
 
   // 此处如果初始值不为neuronInfo,neuronInfo的scene不会被渲染
   public selectedTab: string = 'multiNeuronsViewer'
