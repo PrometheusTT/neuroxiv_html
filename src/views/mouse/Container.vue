@@ -205,6 +205,7 @@ export default class Container extends Vue {
     this.neuronDetail.neuronInfo.isUploadData = false
     await this.$nextTick()
     const needClear = !!this.neuronDetail.neuronInfo.neuronInfoData.id
+    // console.log(this.neuronDetail.neuronInfo.neuronInfoData.id + '--need-clear:' + needClear)
     const neuronInfo = await getNeuronInfo(document.body, neuronDetail.id, this.$store.state.atlas).start()
     this.neuronDetail.neuronInfo.neuronInfoData = neuronInfo
     if (this.neuronDetail.neuronInfo.roiShown) {
@@ -1278,15 +1279,23 @@ export default class Container extends Vue {
         }
       }
     }
-
+    @Watch('$route.query.id')
+    async handleIDChange (newId: string, oldId: string) {
+      if (newId && newId !== oldId) {
+        await this.updateCurrentNeuronInfo({ id: newId })
+      }
+    }
     mounted () {
-      setTimeout(() => {
+      setTimeout(async () => {
         console.log('----------route----------', this.$route.query)
-        if (this.$route.query.hasOwnProperty('brainRegion') && this.$route.query.hasOwnProperty('atlasName')) {
-        // @ts-ignore
-        // this.switchAtlas(this.$route.query['atlasName'])
-          this.headBar.setAtlas(this.$route.query['atlasName'])
-          // @ts-ignore
+
+        // 检查是否存在 `id` 参数
+        if (this.$route.query.hasOwnProperty('id')) {
+          // 如果有 `id` 参数，调用 `updateCurrentNeuronInfo`
+          await this.updateCurrentNeuronInfo({ id: this.$route.query['id'] })
+        } else if (this.$route.query.hasOwnProperty('brainRegion') && this.$route.query.hasOwnProperty('atlasName')) {
+          // 如果没有 `id` 参数，但有 `brainRegion` 和 `atlasName` 参数
+          // this.headBar.setAtlas(this.$route.query['atlasName'])
           this.$store.commit('updateAtlas', this.$route.query['atlasName'])
           this.$nextTick(() => {
             let criteria = {
@@ -1296,7 +1305,7 @@ export default class Container extends Vue {
             this.searchNeurons(criteria)
           })
         } else {
-        // console.log('mounted atlas', this.$store.state.atlas)
+          // 如果没有 `id`、`brainRegion` 和 `atlasName` 参数，按默认逻辑加载
           let criteria = {
             brain_atlas: [this.$store.state.atlas]
           }
@@ -1304,9 +1313,39 @@ export default class Container extends Vue {
             this.neuronDetail.selectedTab = 'multiNeuronsViewer'
           })
         }
-      }, 2000, {})
+      }, 2000)
+
       this.initializeDraggableDialog()
     }
+
+  // mounted () {
+  //   setTimeout(() => {
+  //     console.log('----------route----------', this.$route.query)
+  //     if (this.$route.query.hasOwnProperty('brainRegion') && this.$route.query.hasOwnProperty('atlasName')) {
+  //     // @ts-ignore
+  //     // this.switchAtlas(this.$route.query['atlasName'])
+  //       this.headBar.setAtlas(this.$route.query['atlasName'])
+  //       // @ts-ignore
+  //       this.$store.commit('updateAtlas', this.$route.query['atlasName'])
+  //       this.$nextTick(() => {
+  //         let criteria = {
+  //           brain_atlas: [this.$store.state.atlas],
+  //           celltype: [this.$route.query['brainRegion']]
+  //         }
+  //         this.searchNeurons(criteria)
+  //       })
+  //     } else {
+  //     // console.log('mounted atlas', this.$store.state.atlas)
+  //       let criteria = {
+  //         brain_atlas: [this.$store.state.atlas]
+  //       }
+  //       this.searchNeurons(criteria, undefined, () => {
+  //         this.neuronDetail.selectedTab = 'multiNeuronsViewer'
+  //       })
+  //     }
+  //   }, 2000, {})
+  //   this.initializeDraggableDialog()
+  // }
 }
 </script>
 
