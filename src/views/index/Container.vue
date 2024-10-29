@@ -95,7 +95,19 @@ import NeuronLogo from '@/components/common/NeuronLogo.vue'
 @Component({
   components: { NeuronLogo }
 })
-export default class Container extends Vue {}
+export default class Container extends Vue {
+  mounted () {
+    // 解析查询参数中的 `id`
+    const urlParams = new URLSearchParams(window.location.search)
+    const id = urlParams.get('id')
+    const lang = 'en' // 可以从 `store.state.lang` 或其他配置中获取当前语言
+
+    // 如果存在 `id`，直接跳转至目标 URL
+    if (id) {
+      window.location.href = `${window.location.origin}/mouse.html#/en/?id=${id}`
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
