@@ -543,7 +543,8 @@ export default class NeuronSearch extends Vue {
     return new Promise((resolve, reject) => {
       Papa.parse(csvContent, {
         complete: (results: any) => {
-          this.uploadNeuronList = results.data.slice(1).map((row: any) => row[0])
+          this.uploadNeuronList = results.data.slice(1).map((row: any) => row[0]).filter((item: any) => item !== null && item !== '')
+          console.log('this.uploadNeuronList')
           console.log(this.uploadNeuronList)
           resolve(true)
         },
@@ -560,7 +561,7 @@ export default class NeuronSearch extends Vue {
       try {
         const data = JSON.parse(jsonContent)
         if (Array.isArray(data.neuronsList)) {
-          this.uploadNeuronList = data.neuronsList.map((item: any) => item.id)
+          this.uploadNeuronList = data.neuronsList.map((item: any) => item.id).filter((item: any) => item !== null && item !== '')
           console.log(this.uploadNeuronList)
           resolve(true)
         } else {
