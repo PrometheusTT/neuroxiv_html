@@ -18,6 +18,9 @@
               >
                 <p>{{ neuronInfoData.id }}</p>
                 <p>brain region: {{ neuronInfoData.celltype }}</p>
+                <p v-if="neuronInfoData.id && neuronInfoData.id.indexOf('full') !== -1">
+                  manual labeled brain region: {{ neuronInfoData.celltype_manual }}
+                </p>
                 <p>registration atlas: {{ neuronInfoData.brain_atlas }}</p>
                 <p v-show="neuronInfoData.layer">
                   layer: {{ neuronInfoData.layer }}
@@ -544,29 +547,33 @@ export default class NeuronInfo extends Vue {
       //   folder!.file(imgNames[i], blob)
       // })
 
-      // const swcPromises = this.neuronInfoData(neuron => {
-      //   try {
-      //     // 解析 img_src，生成 .swc 文件路径
-      //     let imgSrc = neuron.img_src.replace(/\\/g, '/')
-      //     let directoryPath = imgSrc.substring(0, imgSrc.lastIndexOf('/'))
-      //     let directoryName = directoryPath.split('/').pop()
-      //     let swcSrc = `${directoryPath}/${directoryName}.swc`
-      //
-      //     let response = await fetch(swcSrc)
-      //     if (response.ok) {
-      //       let swcBlob = await response.blob()
-      //       // @ts-ignore
-      //       swcFolder.file(`${directoryName}.swc`, swcBlob)
-      //     } else {
-      //       console.warn(`Failed to fetch SWC file for neuron: ${swcSrc}`)
-      //     }
-      //   } catch (error) {
-      //     console.warn(`Error fetching SWC file for neuron: ${neuron.img_src}`, error)
-      //   }
-      // })
-      //
-      // // 等待所有异步操作完成
-      // await Promise.all([...swcPromises])
+      // eslint-disable-next-line camelcase
+      try {
+        // @ts-ignore
+
+        try {
+          // 解析 img_src，生成 .swc 文件路径
+          let imgSrc = this.neuronInfoData.img_src.replace(/\\/g, '/')
+          let directoryPath = imgSrc.substring(0, imgSrc.lastIndexOf('/'))
+          let directoryName = directoryPath.split('/').pop()
+          let swcSrc = `${directoryPath}/${directoryName}.swc`
+
+          // 发送请求获取 SWC 文件
+          let response = await fetch(swcSrc)
+          if (response.ok) {
+            let swcBlob = await response.blob()
+            // 使用 swcFolder 保存文件
+            // @ts-ignore
+            swcFolder.file(`${directoryName}.swc`, swcBlob)
+          } else {
+            console.warn(`Failed to fetch SWC file for neuron: ${swcSrc}`)
+          }
+        } catch (error) {
+          console.warn(`Error fetching SWC file for neuron: ${this.neuronInfoData.img_src}`, error)
+        }
+      } catch (error) {
+        console.error('Error fetching SWC files:', error)
+      }
       const zipBlob = await zip.generateAsync({ type: 'blob' })
       const url = URL.createObjectURL(zipBlob)
       await downloadLink(url, 'neuron_info.zip')
@@ -782,6 +789,7 @@ export default class NeuronInfo extends Vue {
    */
   public clearReconstruction () {
     if (this.neuronViewerReconstructionData.length !== 0) {
+      console.log('clearReconstruction')
       // @ts-ignore
       this.$refs.reconstructionTree.setCheckedKeys([])
     }
