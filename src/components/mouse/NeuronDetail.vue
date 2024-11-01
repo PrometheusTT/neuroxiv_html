@@ -27,6 +27,7 @@
           @setVisualizedBasal="$emit('setVisualizedBasal')"
           @setVisualizedApical="$emit('setVisualizedApical')"
           @setVisualizedSoma="$emit('setVisualizedSoma')"
+          @changeResolution="$emit('changeResolution')"
         />
       </el-tab-pane>
       <el-tab-pane

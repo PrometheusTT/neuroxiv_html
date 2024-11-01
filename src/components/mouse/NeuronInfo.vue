@@ -141,6 +141,7 @@
                 </div>
                 <el-tree
                   ref="brainTree"
+                  :key="treeKey"
                   :data="neuronViewerData"
                   :render-after-expand="false"
                   show-checkbox
@@ -282,14 +283,22 @@
       <!--      >-->
       <!--        Search similar neurons-->
       <!--      </el-button>-->
+      <!--      <el-button-->
+      <!--        v-show="neuronInfoData.id"-->
+      <!--        icon="el-icon-download"-->
+      <!--        size="mini"-->
+      <!--        :loading="downloading"-->
+      <!--        @click="downloadData"-->
+      <!--      >-->
+      <!--        Download-->
+      <!--      </el-button>-->
       <el-button
         v-show="neuronInfoData.id"
-        icon="el-icon-download"
         size="mini"
         :loading="downloading"
-        @click="downloadData"
+        @click="changeResolution"
       >
-        Download
+        Change Resolution
       </el-button>
     </div>
   </div>
@@ -381,6 +390,7 @@ export default class NeuronInfo extends Vue {
   public searchKeyword: string = ''
   public filteredData: any = this.neuronViewerData
   public checkedNodes: [] = [] // 用于保存已选中的节点
+  public treeKey: any = 0
 
   onSearch () {
     const keyword = this.searchKeyword.toLowerCase()
@@ -517,6 +527,37 @@ export default class NeuronInfo extends Vue {
       this.ifSoma = 'Show Soma Area'
     }
   }
+
+  private changeResolution () {
+    console.log('changeResolution')
+
+    // 遍历前 3 个 children 项，检查并切换 .obj 和 _raw.obj
+    this.neuronViewerReconstructionData[0].children.slice(0, 3).forEach((item: { src: string }) => {
+      if (item.src.endsWith('_raw.obj')) {
+        // 如果是 _raw.obj，则切换为 .obj
+        item.src = item.src.replace('_raw.obj', '.obj')
+      } else {
+        // 如果是 .obj，则切换为 _raw.obj
+        item.src = item.src.replace('.obj', '_raw.obj')
+      }
+    })
+
+    // 检查并加载各个 children 项
+    if (this.neuronViewerReconstructionData[0].children[0]) {
+      this.dendriteScene.loadDendrite(this.neuronViewerReconstructionData[0].children[0])
+      this.neuronScene.loadObj(this.neuronViewerReconstructionData[0].children[0])
+    }
+
+    if (this.neuronViewerReconstructionData[0].children[1]) {
+      this.neuronScene.loadObj(this.neuronViewerReconstructionData[0].children[1])
+    }
+
+    if (this.neuronViewerReconstructionData[0].children[2]) {
+      this.apicalScene.loadDendrite(this.neuronViewerReconstructionData[0].children[2])
+      this.neuronScene.loadObj(this.neuronViewerReconstructionData[0].children[2])
+    }
+  }
+
   /**
    * 下载 neuron info json, 轮播图片
    * @private
@@ -622,6 +663,7 @@ export default class NeuronInfo extends Vue {
    * @private
    */
   private async checkReconstructionTreeCallback (data: any, checked: boolean) {
+    console.log('checkReconstructionTreeCallback')
     console.log(data)
     if (data.hasOwnProperty('src')) {
       if (checked) {

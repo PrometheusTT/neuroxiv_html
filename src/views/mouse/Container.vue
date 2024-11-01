@@ -31,6 +31,7 @@
               @setVisualizedBasal="setVisualizedBasal"
               @setVisualizedApical="setVisualizedApical"
               @setVisualizedSoma="setVisualizedSoma"
+              @changeResolution="changeResolution"
             />
           </div>
         </el-main>
@@ -187,6 +188,7 @@ export default class Container extends Vue {
   private isModelLoading: boolean = true;
   private isModelLoaded: boolean = false;
   public isInitialState: boolean = false;
+  private useRawObj: boolean = true;
 
   public handleCriteriaEmpty () {
     console.log('handleCriteriaEmpty')
@@ -1127,6 +1129,72 @@ export default class Container extends Vue {
       }
     })
   }
+
+  private changeResolution () {
+    let neuronsDetail = this.neuronList.getSelectedItems()
+    const showAllAxon = this.neuronDetail.multiNeuronsViewer.showAllAxon
+    const showAllApical = this.neuronDetail.multiNeuronsViewer.showAllApical
+    const showAllBasal = this.neuronDetail.multiNeuronsViewer.showAllBasal
+
+    neuronsDetail.forEach((neuronDetail: any) => {
+      const baseData = {
+        id: neuronDetail.id,
+        name: neuronDetail.id,
+        src: '',
+        info: {
+          id: neuronDetail.id,
+          cellType: neuronDetail.celltype
+        }
+      }
+
+      // 生成不同文件路径的后缀名，基于标志位 `useRawObj` 判断
+      const fileSuffix = this.useRawObj ? '_raw.obj' : '.obj'
+
+      // 构建 dendrite, apical, 和 axon 对象
+      const dendrite = {
+        ...baseData,
+        id: neuronDetail.id + '_basal',
+        name: neuronDetail.id + '_basal',
+        rgb_triplet: [0, 0, 255],
+        src: `/data/${neuronDetail.id}/${neuronDetail.id}_basal${fileSuffix}`
+      }
+
+      const apical = {
+        ...baseData,
+        id: neuronDetail.id + '_apical',
+        name: neuronDetail.id + '_apical',
+        rgb_triplet: [255, 0, 255],
+        src: `/data/${neuronDetail.id}/${neuronDetail.id}_apical${fileSuffix}`
+      }
+
+      const axon = {
+        ...baseData,
+        id: neuronDetail.id + '_axon',
+        name: neuronDetail.id + '_axon',
+        rgb_triplet: [255, 0, 0],
+        src: `/data/${neuronDetail.id}/${neuronDetail.id}_axon${fileSuffix}`
+      }
+
+      // 检查 has_dendrite, has_axon, 和 has_apical 是否为 1，然后有选择地加载
+      if (neuronDetail['has_axon']) {
+        console.log('showAllAxon')
+        console.log(showAllAxon)
+        this.neuronDetail.multiNeuronsViewer.neuronScene.loadObjSetVisible(axon, showAllAxon)
+      }
+
+      if (neuronDetail['has_dendrite']) {
+        this.neuronDetail.multiNeuronsViewer.neuronScene.loadObjSetVisible(dendrite, showAllBasal)
+      }
+
+      if (neuronDetail['has_apical']) {
+        this.neuronDetail.multiNeuronsViewer.neuronScene.loadObjSetVisible(apical, showAllApical)
+      }
+    })
+
+    // 切换标志位，以便下次调用时使用不同的文件类型
+    this.useRawObj = !this.useRawObj
+  }
+
   /**
    * 加载神经元列表第一个神经元
    */
