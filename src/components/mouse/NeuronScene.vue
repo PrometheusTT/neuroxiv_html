@@ -606,11 +606,6 @@ export default class NeuronScene extends Vue {
                 obj.children[0].material.linewidth = 100
                 obj.children[0].material.transparent = true
                 obj.children[0].material.opacity = 0.3
-              // if (data.name.indexOf('axon') !== -1) {
-              //   obj.children[0].material.color.set('rgb(0,225,0)')
-              // } else if (data.name.indexOf('den') !== -1) {
-              //   obj.children[0].material.color.set('rgb(100,90,55)')
-              // }
               }
             }
             obj.children[0].geometry.translate(this.centerShift.x, this.centerShift.y, this.centerShift.z)
@@ -635,6 +630,76 @@ export default class NeuronScene extends Vue {
           (err: any) => { reject(err) }
         )
       })
+    }
+
+    public async loadObjSetVisible (data: any, isVisible:boolean) {
+      await this.waitRootLoaded()
+      return new Promise((resolve, reject) => {
+        const loader = new OBJLoader()
+        loader.load(
+          data.src,
+          (obj: any) => {
+            this.neuronData.push(data)
+            // obj.children[0].material = new LineMaterial({
+            //   linewidth: 100
+            // })
+            // obj.children[0].material.resolution.set(window.innerWidth, window.innerHeight)
+            if (data.hasOwnProperty('rgb_triplet')) {
+              // material.color = new THREE.Color(`rgb(${data.rgb_triplet[0]}, ${data.rgb_triplet[1]}, ${data.rgb_triplet[2]})`)
+              obj.children[0].material.color = new THREE.Color(`rgb(${data.rgb_triplet[0]}, ${data.rgb_triplet[1]}, ${data.rgb_triplet[2]})`)
+              if (data.id > 0) {
+                obj.children[0].material.linewidth = 100
+                obj.children[0].material.transparent = true
+                obj.children[0].material.opacity = 0.3
+              }
+            }
+            obj.children[0].geometry.translate(this.centerShift.x, this.centerShift.y, this.centerShift.z)
+            // 绕x轴翻转180度，与脑一致
+            obj.children[0].geometry.rotateX(Math.PI)
+            if (this.neuronDataMap.has(data.id)) {
+              this.unloadObj(data.id)
+            }
+            if (data.hasOwnProperty('info')) {
+              this.neuronInfoMap.set(data.id, data.info)
+            }
+            obj.children[0].name = data.name
+            this.neuronDataMap.set(data.id, obj)
+            obj.visible = isVisible
+            // this.storeInitialState(obj)
+            this.scene.add(obj)
+            // console.log(obj)
+            this.loadedObj = obj // 保存加载的对象
+            this.resetRender()
+            resolve(true)
+          },
+          () => {},
+          (err: any) => { reject(err) }
+        )
+      })
+    }
+
+    // eslint-disable-next-line camelcase
+    public updateObjColor (id: number, rgb_triplet: [number, number, number]): void {
+      if (this.neuronDataMap.has(id)) {
+        const obj = this.neuronDataMap.get(id)
+
+        if (obj && obj.children && obj.children[0] && obj.children[0].material) {
+          // Update the color of the material
+          obj.children[0].material.color = new THREE.Color(`rgb(${rgb_triplet[0]}, ${rgb_triplet[1]}, ${rgb_triplet[2]})`)
+
+          // If the object has transparency settings or other material properties, you can modify them here as well
+          // For example, if you want to update opacity or linewidth
+          if (obj.children[0].material.transparent) {
+            obj.children[0].material.opacity = 0.5 // Or any other value
+          }
+          obj.children[0].material.needsUpdate = true // Ensure the material is updated in the scene
+          this.resetRender() // Re-render the scene if necessary
+        } else {
+          console.error('Object or material not found for the given ID:', id)
+        }
+      } else {
+        console.error('Object with the given ID not found:', id)
+      }
     }
 
     public async loadPointObj (data: string) {
