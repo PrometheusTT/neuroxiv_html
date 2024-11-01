@@ -137,9 +137,9 @@
     </div>
     <div class="right-top">
       <el-button
-        @click="Rotate"
+        @click="ChangeResolution"
       >
-        Animation
+        Change Resolution
       </el-button>
     </div>
   </div>
@@ -213,6 +213,10 @@ export default class NeuronInfo extends Vue {
   private setSoma () {
     console.log('showAllSoma')
     this.$emit('setVisualizedSoma')
+  }
+
+  private ChangeResolution () {
+    this.$emit('changeResolution')
   }
   /**
    * 脑区el-tree节点状态改变的回调函数
@@ -449,7 +453,7 @@ export default class NeuronInfo extends Vue {
   }
 
   rgbToHex (rgb: any[]) {
-    console.log(`#${rgb.map(x => x.toString(16).padStart(2, '0')).join('')}`)
+    // console.log(`#${rgb.map(x => x.toString(16).padStart(2, '0')).join('')}`)
     return `#${rgb.map(x => x.toString(16).padStart(2, '0')).join('')}`
   }
 }
