@@ -1149,6 +1149,7 @@ export default class Container extends Vue {
 
       // 生成不同文件路径的后缀名，基于标志位 `useRawObj` 判断
       const fileSuffix = this.useRawObj ? '_raw.obj' : '.obj'
+      this.neuronDetail.multiNeuronsViewer.buttonText = this.useRawObj ? 'Switch to downsampled morpho' : 'Switch to raw morpho'
 
       // 构建 dendrite, apical, 和 axon 对象
       const dendrite = {

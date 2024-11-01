@@ -139,7 +139,7 @@
       <el-button
         @click="ChangeResolution"
       >
-        Change Resolution
+        {{ buttonText }}
       </el-button>
     </div>
   </div>
@@ -194,6 +194,7 @@ export default class NeuronInfo extends Vue {
   public searchKeyword: string = ''
   public filteredData: any = this.neuronViewerData
   public checkedNodes: [] = [] // 用于保存已选中的节点
+  public buttonText:string = 'switch to raw morpho'
 
   private Rotate () {
     this.neuronScene.toggleRotation()

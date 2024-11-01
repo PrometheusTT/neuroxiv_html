@@ -141,7 +141,6 @@
                 </div>
                 <el-tree
                   ref="brainTree"
-                  :key="treeKey"
                   :data="neuronViewerData"
                   :render-after-expand="false"
                   show-checkbox
@@ -298,7 +297,7 @@
         :loading="downloading"
         @click="changeResolution"
       >
-        Change Resolution
+        {{ buttonText }}
       </el-button>
     </div>
   </div>
@@ -389,8 +388,9 @@ export default class NeuronInfo extends Vue {
   private sameRegionInfo:string = ''
   public searchKeyword: string = ''
   public filteredData: any = this.neuronViewerData
-  public checkedNodes: [] = [] // 用于保存已选中的节点
-  public treeKey: any = 0
+  public checkedNodes: [] = []
+  public buttonText:string = 'Switch to raw morpho'
+  public useRawObj: boolean = true
 
   onSearch () {
     const keyword = this.searchKeyword.toLowerCase()
@@ -528,33 +528,57 @@ export default class NeuronInfo extends Vue {
     }
   }
 
-  private changeResolution () {
-    console.log('changeResolution')
+  private getSelectedNodes () {
+    const tree = this.$refs.reconstructionTree as any
+    if (tree) {
+      // 获取所有选中的节点
+      const checkedNodes = tree.getCheckedNodes()
+      console.log('Checked nodes:', checkedNodes)
+      return checkedNodes
+    }
+    return []
+  }
 
+  private changeResolution () {
+    const tree = this.$refs.reconstructionTree as any
+    const renderSettings = { dendrite: false, axon: false, apical: false }
+
+    if (tree) {
+      // 获取所有选中的节点的 id 键
+      const checkedKeys = new Set(tree.getCheckedKeys())
+      console.log('Checked node keys:', checkedKeys)
+
+      // 设置渲染标志
+      renderSettings.dendrite = checkedKeys.has(-1)
+      renderSettings.axon = checkedKeys.has(-2)
+      renderSettings.apical = checkedKeys.has(-4)
+    }
     // 遍历前 3 个 children 项，检查并切换 .obj 和 _raw.obj
     this.neuronViewerReconstructionData[0].children.slice(0, 3).forEach((item: { src: string }) => {
-      if (item.src.endsWith('_raw.obj')) {
-        // 如果是 _raw.obj，则切换为 .obj
-        item.src = item.src.replace('_raw.obj', '.obj')
-      } else {
-        // 如果是 .obj，则切换为 _raw.obj
+      if (this.useRawObj) {
         item.src = item.src.replace('.obj', '_raw.obj')
+      } else {
+        item.src = item.src.replace('_raw.obj', '.obj')
       }
     })
+
+    // 切换按钮文本
+    this.buttonText = this.useRawObj ? 'Switch to downsampled morpho' : 'Switch to raw morpho'
+    this.useRawObj = !this.useRawObj
 
     // 检查并加载各个 children 项
     if (this.neuronViewerReconstructionData[0].children[0]) {
       this.dendriteScene.loadDendrite(this.neuronViewerReconstructionData[0].children[0])
-      this.neuronScene.loadObj(this.neuronViewerReconstructionData[0].children[0])
+      this.neuronScene.loadObjSetVisible(this.neuronViewerReconstructionData[0].children[0], renderSettings.dendrite)
     }
 
     if (this.neuronViewerReconstructionData[0].children[1]) {
-      this.neuronScene.loadObj(this.neuronViewerReconstructionData[0].children[1])
+      this.neuronScene.loadObjSetVisible(this.neuronViewerReconstructionData[0].children[1], renderSettings.axon)
     }
 
     if (this.neuronViewerReconstructionData[0].children[2]) {
       this.apicalScene.loadDendrite(this.neuronViewerReconstructionData[0].children[2])
-      this.neuronScene.loadObj(this.neuronViewerReconstructionData[0].children[2])
+      this.neuronScene.loadObjSetVisible(this.neuronViewerReconstructionData[0].children[2], renderSettings.apical)
     }
   }
 
