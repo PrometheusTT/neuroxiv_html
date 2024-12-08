@@ -1,0 +1,5956 @@
+[
+    {
+        "acronym": "root",
+        "name": [
+            "root"
+        ]
+    },
+    {
+        "acronym": "grey",
+        "name": [
+            "Basic cell groups and regions"
+        ]
+    },
+    {
+        "acronym": "CH",
+        "name": [
+            "Cerebrum"
+        ]
+    },
+    {
+        "acronym": "CTX",
+        "name": [
+            "Cerebral cortex",
+            "Cortex",
+            "Neocortex"
+        ]
+    },
+    {
+        "acronym": "CTXpl",
+        "name": [
+            "Cortical plate",
+            "Cerebral cortex layer",
+            "Layer of Cerebral Cortex",
+            "Pallial cortex"
+        ]
+    },
+    {
+        "acronym": "Isocortex",
+        "name": [
+            "Isocortex",
+            "Neocortex",
+            "Homotypic cortex"
+        ]
+    },
+    {
+        "acronym": "FRP",
+        "name": [
+            "Frontal pole, cerebral cortex",
+            "Frontal pole",
+            "Frontal cortex",
+            "Frontal-Prefrontal cortex"
+        ]
+    },
+    {
+        "acronym": "MO",
+        "name": [
+            "Somatomotor areas",
+            "Motor Cortex"
+        ]
+    },
+    {
+        "acronym": "MOp",
+        "name": [
+            "Primary motor area",
+            "Primary motor cortex",
+            "Motor cortex primary",
+            "Motor area primary",
+            "Motor Cortex Posterior",
+            "M1"
+        ]
+    },
+    {
+        "acronym": "MOs",
+        "name": [
+            "Secondary motor area",
+            "Secondary motor cortex",
+            "M2",
+            "Motor cortex secondary",
+            "Somatic Motor Cortex"
+        ]
+    },
+    {
+        "acronym": "SS",
+        "name": [
+            "Somatosensory areas",
+            "Somatosensory Cortex",
+            "Cortex Somatosensory"
+        ]
+    },
+    {
+        "acronym": "SSp",
+        "name": [
+            "Primary somatosensory area",
+            "Primary Somatosensory Cortex",
+            "S1",
+            "Somatosensory Cortex Primary"
+        ]
+    },
+    {
+        "acronym": "SSp-n",
+        "name": [
+            "Primary somatosensory area, nose"
+        ]
+    },
+    {
+        "acronym": "SSp-bfd",
+        "name": [
+            "Primary somatosensory area, barrel field"
+        ]
+    },
+    {
+        "acronym": "VISrll",
+        "name": [
+            "Rostrolateral lateral visual area"
+        ]
+    },
+    {
+        "acronym": "SSp-ll",
+        "name": [
+            "Primary somatosensory area, lower limb"
+        ]
+    },
+    {
+        "acronym": "SSp-m",
+        "name": [
+            "Primary somatosensory area, mouth",
+            "Somatosensory Area 1",
+            "Medial Area of S1"
+        ]
+    },
+    {
+        "acronym": "SSp-ul",
+        "name": [
+            "Primary somatosensory area, upper limb"
+        ]
+    },
+    {
+        "acronym": "SSp-tr",
+        "name": [
+            "Primary somatosensory area, trunk"
+        ]
+    },
+    {
+        "acronym": "SSp-un",
+        "name": [
+            "Primary somatosensory area, unassigned"
+        ]
+    },
+    {
+        "acronym": "SSs",
+        "name": [
+            "Supplemental somatosensory area",
+            "Secondary somatosensory cortex",
+            "S2"
+        ]
+    },
+    {
+        "acronym": "GU",
+        "name": [
+            "Gustatory areas",
+            "Gustatory Cortex",
+            "Cortex Gustatory",
+            "Insular Gustatory Area"
+        ]
+    },
+    {
+        "acronym": "VISC",
+        "name": [
+            "Visceral area",
+            "Visceral Cortex",
+            "Cortex Visceral",
+            "Viscerosensory Cortex"
+        ]
+    },
+    {
+        "acronym": "AUD",
+        "name": [
+            "Auditory areas",
+            "Auditory Cortex",
+            "A1"
+        ]
+    },
+    {
+        "acronym": "AUDd",
+        "name": [
+            "Dorsal auditory area",
+            "Dorsal Auditory Cortex",
+            "Auditory Cortex Dorsal"
+        ]
+    },
+    {
+        "acronym": "VISlla",
+        "name": [
+            "Laterolateral anterior visual area",
+            "Lateral Visual Area",
+            "Visual Area Lateral Part"
+        ]
+    },
+    {
+        "acronym": "AUDp",
+        "name": [
+            "Primary auditory area",
+            "Posterior Auditory Cortex",
+            "Auditory Cortex Posterior"
+        ]
+    },
+    {
+        "acronym": "AUDpo",
+        "name": [
+            "Posterior auditory area"
+        ]
+    },
+    {
+        "acronym": "AUDv",
+        "name": [
+            "Ventral auditory area",
+            "Ventral auditory cortex",
+            "Auditory Cortex Ventral"
+        ]
+    },
+    {
+        "acronym": "VIS",
+        "name": [
+            "Visual areas",
+            "Visual cortex",
+            "Cortex Visual"
+        ]
+    },
+    {
+        "acronym": "VISal",
+        "name": [
+            "Anterolateral visual area",
+            "Visual Area Anterolateral"
+        ]
+    },
+    {
+        "acronym": "VISam",
+        "name": [
+            "Anteromedial visual area"
+        ]
+    },
+    {
+        "acronym": "VISl",
+        "name": [
+            "Lateral visual area",
+            "Lateral area visual",
+            "Visual Area Lateral"
+        ]
+    },
+    {
+        "acronym": "VISp",
+        "name": [
+            "Primary visual area",
+            "Primary Visual Cortex,",
+            "Visual Area Posterior"
+        ]
+    },
+    {
+        "acronym": "VISpl",
+        "name": [
+            "Posterolateral visual area"
+        ]
+    },
+    {
+        "acronym": "VISpm",
+        "name": [
+            "posteromedial visual area"
+        ]
+    },
+    {
+        "acronym": "VISli",
+        "name": [
+            "Laterointermediate area"
+        ]
+    },
+    {
+        "acronym": "VISpor",
+        "name": [
+            "Postrhinal area"
+        ]
+    },
+    {
+        "acronym": "ACA",
+        "name": [
+            "Anterior cingulate area",
+            "Anterior Cingulate Cortex",
+            "Cortex Anterior Cingulate"
+        ]
+    },
+    {
+        "acronym": "ACAd",
+        "name": [
+            "Anterior cingulate area, dorsal part",
+            "Dorsal Anterior Cingulate Cortex",
+            "Anterior Cingulate Cortex Dorsal"
+        ]
+    },
+    {
+        "acronym": "ACAv",
+        "name": [
+            "Anterior cingulate area, ventral part",
+            "Ventral Anterior Cingulate Cortex",
+            "Anterior Cingulate Cortex Ventral"
+        ]
+    },
+    {
+        "acronym": "PL",
+        "name": [
+            "Prelimbic area",
+            "Prelimbic Cortex"
+        ]
+    },
+    {
+        "acronym": "PL2",
+        "name": [
+            "Prelimbic area, layer 2"
+        ]
+    },
+    {
+        "acronym": "ILA",
+        "name": [
+            "Infralimbic area",
+            "Infralimbic cortex"
+        ]
+    },
+    {
+        "acronym": "ILA2",
+        "name": [
+            "Infralimbic area, layer 2"
+        ]
+    },
+    {
+        "acronym": "ORB",
+        "name": [
+            "Orbital area",
+            "Orbital cortex",
+            "Orbitofrontal cortex"
+        ]
+    },
+    {
+        "acronym": "ORBl",
+        "name": [
+            "Orbital area, lateral part",
+            "Lateral Orbital Cortex",
+            "Lateral Orbitofrontal Cortex"
+        ]
+    },
+    {
+        "acronym": "ORBm",
+        "name": [
+            "Orbital area, medial part",
+            "Medial Orbital Cortex",
+            "Medial Orbitofrontal Cortex"
+        ]
+    },
+    {
+        "acronym": "ORBm2",
+        "name": [
+            "Orbital area, medial part, layer 2"
+        ]
+    },
+    {
+        "acronym": "ORBv",
+        "name": [
+            "Orbital area, ventral part",
+            "Ventral Orbital Cortex",
+            "Ventral Orbitofrontal Cortex"
+        ]
+    },
+    {
+        "acronym": "ORBvl",
+        "name": [
+            "Orbital area, ventrolateral part"
+        ]
+    },
+    {
+        "acronym": "AI",
+        "name": [
+            "Agranular insular area"
+        ]
+    },
+    {
+        "acronym": "AId",
+        "name": [
+            "Agranular insular area, dorsal part",
+            "Dorsal Agranular Insular Cortex",
+            "Dorsal Agranular Insular Area"
+        ]
+    },
+    {
+        "acronym": "AIp",
+        "name": [
+            "Agranular insular area, posterior part",
+            "Posterior Agranular Insular Area",
+            "Posterior Agranular Insular Cortex"
+        ]
+    },
+    {
+        "acronym": "AIv",
+        "name": [
+            "Agranular insular area, ventral part",
+            "Ventral Agranular Insular Cortex",
+            "Ventral Agranular Insular Area"
+        ]
+    },
+    {
+        "acronym": "RSP",
+        "name": [
+            "Retrosplenial area",
+            "Retrosplenial cortex"
+        ]
+    },
+    {
+        "acronym": "RSPagl",
+        "name": [
+            "Retrosplenial area, lateral agranular part"
+        ]
+    },
+    {
+        "acronym": "VISmma",
+        "name": [
+            "Mediomedial anterior visual area"
+        ]
+    },
+    {
+        "acronym": "VISmmp",
+        "name": [
+            "Mediomedial posterior visual area"
+        ]
+    },
+    {
+        "acronym": "VISm",
+        "name": [
+            "Medial visual area",
+            "Visual Area Medial Part"
+        ]
+    },
+    {
+        "acronym": "RSPd",
+        "name": [
+            "Retrosplenial area, dorsal part",
+            "Retrosplenial Cortex Dorsal",
+            "Dorsal Retrosplenial Cortex"
+        ]
+    },
+    {
+        "acronym": "RSPv",
+        "name": [
+            "Retrosplenial area, ventral part",
+            "Ventral Retrosplenial Cortex",
+            "Retrosplenial Cortex Ventral "
+        ]
+    },
+    {
+        "acronym": "RSPv2",
+        "name": [
+            "Retrosplenial area, ventral part, layer 2"
+        ]
+    },
+    {
+        "acronym": "PTLp",
+        "name": [
+            "Posterior parietal association areas"
+        ]
+    },
+    {
+        "acronym": "VISa",
+        "name": [
+            "Anterior area",
+            "Anterior cortex",
+            "Visual Area Anterior"
+        ]
+    },
+    {
+        "acronym": "VISrl",
+        "name": [
+            "Rostrolateral visual area"
+        ]
+    },
+    {
+        "acronym": "TEa",
+        "name": [
+            "Temporal association areas",
+            "Temporal association cortex"
+        ]
+    },
+    {
+        "acronym": "PERI",
+        "name": [
+            "Perirhinal area",
+            "Perirhinal cortex"
+        ]
+    },
+    {
+        "acronym": "ECT",
+        "name": [
+            "Ectorhinal area",
+            "Ectorhinal cortex"
+        ]
+    },
+    {
+        "acronym": "OLF",
+        "name": [
+            "Olfactory areas",
+            "Olfactory Bulb",
+            "Olfactory cortex"
+        ]
+    },
+    {
+        "acronym": "MOB",
+        "name": [
+            "Main olfactory bulb",
+            "Primary olfactory bulb"
+        ]
+    },
+    {
+        "acronym": "MOBgl",
+        "name": [
+            "Main olfactory bulb, glomerular layer"
+        ]
+    },
+    {
+        "acronym": "MOBgr",
+        "name": [
+            "Main olfactory bulb, granule layer"
+        ]
+    },
+    {
+        "acronym": "MOBipl",
+        "name": [
+            "Main olfactory bulb, inner plexiform layer"
+        ]
+    },
+    {
+        "acronym": "MOBmi",
+        "name": [
+            "Main olfactory bulb, mitral layer"
+        ]
+    },
+    {
+        "acronym": "MOBopl",
+        "name": [
+            "Main olfactory bulb, outer plexiform layer"
+        ]
+    },
+    {
+        "acronym": "AOB",
+        "name": [
+            "Accessory olfactory bulb",
+            "Secondary olfactory bulb"
+        ]
+    },
+    {
+        "acronym": "AOBgl",
+        "name": [
+            "Accessory olfactory bulb, glomerular layer"
+        ]
+    },
+    {
+        "acronym": "AOBgr",
+        "name": [
+            "Accessory olfactory bulb, granular layer"
+        ]
+    },
+    {
+        "acronym": "AOBmi",
+        "name": [
+            "Accessory olfactory bulb, mitral layer"
+        ]
+    },
+    {
+        "acronym": "AON",
+        "name": [
+            "Anterior olfactory nucleus"
+        ]
+    },
+    {
+        "acronym": "AONd",
+        "name": [
+            "Anterior olfactory nucleus, dorsal part"
+        ]
+    },
+    {
+        "acronym": "AONe",
+        "name": [
+            "Anterior olfactory nucleus, external part"
+        ]
+    },
+    {
+        "acronym": "AONl",
+        "name": [
+            "Anterior olfactory nucleus, lateral part"
+        ]
+    },
+    {
+        "acronym": "AONm",
+        "name": [
+            "Anterior olfactory nucleus, medial part"
+        ]
+    },
+    {
+        "acronym": "AONpv",
+        "name": [
+            "Anterior olfactory nucleus, posteroventral part"
+        ]
+    },
+    {
+        "acronym": "AON2",
+        "name": [
+            "Anterior olfactory nucleus, layer 2"
+        ]
+    },
+    {
+        "acronym": "TT",
+        "name": [
+            "Taenia tecta"
+        ]
+    },
+    {
+        "acronym": "TTd",
+        "name": [
+            "Taenia tecta, dorsal part"
+        ]
+    },
+    {
+        "acronym": "TTd1-4",
+        "name": [
+            "Taenia tecta, dorsal part, layers 1-4"
+        ]
+    },
+    {
+        "acronym": "TTd2",
+        "name": [
+            "Taenia tecta, dorsal part, layer 2"
+        ]
+    },
+    {
+        "acronym": "TTd3",
+        "name": [
+            "Taenia tecta, dorsal part, layer 3"
+        ]
+    },
+    {
+        "acronym": "TTv",
+        "name": [
+            "Taenia tecta, ventral part"
+        ]
+    },
+    {
+        "acronym": "TTv1-3",
+        "name": [
+            "Taenia tecta, ventral part, layers 1-3"
+        ]
+    },
+    {
+        "acronym": "TTv2",
+        "name": [
+            "Taenia tecta, ventral part, layer 2"
+        ]
+    },
+    {
+        "acronym": "TTv3",
+        "name": [
+            "Taenia tecta, ventral part, layer 3"
+        ]
+    },
+    {
+        "acronym": "DP",
+        "name": [
+            "Dorsal peduncular area",
+            "Dorsal peduncular cortex"
+        ]
+    },
+    {
+        "acronym": "DP2",
+        "name": [
+            "Dorsal peduncular area, layer 2"
+        ]
+    },
+    {
+        "acronym": "PIR",
+        "name": [
+            "Piriform area",
+            "Piriform cortex"
+        ]
+    },
+    {
+        "acronym": "PIR1-3",
+        "name": [
+            "Piriform area, layers 1-3"
+        ]
+    },
+    {
+        "acronym": "PIR2",
+        "name": [
+            "Piriform area, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "PIR3",
+        "name": [
+            "Piriform area, polymorph layer"
+        ]
+    },
+    {
+        "acronym": "NLOT",
+        "name": [
+            "Nucleus of the lateral olfactory tract"
+        ]
+    },
+    {
+        "acronym": "NLOT1-3",
+        "name": [
+            "Nucleus of the lateral olfactory tract, layers 1-3"
+        ]
+    },
+    {
+        "acronym": "NLOT2",
+        "name": [
+            "Nucleus of the lateral olfactory tract, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "NLOT3",
+        "name": [
+            "Nucleus of the lateral olfactory tract, layer 3"
+        ]
+    },
+    {
+        "acronym": "COA",
+        "name": [
+            "Cortical amygdalar area"
+        ]
+    },
+    {
+        "acronym": "COAa",
+        "name": [
+            "Cortical amygdalar area, anterior part"
+        ]
+    },
+    {
+        "acronym": "COAa2",
+        "name": [
+            "Cortical amygdalar area, anterior part, layer 2"
+        ]
+    },
+    {
+        "acronym": "COAa3",
+        "name": [
+            "Cortical amygdalar area, anterior part, layer 3"
+        ]
+    },
+    {
+        "acronym": "COAp",
+        "name": [
+            "Cortical amygdalar area, posterior part"
+        ]
+    },
+    {
+        "acronym": "COApl",
+        "name": [
+            "Cortical amygdalar area, posterior part, lateral zone"
+        ]
+    },
+    {
+        "acronym": "layers",
+        "name": [
+            "Cortical amygdalar area, posterior part, lateral zone,",
+            "Cortical amygdalar area, posterior part, lateral zone,",
+            "Cortical amygdalar area, posterior part, medial zone,",
+            "Cortical amygdalar area, posterior part, medial zone,"
+        ]
+    },
+    {
+        "acronym": "COApl2",
+        "name": [
+            "Cortical amygdalar area, posterior part, lateral zone, layer 2"
+        ]
+    },
+    {
+        "acronym": "COApl3",
+        "name": [
+            "Cortical amygdalar area, posterior part, lateral zone, layer 3"
+        ]
+    },
+    {
+        "acronym": "COApm",
+        "name": [
+            "Cortical amygdalar area, posterior part, medial zone"
+        ]
+    },
+    {
+        "acronym": "COApm2",
+        "name": [
+            "Cortical amygdalar area, posterior part, medial zone, layer 2"
+        ]
+    },
+    {
+        "acronym": "COApm3",
+        "name": [
+            "Cortical amygdalar area, posterior part, medial zone, layer 3"
+        ]
+    },
+    {
+        "acronym": "PAA",
+        "name": [
+            "Piriform-amygdalar area"
+        ]
+    },
+    {
+        "acronym": "PAA1-3",
+        "name": [
+            "Piriform-amygdalar area, layers 1-3"
+        ]
+    },
+    {
+        "acronym": "PAA2",
+        "name": [
+            "Piriform-amygdalar area, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "PAA3",
+        "name": [
+            "Piriform-amygdalar area, polymorph layer"
+        ]
+    },
+    {
+        "acronym": "TR",
+        "name": [
+            "Postpiriform transition area"
+        ]
+    },
+    {
+        "acronym": "TR1-3",
+        "name": [
+            "Postpiriform transition area, layers 1-3"
+        ]
+    },
+    {
+        "acronym": "TR2",
+        "name": [
+            "Postpiriform transition area, layers 2"
+        ]
+    },
+    {
+        "acronym": "TR3",
+        "name": [
+            "Postpiriform transition area, layers 3"
+        ]
+    },
+    {
+        "acronym": "HPF",
+        "name": [
+            "Hippocampal formation"
+        ]
+    },
+    {
+        "acronym": "HIP",
+        "name": [
+            "Hippocampus",
+            "Hippocampal region"
+        ]
+    },
+    {
+        "acronym": "CA",
+        "name": [
+            "Ammon's horn",
+            "Cornu Ammonis"
+        ]
+    },
+    {
+        "acronym": "CA1slm",
+        "name": [
+            "Field CA1, stratum lacunosum-moleculare"
+        ]
+    },
+    {
+        "acronym": "CA1so",
+        "name": [
+            "Field CA1, stratum oriens"
+        ]
+    },
+    {
+        "acronym": "CA1sp",
+        "name": [
+            "Field CA1, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "CA1sr",
+        "name": [
+            "Field CA1, stratum radiatum"
+        ]
+    },
+    {
+        "acronym": "CA2",
+        "name": [
+            "Field CA2",
+            "Cornu Ammonis 2",
+            "Ammon's Horn Area 2"
+        ]
+    },
+    {
+        "acronym": "CA2slm",
+        "name": [
+            "Field CA2, stratum lacunosum-moleculare"
+        ]
+    },
+    {
+        "acronym": "CA2so",
+        "name": [
+            "Field CA2, stratum oriens"
+        ]
+    },
+    {
+        "acronym": "CA2sp",
+        "name": [
+            "Field CA2, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "CA2sr",
+        "name": [
+            "Field CA2, stratum radiatum"
+        ]
+    },
+    {
+        "acronym": "CA3",
+        "name": [
+            "Field CA3",
+            "Cornu Ammonis 3",
+            "Ammon's Horn Area 3"
+        ]
+    },
+    {
+        "acronym": "CA3slm",
+        "name": [
+            "Field CA3, stratum lacunosum-moleculare"
+        ]
+    },
+    {
+        "acronym": "CA3slu",
+        "name": [
+            "Field CA3, stratum lucidum"
+        ]
+    },
+    {
+        "acronym": "CA3so",
+        "name": [
+            "Field CA3, stratum oriens"
+        ]
+    },
+    {
+        "acronym": "CA3sp",
+        "name": [
+            "Field CA3, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "CA3sr",
+        "name": [
+            "Field CA3, stratum radiatum"
+        ]
+    },
+    {
+        "acronym": "DG",
+        "name": [
+            "Dentate gyrus",
+            "Dentate area"
+        ]
+    },
+    {
+        "acronym": "DG-mo",
+        "name": [
+            "Dentate gyrus, molecular layer"
+        ]
+    },
+    {
+        "acronym": "DG-po",
+        "name": [
+            "Dentate gyrus, polymorph layer"
+        ]
+    },
+    {
+        "acronym": "DG-sg",
+        "name": [
+            "Dentate gyrus, granule cell layer"
+        ]
+    },
+    {
+        "acronym": "DG-sgz",
+        "name": [
+            "Dentate gyrus, subgranular zone"
+        ]
+    },
+    {
+        "acronym": "DGcr",
+        "name": [
+            "Dentate gyrus crest"
+        ]
+    },
+    {
+        "acronym": "DGcr-mo",
+        "name": [
+            "Dentate gyrus crest, molecular layer"
+        ]
+    },
+    {
+        "acronym": "DGcr-po",
+        "name": [
+            "Dentate gyrus crest, polymorph layer"
+        ]
+    },
+    {
+        "acronym": "DGcr-sg",
+        "name": [
+            "Dentate gyrus crest, granule cell layer"
+        ]
+    },
+    {
+        "acronym": "DGlb",
+        "name": [
+            "Dentate gyrus lateral blade"
+        ]
+    },
+    {
+        "acronym": "DGlb-mo",
+        "name": [
+            "Dentate gyrus lateral blade, molecular layer"
+        ]
+    },
+    {
+        "acronym": "DGlb-po",
+        "name": [
+            "Dentate gyrus lateral blade, polymorph layer"
+        ]
+    },
+    {
+        "acronym": "DGlb-sg",
+        "name": [
+            "Dentate gyrus lateral blade, granule cell layer"
+        ]
+    },
+    {
+        "acronym": "DGmb",
+        "name": [
+            "Dentate gyrus medial blade"
+        ]
+    },
+    {
+        "acronym": "DGmb-mo",
+        "name": [
+            "Dentate gyrus medial blade, molecular layer"
+        ]
+    },
+    {
+        "acronym": "DGmb-po",
+        "name": [
+            "Dentate gyrus medial blade, polymorph layer"
+        ]
+    },
+    {
+        "acronym": "DGmb-sg",
+        "name": [
+            "Dentate gyrus medial blade, granule cell layer"
+        ]
+    },
+    {
+        "acronym": "FC",
+        "name": [
+            "Fasciola cinerea"
+        ]
+    },
+    {
+        "acronym": "IG",
+        "name": [
+            "Induseum griseum"
+        ]
+    },
+    {
+        "acronym": "RHP",
+        "name": [
+            "Retrohippocampal region"
+        ]
+    },
+    {
+        "acronym": "ENT",
+        "name": [
+            "Entorhinal area",
+            "Entorhinal cortex"
+        ]
+    },
+    {
+        "acronym": "ENTl",
+        "name": [
+            "Entorhinal area, lateral part"
+        ]
+    },
+    {
+        "acronym": "ENTl2",
+        "name": [
+            "Entorhinal area, lateral part, layer 2"
+        ]
+    },
+    {
+        "acronym": "ENTl2a",
+        "name": [
+            "Entorhinal area, lateral part, layer 2a"
+        ]
+    },
+    {
+        "acronym": "ENTl2b",
+        "name": [
+            "Entorhinal area, lateral part, layer 2b"
+        ]
+    },
+    {
+        "acronym": "ENTl3",
+        "name": [
+            "Entorhinal area, lateral part, layer 3"
+        ]
+    },
+    {
+        "acronym": "ENTl4/5",
+        "name": [
+            "Entorhinal area, lateral part, layer 4/5"
+        ]
+    },
+    {
+        "acronym": "ENTl5/6",
+        "name": [
+            "Entorhinal area, lateral part, layer 5/6"
+        ]
+    },
+    {
+        "acronym": "ENTm",
+        "name": [
+            "Entorhinal area, medial part, dorsal zone"
+        ]
+    },
+    {
+        "acronym": "ENTm2",
+        "name": [
+            "Entorhinal area, medial part, dorsal zone, layer 2"
+        ]
+    },
+    {
+        "acronym": "ENTm2a",
+        "name": [
+            "Entorhinal area, medial part, dorsal zone, layer 2a"
+        ]
+    },
+    {
+        "acronym": "ENTm2b",
+        "name": [
+            "Entorhinal area, medial part, dorsal zone, layer 2b"
+        ]
+    },
+    {
+        "acronym": "ENTm3",
+        "name": [
+            "Entorhinal area, medial part, dorsal zone, layer 3"
+        ]
+    },
+    {
+        "acronym": "ENTm5/6",
+        "name": [
+            "Entorhinal area, medial part, dorsal zone, layer 5/6"
+        ]
+    },
+    {
+        "acronym": "ENTm6",
+        "name": [
+            "Entorhinal area, medial part, dorsal zone, layer 6"
+        ]
+    },
+    {
+        "acronym": "ENTmv",
+        "name": [
+            "Entorhinal area, medial part, ventral zone"
+        ]
+    },
+    {
+        "acronym": "ENTmv2",
+        "name": [
+            "Entorhinal area, medial part, ventral zone, layer 2"
+        ]
+    },
+    {
+        "acronym": "ENTmv3",
+        "name": [
+            "Entorhinal area, medial part, ventral zone, layer 3"
+        ]
+    },
+    {
+        "acronym": "ENTmv5/6",
+        "name": [
+            "Entorhinal area, medial part, ventral zone, layer 5/6"
+        ]
+    },
+    {
+        "acronym": "PAR",
+        "name": [
+            "Parasubiculum",
+            "Parietal Cortex",
+            "Parietal Lobe"
+        ]
+    },
+    {
+        "acronym": "PAR2",
+        "name": [
+            "Parasubiculum, layer 2"
+        ]
+    },
+    {
+        "acronym": "PAR3",
+        "name": [
+            "Parasubiculum, layer 3"
+        ]
+    },
+    {
+        "acronym": "POST",
+        "name": [
+            "Postsubiculum",
+            "Postcentral Gyrus",
+            "Postcentral Cortex"
+        ]
+    },
+    {
+        "acronym": "POST2",
+        "name": [
+            "Postsubiculum, layer 2"
+        ]
+    },
+    {
+        "acronym": "POST3",
+        "name": [
+            "Postsubiculum, layer 3"
+        ]
+    },
+    {
+        "acronym": "PRE",
+        "name": [
+            "Presubiculum",
+            "Precentral Gyrus",
+            "Precentral Cortex"
+        ]
+    },
+    {
+        "acronym": "PRE2",
+        "name": [
+            "Presubiculum, layer 2"
+        ]
+    },
+    {
+        "acronym": "PRE3",
+        "name": [
+            "Presubiculum, layer 3"
+        ]
+    },
+    {
+        "acronym": "SUB",
+        "name": [
+            "Subiculum",
+            "Subicular Cortex"
+        ]
+    },
+    {
+        "acronym": "SUBd",
+        "name": [
+            "Subiculum, dorsal part"
+        ]
+    },
+    {
+        "acronym": "SUBd-m",
+        "name": [
+            "Subiculum, dorsal part, molecular layer"
+        ]
+    },
+    {
+        "acronym": "SUBd-sp",
+        "name": [
+            "Subiculum, dorsal part, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "SUBd-sr",
+        "name": [
+            "Subiculum, dorsal part, stratum radiatum"
+        ]
+    },
+    {
+        "acronym": "SUBv",
+        "name": [
+            "Subiculum, ventral part"
+        ]
+    },
+    {
+        "acronym": "SUBv-m",
+        "name": [
+            "Subiculum, ventral part, molecular layer"
+        ]
+    },
+    {
+        "acronym": "SUBv-sp",
+        "name": [
+            "Subiculum, ventral part, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "SUBv-sr",
+        "name": [
+            "Subiculum, ventral part, stratum radiatum"
+        ]
+    },
+    {
+        "acronym": "ProS",
+        "name": [
+            "Prosubiculum",
+            "Prosubicular Cortex"
+        ]
+    },
+    {
+        "acronym": "ProSd",
+        "name": [
+            "Prosubiculum, dorsal part"
+        ]
+    },
+    {
+        "acronym": "ProSd-m",
+        "name": [
+            "Prosubiculum, dorsal part, molecular layer"
+        ]
+    },
+    {
+        "acronym": "ProSd-sp",
+        "name": [
+            "Prosubiculum, dorsal part, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "ProSd-sr",
+        "name": [
+            "Prosubiculum, dorsal part, stratum radiatum"
+        ]
+    },
+    {
+        "acronym": "ProSv",
+        "name": [
+            "Prosubiculum, ventral part"
+        ]
+    },
+    {
+        "acronym": "ProSv-m",
+        "name": [
+            "Prosubiculum, ventral part, molecular layer"
+        ]
+    },
+    {
+        "acronym": "ProSv-sp",
+        "name": [
+            "Prosubiculum, ventral part, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "Prosv-sr",
+        "name": [
+            "Prosubiculum, ventral part, stratum radiatum"
+        ]
+    },
+    {
+        "acronym": "HATA",
+        "name": [
+            "Hippocampo-amygdalar transition area"
+        ]
+    },
+    {
+        "acronym": "APr",
+        "name": [
+            "Area prostriata"
+        ]
+    },
+    {
+        "acronym": "CTXsp",
+        "name": [
+            "Cortical subplate"
+        ]
+    },
+    {
+        "acronym": "6b",
+        "name": [
+            "Layer 6b, isocortex"
+        ]
+    },
+    {
+        "acronym": "CLA",
+        "name": [
+            "Claustrum",
+            "Claustral Cortex"
+        ]
+    },
+    {
+        "acronym": "EP",
+        "name": [
+            "Endopiriform nucleus"
+        ]
+    },
+    {
+        "acronym": "EPd",
+        "name": [
+            "Endopiriform nucleus, dorsal part"
+        ]
+    },
+    {
+        "acronym": "EPv",
+        "name": [
+            "Endopiriform nucleus, ventral part"
+        ]
+    },
+    {
+        "acronym": "LA",
+        "name": [
+            "Lateral amygdalar nucleus"
+        ]
+    },
+    {
+        "acronym": "BLA",
+        "name": [
+            "Basolateral amygdalar nucleus"
+        ]
+    },
+    {
+        "acronym": "BLAa",
+        "name": [
+            "Basolateral amygdalar nucleus, anterior part"
+        ]
+    },
+    {
+        "acronym": "BLAp",
+        "name": [
+            "Basolateral amygdalar nucleus, posterior part"
+        ]
+    },
+    {
+        "acronym": "BLAv",
+        "name": [
+            "Basolateral amygdalar nucleus, ventral part"
+        ]
+    },
+    {
+        "acronym": "BMA",
+        "name": [
+            "Basomedial amygdalar nucleus"
+        ]
+    },
+    {
+        "acronym": "BMAa",
+        "name": [
+            "Basomedial amygdalar nucleus, anterior part"
+        ]
+    },
+    {
+        "acronym": "BMAp",
+        "name": [
+            "Basomedial amygdalar nucleus, posterior part"
+        ]
+    },
+    {
+        "acronym": "PA",
+        "name": [
+            "Posterior amygdalar nucleus"
+        ]
+    },
+    {
+        "acronym": "CNU",
+        "name": [
+            "Cerebral nuclei",
+            "Cuneus",
+            "Visual Cortex Cuneus Area"
+        ]
+    },
+    {
+        "acronym": "STR",
+        "name": [
+            "Striatum",
+            "Striatal Cortex"
+        ]
+    },
+    {
+        "acronym": "STRd",
+        "name": [
+            "Striatum dorsal region"
+        ]
+    },
+    {
+        "acronym": "CP",
+        "name": [
+            "Caudoputamen",
+            "Caudate Putamen",
+            "Corpus Striatum"
+        ]
+    },
+    {
+        "acronym": "STRv",
+        "name": [
+            "Striatum ventral region"
+        ]
+    },
+    {
+        "acronym": "ACB",
+        "name": [
+            "Nucleus accumbens",
+            "Nucleus Accumbens"
+        ]
+    },
+    {
+        "acronym": "FS",
+        "name": [
+            "Fundus of striatum"
+        ]
+    },
+    {
+        "acronym": "OT",
+        "name": [
+            "Olfactory tubercle"
+        ]
+    },
+    {
+        "acronym": "isl",
+        "name": [
+            "Islands of Calleja"
+        ]
+    },
+    {
+        "acronym": "islm",
+        "name": [
+            "Major island of Calleja"
+        ]
+    },
+    {
+        "acronym": "OT1-3",
+        "name": [
+            "Olfactory tubercle, layers 1-3"
+        ]
+    },
+    {
+        "acronym": "OT2",
+        "name": [
+            "Olfactory tubercle, pyramidal layer"
+        ]
+    },
+    {
+        "acronym": "OT3",
+        "name": [
+            "Olfactory tubercle, polymorph layer"
+        ]
+    },
+    {
+        "acronym": "LSS",
+        "name": [
+            "Lateral strip of striatum"
+        ]
+    },
+    {
+        "acronym": "LSX",
+        "name": [
+            "Lateral septal complex"
+        ]
+    },
+    {
+        "acronym": "LS",
+        "name": [
+            "Lateral septal nucleus"
+        ]
+    },
+    {
+        "acronym": "LSc",
+        "name": [
+            "Lateral septal nucleus, caudal (caudodorsal) part"
+        ]
+    },
+    {
+        "acronym": "LSr",
+        "name": [
+            "Lateral septal nucleus, rostral (rostroventral) part"
+        ]
+    },
+    {
+        "acronym": "LSv",
+        "name": [
+            "Lateral septal nucleus, ventral part"
+        ]
+    },
+    {
+        "acronym": "SF",
+        "name": [
+            "Septofimbrial nucleus"
+        ]
+    },
+    {
+        "acronym": "SH",
+        "name": [
+            "Septohippocampal nucleus"
+        ]
+    },
+    {
+        "acronym": "sAMY",
+        "name": [
+            "Striatum-like amygdalar nuclei"
+        ]
+    },
+    {
+        "acronym": "AAA",
+        "name": [
+            "Anterior amygdalar area"
+        ]
+    },
+    {
+        "acronym": "BA",
+        "name": [
+            "Bed nucleus of the accessory olfactory tract"
+        ]
+    },
+    {
+        "acronym": "CEA",
+        "name": [
+            "Central amygdalar nucleus"
+        ]
+    },
+    {
+        "acronym": "CEAc",
+        "name": [
+            "Central amygdalar nucleus, capsular part"
+        ]
+    },
+    {
+        "acronym": "CEAl",
+        "name": [
+            "Central amygdalar nucleus, lateral part"
+        ]
+    },
+    {
+        "acronym": "CEAm",
+        "name": [
+            "Central amygdalar nucleus, medial part"
+        ]
+    },
+    {
+        "acronym": "IA",
+        "name": [
+            "Intercalated amygdalar nucleus"
+        ]
+    },
+    {
+        "acronym": "MEA",
+        "name": [
+            "Medial amygdalar nucleus"
+        ]
+    },
+    {
+        "acronym": "MEAad",
+        "name": [
+            "Medial amygdalar nucleus, anterodorsal part"
+        ]
+    },
+    {
+        "acronym": "MEAav",
+        "name": [
+            "Medial amygdalar nucleus, anteroventral part"
+        ]
+    },
+    {
+        "acronym": "MEApd",
+        "name": [
+            "Medial amygdalar nucleus, posterodorsal part"
+        ]
+    },
+    {
+        "acronym": "MEApd-a",
+        "name": [
+            "Medial amygdalar nucleus, posterodorsal part, sublayer a"
+        ]
+    },
+    {
+        "acronym": "MEApd-b",
+        "name": [
+            "Medial amygdalar nucleus, posterodorsal part, sublayer b"
+        ]
+    },
+    {
+        "acronym": "MEApd-c",
+        "name": [
+            "Medial amygdalar nucleus, posterodorsal part, sublayer c"
+        ]
+    },
+    {
+        "acronym": "MEApv",
+        "name": [
+            "Medial amygdalar nucleus, posteroventral part"
+        ]
+    },
+    {
+        "acronym": "PAL",
+        "name": [
+            "Pallidum",
+            "Globes Pallidus"
+        ]
+    },
+    {
+        "acronym": "PALd",
+        "name": [
+            "Pallidum, dorsal region"
+        ]
+    },
+    {
+        "acronym": "GPe",
+        "name": [
+            "Globus Pallidus Externus",
+            "Globus pallidus, external segment",
+            "External Globus Pallidus"
+        ]
+    },
+    {
+        "acronym": "GPi",
+        "name": [
+            "Globus pallidus, internal segment",
+            "Internal Globus Pallidus",
+            "Globus Pallidus Internus"
+        ]
+    },
+    {
+        "acronym": "PALv",
+        "name": [
+            "Pallidum, ventral region"
+        ]
+    },
+    {
+        "acronym": "SI",
+        "name": [
+            "Substantia innominata"
+        ]
+    },
+    {
+        "acronym": "MA",
+        "name": [
+            "Magnocellular nucleus"
+        ]
+    },
+    {
+        "acronym": "PALm",
+        "name": [
+            "Pallidum, medial region"
+        ]
+    },
+    {
+        "acronym": "MSC",
+        "name": [
+            "Medial septal complex"
+        ]
+    },
+    {
+        "acronym": "MS",
+        "name": [
+            "Medial septal nucleus"
+        ]
+    },
+    {
+        "acronym": "NDB",
+        "name": [
+            "Diagonal band nucleus"
+        ]
+    },
+    {
+        "acronym": "TRS",
+        "name": [
+            "Triangular nucleus of septum"
+        ]
+    },
+    {
+        "acronym": "PALc",
+        "name": [
+            "Pallidum, caudal region"
+        ]
+    },
+    {
+        "acronym": "BST",
+        "name": [
+            "Bed nuclei of the stria terminalis"
+        ]
+    },
+    {
+        "acronym": "BSTa",
+        "name": [
+            "Bed nuclei of the stria terminalis, anterior division"
+        ]
+    },
+    {
+        "acronym": "division,",
+        "name": [
+            "Bed nuclei of the stria terminalis, anterior",
+            "Bed nuclei of the stria terminalis, anterior",
+            "Bed nuclei of the stria terminalis, anterior",
+            "Bed nuclei of the stria terminalis, anterior",
+            "Bed nuclei of the stria terminalis, anterior",
+            "Bed nuclei of the stria terminalis, anterior",
+            "Bed nuclei of the stria terminalis, posterior",
+            "Bed nuclei of the stria terminalis, posterior",
+            "Bed nuclei of the stria terminalis, posterior",
+            "Paraventricular hypothalamic nucleus, parvicellular",
+            "Paraventricular hypothalamic nucleus, parvicellular",
+            "Paraventricular hypothalamic nucleus, parvicellular",
+            "Paraventricular hypothalamic nucleus, descending",
+            "Paraventricular hypothalamic nucleus, descending",
+            "Paraventricular hypothalamic nucleus, descending",
+            "Paraventricular hypothalamic nucleus, descending"
+        ]
+    },
+    {
+        "acronym": "area",
+        "name": [
+            "anterolateral",
+            "anteromedial"
+        ]
+    },
+    {
+        "acronym": "nucleus",
+        "name": [
+            "dorsomedial",
+            "juxtacapsular",
+            "magnocellular",
+            "rhomboid",
+            "principal",
+            "interfascicular",
+            "transverse"
+        ]
+    },
+    {
+        "acronym": "fusiform",
+        "name": [
+            "Bed nuclei of the stria terminalis, anterior division,"
+        ]
+    },
+    {
+        "acronym": "oval",
+        "name": [
+            "Bed nuclei of the stria terminalis, anterior division,"
+        ]
+    },
+    {
+        "acronym": "ventral",
+        "name": [
+            "Bed nuclei of the stria terminalis, anterior division,"
+        ]
+    },
+    {
+        "acronym": "BSTp",
+        "name": [
+            "Bed nuclei of the stria terminalis, posterior division"
+        ]
+    },
+    {
+        "acronym": "dorsal",
+        "name": [
+            "Bed nuclei of the stria terminalis, posterior division,"
+        ]
+    },
+    {
+        "acronym": "strial",
+        "name": [
+            "Bed nuclei of the stria terminalis, posterior division,"
+        ]
+    },
+    {
+        "acronym": "BAC",
+        "name": [
+            "Bed nucleus of the anterior commissure"
+        ]
+    },
+    {
+        "acronym": "BS",
+        "name": [
+            "Brain stem"
+        ]
+    },
+    {
+        "acronym": "IB",
+        "name": [
+            "Interbrain"
+        ]
+    },
+    {
+        "acronym": "TH",
+        "name": [
+            "Thalamus",
+            "Thalamic Nucleus"
+        ]
+    },
+    {
+        "acronym": "DORsm",
+        "name": [
+            "Thalamus, sensory-motor cortex related"
+        ]
+    },
+    {
+        "acronym": "VENT",
+        "name": [
+            "Ventral group of the dorsal thalamus",
+            "Ventral Nucleus of Thalamus",
+            "Ventral Thalamus"
+        ]
+    },
+    {
+        "acronym": "VAL",
+        "name": [
+            "Ventral anterior-lateral complex of the thalamus",
+            "Ventral Anterior Lateral Nucleus of Thalamus",
+            "Ventral Lateral Nucleus"
+        ]
+    },
+    {
+        "acronym": "VM",
+        "name": [
+            "Ventral medial nucleus of the thalamus",
+            "Ventral Midbrain",
+            "Ventral Mesencephalon"
+        ]
+    },
+    {
+        "acronym": "VP",
+        "name": [
+            "Ventral posterior complex of the thalamus",
+            "Ventral Pallidum",
+            "Ventral Pallidal Area"
+        ]
+    },
+    {
+        "acronym": "VPL",
+        "name": [
+            "Ventral posterolateral nucleus of the thalamus",
+            "Ventral Posterior Lateral Nucleus"
+        ]
+    },
+    {
+        "acronym": "parvicellular",
+        "name": [
+            "Ventral posterolateral nucleus of the thalamus,",
+            "Ventral posteromedial nucleus of the thalamus,"
+        ]
+    },
+    {
+        "acronym": "VPM",
+        "name": [
+            "Ventral posteromedial nucleus of the thalamus",
+            "Ventral Posterior Medial Nucleus"
+        ]
+    },
+    {
+        "acronym": "PoT",
+        "name": [
+            "Posterior triangular thalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "SPF",
+        "name": [
+            "Subparafascicular nucleus"
+        ]
+    },
+    {
+        "acronym": "SPFm",
+        "name": [
+            "Subparafascicular nucleus, magnocellular part"
+        ]
+    },
+    {
+        "acronym": "SPFp",
+        "name": [
+            "Subparafascicular nucleus, parvicellular part"
+        ]
+    },
+    {
+        "acronym": "SPA",
+        "name": [
+            "Subparafascicular area"
+        ]
+    },
+    {
+        "acronym": "PP",
+        "name": [
+            "Peripeduncular nucleus"
+        ]
+    },
+    {
+        "acronym": "GENd",
+        "name": [
+            "Geniculate group, dorsal thalamus"
+        ]
+    },
+    {
+        "acronym": "MG",
+        "name": [
+            "Medial geniculate complex",
+            "Medial Geniculate Nucleus",
+            "Medial Geniculate Body"
+        ]
+    },
+    {
+        "acronym": "MGd",
+        "name": [
+            "Medial geniculate complex, dorsal part"
+        ]
+    },
+    {
+        "acronym": "MGv",
+        "name": [
+            "Medial geniculate complex, ventral part"
+        ]
+    },
+    {
+        "acronym": "MGm",
+        "name": [
+            "Medial geniculate complex, medial part"
+        ]
+    },
+    {
+        "acronym": "LGd",
+        "name": [
+            "Dorsal part of the lateral geniculate complex",
+            "Lateral Geniculate Bodyx",
+            "Geniculate Nucleus Dorsal Part"
+        ]
+    },
+    {
+        "acronym": "LGd-sh",
+        "name": [
+            "Dorsal part of the lateral geniculate complex, shell"
+        ]
+    },
+    {
+        "acronym": "LGd-co",
+        "name": [
+            "Dorsal part of the lateral geniculate complex, core"
+        ]
+    },
+    {
+        "acronym": "ipsilateral",
+        "name": [
+            "Dorsal part of the lateral geniculate complex,"
+        ]
+    },
+    {
+        "acronym": "DORpm",
+        "name": [
+            "Thalamus, polymodal association cortex related"
+        ]
+    },
+    {
+        "acronym": "LAT",
+        "name": [
+            "Lateral group of the dorsal thalamus"
+        ]
+    },
+    {
+        "acronym": "LP",
+        "name": [
+            "Lateral posterior nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "PO",
+        "name": [
+            "Preoptic Nucleus",
+            "Posterior complex of the thalamus",
+            "Preoptic Area"
+        ]
+    },
+    {
+        "acronym": "POL",
+        "name": [
+            "Posterior limiting nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "SGN",
+        "name": [
+            "Suprageniculate nucleus"
+        ]
+    },
+    {
+        "acronym": "Eth",
+        "name": [
+            "Ethmoid nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "REth",
+        "name": [
+            "Retroethmoid nucleus"
+        ]
+    },
+    {
+        "acronym": "ATN",
+        "name": [
+            "Anterior group of the dorsal thalamus"
+        ]
+    },
+    {
+        "acronym": "AV",
+        "name": [
+            "Anteroventral nucleus of thalamus"
+        ]
+    },
+    {
+        "acronym": "AM",
+        "name": [
+            "Anteromedial nucleus"
+        ]
+    },
+    {
+        "acronym": "AMd",
+        "name": [
+            "Anteromedial nucleus, dorsal part"
+        ]
+    },
+    {
+        "acronym": "AMv",
+        "name": [
+            "Anteromedial nucleus, ventral part"
+        ]
+    },
+    {
+        "acronym": "AD",
+        "name": [
+            "Anterodorsal nucleus"
+        ]
+    },
+    {
+        "acronym": "IAM",
+        "name": [
+            "Interanteromedial nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "IAD",
+        "name": [
+            "Interanterodorsal nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "LD",
+        "name": [
+            "Lateral dorsal nucleus of thalamus"
+        ]
+    },
+    {
+        "acronym": "MED",
+        "name": [
+            "Medial group of the dorsal thalamus"
+        ]
+    },
+    {
+        "acronym": "IMD",
+        "name": [
+            "Intermediodorsal nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "MD",
+        "name": [
+            "Mediodorsal nucleus of thalamus",
+            "Mediodorsal Thalamic Nucleus",
+            "Medial Dorsal Nucleus of Thalamus"
+        ]
+    },
+    {
+        "acronym": "MDc",
+        "name": [
+            "Mediodorsal nucleus of the thalamus, central part"
+        ]
+    },
+    {
+        "acronym": "MDl",
+        "name": [
+            "Mediodorsal nucleus of the thalamus, lateral part"
+        ]
+    },
+    {
+        "acronym": "MDm",
+        "name": [
+            "Mediodorsal nucleus of the thalamus, medial part"
+        ]
+    },
+    {
+        "acronym": "SMT",
+        "name": [
+            "Submedial nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "PR",
+        "name": [
+            "Perireunensis nucleus"
+        ]
+    },
+    {
+        "acronym": "MTN",
+        "name": [
+            "Midline group of the dorsal thalamus"
+        ]
+    },
+    {
+        "acronym": "PVT",
+        "name": [
+            "Paraventricular nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "PT",
+        "name": [
+            "Parataenial nucleus"
+        ]
+    },
+    {
+        "acronym": "RE",
+        "name": [
+            "Nucleus of reuniens"
+        ]
+    },
+    {
+        "acronym": "Xi",
+        "name": [
+            "Xiphoid thalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "ILM",
+        "name": [
+            "Intralaminar nuclei of the dorsal thalamus"
+        ]
+    },
+    {
+        "acronym": "RH",
+        "name": [
+            "Rhomboid nucleus"
+        ]
+    },
+    {
+        "acronym": "CM",
+        "name": [
+            "Central medial nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "PCN",
+        "name": [
+            "Paracentral nucleus"
+        ]
+    },
+    {
+        "acronym": "CL",
+        "name": [
+            "Central lateral nucleus of the thalamus"
+        ]
+    },
+    {
+        "acronym": "PF",
+        "name": [
+            "Parafascicular nucleus"
+        ]
+    },
+    {
+        "acronym": "PIL",
+        "name": [
+            "Posterior intralaminar thalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "RT",
+        "name": [
+            "Reticular nucleus of the thalamus",
+            "Reticular Thalamic Nucleus",
+            "Reticular Formation"
+        ]
+    },
+    {
+        "acronym": "GENv",
+        "name": [
+            "Geniculate group, ventral thalamus"
+        ]
+    },
+    {
+        "acronym": "IGL",
+        "name": [
+            "Intergeniculate leaflet of the lateral geniculate complex"
+        ]
+    },
+    {
+        "acronym": "IntG",
+        "name": [
+            "Intermediate geniculate nucleus"
+        ]
+    },
+    {
+        "acronym": "LGv",
+        "name": [
+            "Ventral part of the lateral geniculate complex"
+        ]
+    },
+    {
+        "acronym": "LGvl",
+        "name": [
+            "Ventral part of the lateral geniculate complex, lateral zone"
+        ]
+    },
+    {
+        "acronym": "LGvm",
+        "name": [
+            "Ventral part of the lateral geniculate complex, medial zone"
+        ]
+    },
+    {
+        "acronym": "SubG",
+        "name": [
+            "Subgeniculate nucleus"
+        ]
+    },
+    {
+        "acronym": "EPI",
+        "name": [
+            "Epithalamus"
+        ]
+    },
+    {
+        "acronym": "MH",
+        "name": [
+            "Medial habenula"
+        ]
+    },
+    {
+        "acronym": "LH",
+        "name": [
+            "Lateral habenula"
+        ]
+    },
+    {
+        "acronym": "PIN",
+        "name": [
+            "Pineal body"
+        ]
+    },
+    {
+        "acronym": "HY",
+        "name": [
+            "Hypothalamus"
+        ]
+    },
+    {
+        "acronym": "PVZ",
+        "name": [
+            "Periventricular zone"
+        ]
+    },
+    {
+        "acronym": "SO",
+        "name": [
+            "Supraoptic nucleus"
+        ]
+    },
+    {
+        "acronym": "ASO",
+        "name": [
+            "Accessory supraoptic group"
+        ]
+    },
+    {
+        "acronym": "NC",
+        "name": [
+            "Nucleus circularis"
+        ]
+    },
+    {
+        "acronym": "PVH",
+        "name": [
+            "Paraventricular hypothalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "magnocellular",
+        "name": [
+            "Paraventricular hypothalamic nucleus,",
+            "Paraventricular hypothalamic nucleus,",
+            "Paraventricular hypothalamic nucleus,",
+            "Paraventricular hypothalamic nucleus,",
+            "Paraventricular hypothalamic nucleus,",
+            "Paraventricular hypothalamic nucleus,"
+        ]
+    },
+    {
+        "acronym": "part",
+        "name": [
+            "division, anterior magnocellular",
+            "division, medial magnocellular",
+            "division, posterior magnocellular",
+            "anterior parvicellular",
+            "periventricular",
+            "dorsal parvicellular",
+            "forniceal",
+            "lateral parvicellular",
+            "dorsomedial",
+            "dorsomedial"
+        ]
+    },
+    {
+        "acronym": "zone",
+        "name": [
+            "division, posterior magnocellular part, lateral",
+            "division, posterior magnocellular part, medial",
+            "medial parvicellular part, dorsal",
+            "medial parvicellular part, ventral",
+            "dorsomedial part, dorsal",
+            "dorsomedial part, ventral"
+        ]
+    },
+    {
+        "acronym": "PVHp",
+        "name": [
+            "Paraventricular hypothalamic nucleus, parvicellular division"
+        ]
+    },
+    {
+        "acronym": "PVa",
+        "name": [
+            "Periventricular hypothalamic nucleus, anterior part"
+        ]
+    },
+    {
+        "acronym": "PVi",
+        "name": [
+            "Periventricular hypothalamic nucleus, intermediate part"
+        ]
+    },
+    {
+        "acronym": "ARH",
+        "name": [
+            "Arcuate hypothalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "PVR",
+        "name": [
+            "Periventricular region"
+        ]
+    },
+    {
+        "acronym": "ADP",
+        "name": [
+            "Anterodorsal preoptic nucleus"
+        ]
+    },
+    {
+        "acronym": "AHA",
+        "name": [
+            "Anterior hypothalamic area"
+        ]
+    },
+    {
+        "acronym": "AVP",
+        "name": [
+            "Anteroventral preoptic nucleus"
+        ]
+    },
+    {
+        "acronym": "AVPV",
+        "name": [
+            "Anteroventral periventricular nucleus"
+        ]
+    },
+    {
+        "acronym": "DMH",
+        "name": [
+            "Dorsomedial nucleus of the hypothalamus"
+        ]
+    },
+    {
+        "acronym": "DMHa",
+        "name": [
+            "Dorsomedial nucleus of the hypothalamus, anterior part"
+        ]
+    },
+    {
+        "acronym": "DMHp",
+        "name": [
+            "Dorsomedial nucleus of the hypothalamus, posterior part"
+        ]
+    },
+    {
+        "acronym": "DMHv",
+        "name": [
+            "Dorsomedial nucleus of the hypothalamus, ventral part"
+        ]
+    },
+    {
+        "acronym": "MEPO",
+        "name": [
+            "Median preoptic nucleus"
+        ]
+    },
+    {
+        "acronym": "MPO",
+        "name": [
+            "Medial preoptic area"
+        ]
+    },
+    {
+        "acronym": "OV",
+        "name": [
+            "Vascular organ of the lamina terminalis"
+        ]
+    },
+    {
+        "acronym": "PD",
+        "name": [
+            "Posterodorsal preoptic nucleus"
+        ]
+    },
+    {
+        "acronym": "PS",
+        "name": [
+            "Parastrial nucleus"
+        ]
+    },
+    {
+        "acronym": "PSCH",
+        "name": [
+            "Suprachiasmatic preoptic nucleus"
+        ]
+    },
+    {
+        "acronym": "PVp",
+        "name": [
+            "Periventricular hypothalamic nucleus, posterior part"
+        ]
+    },
+    {
+        "acronym": "PVpo",
+        "name": [
+            "Periventricular hypothalamic nucleus, preoptic part"
+        ]
+    },
+    {
+        "acronym": "SBPV",
+        "name": [
+            "Subparaventricular zone"
+        ]
+    },
+    {
+        "acronym": "SCH",
+        "name": [
+            "Suprachiasmatic nucleus"
+        ]
+    },
+    {
+        "acronym": "SFO",
+        "name": [
+            "Subfornical organ"
+        ]
+    },
+    {
+        "acronym": "VMPO",
+        "name": [
+            "Ventromedial preoptic nucleus"
+        ]
+    },
+    {
+        "acronym": "VLPO",
+        "name": [
+            "Ventrolateral preoptic nucleus"
+        ]
+    },
+    {
+        "acronym": "MEZ",
+        "name": [
+            "Hypothalamic medial zone"
+        ]
+    },
+    {
+        "acronym": "AHN",
+        "name": [
+            "Anterior hypothalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "AHNa",
+        "name": [
+            "Anterior hypothalamic nucleus, anterior part"
+        ]
+    },
+    {
+        "acronym": "AHNc",
+        "name": [
+            "Anterior hypothalamic nucleus, central part"
+        ]
+    },
+    {
+        "acronym": "AHNd",
+        "name": [
+            "Anterior hypothalamic nucleus, dorsal part"
+        ]
+    },
+    {
+        "acronym": "AHNp",
+        "name": [
+            "Anterior hypothalamic nucleus, posterior part"
+        ]
+    },
+    {
+        "acronym": "MBO",
+        "name": [
+            "Mammillary body"
+        ]
+    },
+    {
+        "acronym": "LM",
+        "name": [
+            "Lateral mammillary nucleus"
+        ]
+    },
+    {
+        "acronym": "MM",
+        "name": [
+            "Medial mammillary nucleus"
+        ]
+    },
+    {
+        "acronym": "MMme",
+        "name": [
+            "Medial mammillary nucleus, median part"
+        ]
+    },
+    {
+        "acronym": "MMl",
+        "name": [
+            "Medial mammillary nucleus, lateral part"
+        ]
+    },
+    {
+        "acronym": "MMm",
+        "name": [
+            "Medial mammillary nucleus, medial part"
+        ]
+    },
+    {
+        "acronym": "MMp",
+        "name": [
+            "Medial mammillary nucleus, posterior part"
+        ]
+    },
+    {
+        "acronym": "MMd",
+        "name": [
+            "Medial mammillary nucleus, dorsal part"
+        ]
+    },
+    {
+        "acronym": "SUM",
+        "name": [
+            "Supramammillary nucleus"
+        ]
+    },
+    {
+        "acronym": "SUMl",
+        "name": [
+            "Supramammillary nucleus, lateral part"
+        ]
+    },
+    {
+        "acronym": "SUMm",
+        "name": [
+            "Supramammillary nucleus, medial part"
+        ]
+    },
+    {
+        "acronym": "TM",
+        "name": [
+            "Tuberomammillary nucleus"
+        ]
+    },
+    {
+        "acronym": "TMd",
+        "name": [
+            "Tuberomammillary nucleus, dorsal part"
+        ]
+    },
+    {
+        "acronym": "TMv",
+        "name": [
+            "Tuberomammillary nucleus, ventral part"
+        ]
+    },
+    {
+        "acronym": "MPN",
+        "name": [
+            "Medial preoptic nucleus"
+        ]
+    },
+    {
+        "acronym": "MPNc",
+        "name": [
+            "Medial preoptic nucleus, central part"
+        ]
+    },
+    {
+        "acronym": "MPNl",
+        "name": [
+            "Medial preoptic nucleus, lateral part"
+        ]
+    },
+    {
+        "acronym": "MPNm",
+        "name": [
+            "Medial preoptic nucleus, medial part"
+        ]
+    },
+    {
+        "acronym": "PMd",
+        "name": [
+            "Dorsal premammillary nucleus"
+        ]
+    },
+    {
+        "acronym": "PMv",
+        "name": [
+            "Ventral premammillary nucleus"
+        ]
+    },
+    {
+        "acronym": "PVHd",
+        "name": [
+            "Paraventricular hypothalamic nucleus, descending division"
+        ]
+    },
+    {
+        "acronym": "VMH",
+        "name": [
+            "Ventromedial hypothalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "VMHa",
+        "name": [
+            "Ventromedial hypothalamic nucleus, anterior part"
+        ]
+    },
+    {
+        "acronym": "VMHc",
+        "name": [
+            "Ventromedial hypothalamic nucleus, central part"
+        ]
+    },
+    {
+        "acronym": "VMHdm",
+        "name": [
+            "Ventromedial hypothalamic nucleus, dorsomedial part"
+        ]
+    },
+    {
+        "acronym": "VMHvl",
+        "name": [
+            "Ventromedial hypothalamic nucleus, ventrolateral part"
+        ]
+    },
+    {
+        "acronym": "PH",
+        "name": [
+            "Posterior hypothalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "LZ",
+        "name": [
+            "Hypothalamic lateral zone"
+        ]
+    },
+    {
+        "acronym": "LHA",
+        "name": [
+            "Lateral hypothalamic area"
+        ]
+    },
+    {
+        "acronym": "LPO",
+        "name": [
+            "Lateral preoptic area"
+        ]
+    },
+    {
+        "acronym": "PST",
+        "name": [
+            "Preparasubthalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "PSTN",
+        "name": [
+            "Parasubthalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "PeF",
+        "name": [
+            "Perifornical nucleus"
+        ]
+    },
+    {
+        "acronym": "RCH",
+        "name": [
+            "Retrochiasmatic area"
+        ]
+    },
+    {
+        "acronym": "STN",
+        "name": [
+            "Subthalamic nucleus"
+        ]
+    },
+    {
+        "acronym": "TU",
+        "name": [
+            "Tuberal nucleus"
+        ]
+    },
+    {
+        "acronym": "ZI",
+        "name": [
+            "Zona incerta"
+        ]
+    },
+    {
+        "acronym": "A13",
+        "name": [
+            "Dopaminergic A13 group"
+        ]
+    },
+    {
+        "acronym": "FF",
+        "name": [
+            "Fields of Forel"
+        ]
+    },
+    {
+        "acronym": "ME",
+        "name": [
+            "Median eminence"
+        ]
+    },
+    {
+        "acronym": "MB",
+        "name": [
+            "Midbrain"
+        ]
+    },
+    {
+        "acronym": "MBsen",
+        "name": [
+            "Midbrain, sensory related"
+        ]
+    },
+    {
+        "acronym": "SCs",
+        "name": [
+            "Superior colliculus, sensory related"
+        ]
+    },
+    {
+        "acronym": "SCop",
+        "name": [
+            "Superior colliculus, optic layer"
+        ]
+    },
+    {
+        "acronym": "SCsg",
+        "name": [
+            "Superior colliculus, superficial gray layer"
+        ]
+    },
+    {
+        "acronym": "SCzo",
+        "name": [
+            "Superior colliculus, zonal layer"
+        ]
+    },
+    {
+        "acronym": "IC",
+        "name": [
+            "Inferior colliculus"
+        ]
+    },
+    {
+        "acronym": "ICc",
+        "name": [
+            "Inferior colliculus, central nucleus"
+        ]
+    },
+    {
+        "acronym": "ICd",
+        "name": [
+            "Inferior colliculus, dorsal nucleus"
+        ]
+    },
+    {
+        "acronym": "ICe",
+        "name": [
+            "Inferior colliculus, external nucleus"
+        ]
+    },
+    {
+        "acronym": "NB",
+        "name": [
+            "Nucleus of the brachium of the inferior colliculus"
+        ]
+    },
+    {
+        "acronym": "SAG",
+        "name": [
+            "Nucleus sagulum"
+        ]
+    },
+    {
+        "acronym": "PBG",
+        "name": [
+            "Parabigeminal nucleus"
+        ]
+    },
+    {
+        "acronym": "MEV",
+        "name": [
+            "Midbrain trigeminal nucleus"
+        ]
+    },
+    {
+        "acronym": "SCO",
+        "name": [
+            "Subcommissural organ"
+        ]
+    },
+    {
+        "acronym": "MBmot",
+        "name": [
+            "Midbrain, motor related"
+        ]
+    },
+    {
+        "acronym": "SNr",
+        "name": [
+            "Substantia nigra, reticular part"
+        ]
+    },
+    {
+        "acronym": "VTA",
+        "name": [
+            "Ventral tegmental area"
+        ]
+    },
+    {
+        "acronym": "PN",
+        "name": [
+            "Paranigral nucleus"
+        ]
+    },
+    {
+        "acronym": "RR",
+        "name": [
+            "Midbrain reticular nucleus, retrorubral area"
+        ]
+    },
+    {
+        "acronym": "MRN",
+        "name": [
+            "Midbrain reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "MRNm",
+        "name": [
+            "Midbrain reticular nucleus, magnocellular part"
+        ]
+    },
+    {
+        "acronym": "MRNmg",
+        "name": [
+            "Midbrain reticular nucleus, magnocellular part, general"
+        ]
+    },
+    {
+        "acronym": "MRNp",
+        "name": [
+            "Midbrain reticular nucleus, parvicellular part"
+        ]
+    },
+    {
+        "acronym": "SCm",
+        "name": [
+            "Superior colliculus, motor related"
+        ]
+    },
+    {
+        "acronym": "SCdg",
+        "name": [
+            "Superior colliculus, motor related, deep gray layer"
+        ]
+    },
+    {
+        "acronym": "SCdw",
+        "name": [
+            "Superior colliculus, motor related, deep white layer"
+        ]
+    },
+    {
+        "acronym": "SCiw",
+        "name": [
+            "Superior colliculus, motor related, intermediate white layer"
+        ]
+    },
+    {
+        "acronym": "SCig",
+        "name": [
+            "Superior colliculus, motor related, intermediate gray layer"
+        ]
+    },
+    {
+        "acronym": "layer,",
+        "name": [
+            "Superior colliculus, motor related, intermediate gray",
+            "Superior colliculus, motor related, intermediate gray",
+            "Superior colliculus, motor related, intermediate gray"
+        ]
+    },
+    {
+        "acronym": "a",
+        "name": [
+            "sublayer"
+        ]
+    },
+    {
+        "acronym": "b",
+        "name": [
+            "sublayer"
+        ]
+    },
+    {
+        "acronym": "c",
+        "name": [
+            "sublayer",
+            "central canal, spinal cord/medulla"
+        ]
+    },
+    {
+        "acronym": "PAG",
+        "name": [
+            "Periaqueductal gray"
+        ]
+    },
+    {
+        "acronym": "PRC",
+        "name": [
+            "Precommissural nucleus"
+        ]
+    },
+    {
+        "acronym": "INC",
+        "name": [
+            "Interstitial nucleus of Cajal"
+        ]
+    },
+    {
+        "acronym": "ND",
+        "name": [
+            "Nucleus of Darkschewitsch"
+        ]
+    },
+    {
+        "acronym": "Su3",
+        "name": [
+            "Supraoculomotor periaqueductal gray"
+        ]
+    },
+    {
+        "acronym": "PRT",
+        "name": [
+            "Pretectal region"
+        ]
+    },
+    {
+        "acronym": "APN",
+        "name": [
+            "Anterior pretectal nucleus"
+        ]
+    },
+    {
+        "acronym": "MPT",
+        "name": [
+            "Medial pretectal area"
+        ]
+    },
+    {
+        "acronym": "NOT",
+        "name": [
+            "Nucleus of the optic tract"
+        ]
+    },
+    {
+        "acronym": "NPC",
+        "name": [
+            "Nucleus of the posterior commissure"
+        ]
+    },
+    {
+        "acronym": "OP",
+        "name": [
+            "Olivary pretectal nucleus"
+        ]
+    },
+    {
+        "acronym": "PPT",
+        "name": [
+            "Posterior pretectal nucleus"
+        ]
+    },
+    {
+        "acronym": "RPF",
+        "name": [
+            "Retroparafascicular nucleus"
+        ]
+    },
+    {
+        "acronym": "InCo",
+        "name": [
+            "Intercollicular nucleus"
+        ]
+    },
+    {
+        "acronym": "CUN",
+        "name": [
+            "Cuneiform nucleus"
+        ]
+    },
+    {
+        "acronym": "RN",
+        "name": [
+            "Red nucleus"
+        ]
+    },
+    {
+        "acronym": "III",
+        "name": [
+            "Oculomotor nucleus"
+        ]
+    },
+    {
+        "acronym": "MA3",
+        "name": [
+            "Medial accesory oculomotor nucleus"
+        ]
+    },
+    {
+        "acronym": "EW",
+        "name": [
+            "Edinger-Westphal nucleus"
+        ]
+    },
+    {
+        "acronym": "IV",
+        "name": [
+            "Trochlear nucleus"
+        ]
+    },
+    {
+        "acronym": "Pa4",
+        "name": [
+            "Paratrochlear nucleus"
+        ]
+    },
+    {
+        "acronym": "VTN",
+        "name": [
+            "Ventral tegmental nucleus"
+        ]
+    },
+    {
+        "acronym": "AT",
+        "name": [
+            "Anterior tegmental nucleus"
+        ]
+    },
+    {
+        "acronym": "LT",
+        "name": [
+            "Lateral terminal nucleus of the accessory optic tract"
+        ]
+    },
+    {
+        "acronym": "DT",
+        "name": [
+            "Dorsal terminal nucleus of the accessory optic tract"
+        ]
+    },
+    {
+        "acronym": "MT",
+        "name": [
+            "Medial terminal nucleus of the accessory optic tract"
+        ]
+    },
+    {
+        "acronym": "SNl",
+        "name": [
+            "Substantia nigra, lateral part"
+        ]
+    },
+    {
+        "acronym": "MBsta",
+        "name": [
+            "Midbrain, behavioral state related"
+        ]
+    },
+    {
+        "acronym": "SNc",
+        "name": [
+            "Substantia nigra, compact part"
+        ]
+    },
+    {
+        "acronym": "PPN",
+        "name": [
+            "Pedunculopontine nucleus"
+        ]
+    },
+    {
+        "acronym": "RAmb",
+        "name": [
+            "Midbrain raphe nuclei"
+        ]
+    },
+    {
+        "acronym": "IF",
+        "name": [
+            "Interfascicular nucleus raphe"
+        ]
+    },
+    {
+        "acronym": "IPN",
+        "name": [
+            "Interpeduncular nucleus"
+        ]
+    },
+    {
+        "acronym": "IPR",
+        "name": [
+            "Interpeduncular nucleus, rostral"
+        ]
+    },
+    {
+        "acronym": "IPC",
+        "name": [
+            "Interpeduncular nucleus, caudal"
+        ]
+    },
+    {
+        "acronym": "IPA",
+        "name": [
+            "Interpeduncular nucleus, apical"
+        ]
+    },
+    {
+        "acronym": "IPL",
+        "name": [
+            "Interpeduncular nucleus, lateral"
+        ]
+    },
+    {
+        "acronym": "IPI",
+        "name": [
+            "Interpeduncular nucleus, intermediate"
+        ]
+    },
+    {
+        "acronym": "IPDM",
+        "name": [
+            "Interpeduncular nucleus, dorsomedial"
+        ]
+    },
+    {
+        "acronym": "IPDL",
+        "name": [
+            "Interpeduncular nucleus, dorsolateral"
+        ]
+    },
+    {
+        "acronym": "IPRL",
+        "name": [
+            "Interpeduncular nucleus, rostrolateral"
+        ]
+    },
+    {
+        "acronym": "RL",
+        "name": [
+            "Rostral linear nucleus raphe"
+        ]
+    },
+    {
+        "acronym": "CLI",
+        "name": [
+            "Central linear nucleus raphe"
+        ]
+    },
+    {
+        "acronym": "DR",
+        "name": [
+            "Dorsal nucleus raphe"
+        ]
+    },
+    {
+        "acronym": "HB",
+        "name": [
+            "Hindbrain",
+            "Habenucla",
+            "Habenuclar Nucleus"
+        ]
+    },
+    {
+        "acronym": "P",
+        "name": [
+            "Pons",
+            "Posterior Thalamus",
+            "Posterior Nucleus of Thalamus"
+        ]
+    },
+    {
+        "acronym": "P-sen",
+        "name": [
+            "Pons, sensory related"
+        ]
+    },
+    {
+        "acronym": "NLL",
+        "name": [
+            "Nucleus of the lateral lemniscus"
+        ]
+    },
+    {
+        "acronym": "NLLd",
+        "name": [
+            "Nucleus of the lateral lemniscus, dorsal part"
+        ]
+    },
+    {
+        "acronym": "NLLh",
+        "name": [
+            "Nucleus of the lateral lemniscus, horizontal part"
+        ]
+    },
+    {
+        "acronym": "NLLv",
+        "name": [
+            "Nucleus of the lateral lemniscus, ventral part"
+        ]
+    },
+    {
+        "acronym": "PSV",
+        "name": [
+            "Principal sensory nucleus of the trigeminal"
+        ]
+    },
+    {
+        "acronym": "PB",
+        "name": [
+            "Parabrachial nucleus"
+        ]
+    },
+    {
+        "acronym": "KF",
+        "name": [
+            "Koelliker-Fuse subnucleus"
+        ]
+    },
+    {
+        "acronym": "PBl",
+        "name": [
+            "Parabrachial nucleus, lateral division"
+        ]
+    },
+    {
+        "acronym": "PBlc",
+        "name": [
+            "Parabrachial nucleus, lateral division, central lateral part"
+        ]
+    },
+    {
+        "acronym": "PBld",
+        "name": [
+            "Parabrachial nucleus, lateral division, dorsal lateral part"
+        ]
+    },
+    {
+        "acronym": "PBle",
+        "name": [
+            "Parabrachial nucleus, lateral division, external lateral part"
+        ]
+    },
+    {
+        "acronym": "PBls",
+        "name": [
+            "Parabrachial nucleus, lateral division, superior lateral part"
+        ]
+    },
+    {
+        "acronym": "PBlv",
+        "name": [
+            "Parabrachial nucleus, lateral division, ventral lateral part"
+        ]
+    },
+    {
+        "acronym": "PBm",
+        "name": [
+            "Parabrachial nucleus, medial division"
+        ]
+    },
+    {
+        "acronym": "PBme",
+        "name": [
+            "Parabrachial nucleus, medial division, external medial part"
+        ]
+    },
+    {
+        "acronym": "PBmm",
+        "name": [
+            "Parabrachial nucleus, medial division, medial medial part"
+        ]
+    },
+    {
+        "acronym": "PBmv",
+        "name": [
+            "Parabrachial nucleus, medial division, ventral medial part"
+        ]
+    },
+    {
+        "acronym": "SOC",
+        "name": [
+            "Superior olivary complex"
+        ]
+    },
+    {
+        "acronym": "POR",
+        "name": [
+            "Superior olivary complex, periolivary region"
+        ]
+    },
+    {
+        "acronym": "SOCm",
+        "name": [
+            "Superior olivary complex, medial part"
+        ]
+    },
+    {
+        "acronym": "SOCl",
+        "name": [
+            "Superior olivary complex, lateral part"
+        ]
+    },
+    {
+        "acronym": "P-mot",
+        "name": [
+            "Pons, motor related"
+        ]
+    },
+    {
+        "acronym": "B",
+        "name": [
+            "Barrington's nucleus"
+        ]
+    },
+    {
+        "acronym": "DTN",
+        "name": [
+            "Dorsal tegmental nucleus"
+        ]
+    },
+    {
+        "acronym": "LTN",
+        "name": [
+            "Lateral tegmental nucleus"
+        ]
+    },
+    {
+        "acronym": "PDTg",
+        "name": [
+            "Posterodorsal tegmental nucleus"
+        ]
+    },
+    {
+        "acronym": "PCG",
+        "name": [
+            "Pontine central gray"
+        ]
+    },
+    {
+        "acronym": "PG",
+        "name": [
+            "Pontine gray"
+        ]
+    },
+    {
+        "acronym": "PRNc",
+        "name": [
+            "Pontine reticular nucleus, caudal part"
+        ]
+    },
+    {
+        "acronym": "PRNv",
+        "name": [
+            "Pontine reticular nucleus, ventral part"
+        ]
+    },
+    {
+        "acronym": "SG",
+        "name": [
+            "Supragenual nucleus"
+        ]
+    },
+    {
+        "acronym": "SSN",
+        "name": [
+            "Superior salivatory nucleus"
+        ]
+    },
+    {
+        "acronym": "SUT",
+        "name": [
+            "Supratrigeminal nucleus"
+        ]
+    },
+    {
+        "acronym": "TRN",
+        "name": [
+            "Tegmental reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "V",
+        "name": [
+            "Motor nucleus of trigeminal"
+        ]
+    },
+    {
+        "acronym": "Acs5",
+        "name": [
+            "Accessory trigeminal nucleus"
+        ]
+    },
+    {
+        "acronym": "PC5",
+        "name": [
+            "Parvicellular motor 5 nucleus"
+        ]
+    },
+    {
+        "acronym": "I5",
+        "name": [
+            "Intertrigeminal nucleus"
+        ]
+    },
+    {
+        "acronym": "P-sat",
+        "name": [
+            "Pons, behavioral state related"
+        ]
+    },
+    {
+        "acronym": "CS",
+        "name": [
+            "Superior central nucleus raphe"
+        ]
+    },
+    {
+        "acronym": "CSl",
+        "name": [
+            "Superior central nucleus raphe, lateral part"
+        ]
+    },
+    {
+        "acronym": "CSm",
+        "name": [
+            "Superior central nucleus raphe, medial part"
+        ]
+    },
+    {
+        "acronym": "LC",
+        "name": [
+            "Locus ceruleus"
+        ]
+    },
+    {
+        "acronym": "LDT",
+        "name": [
+            "Laterodorsal tegmental nucleus"
+        ]
+    },
+    {
+        "acronym": "NI",
+        "name": [
+            "Nucleus incertus"
+        ]
+    },
+    {
+        "acronym": "PRNr",
+        "name": [
+            "Pontine reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "RPO",
+        "name": [
+            "Nucleus raphe pontis"
+        ]
+    },
+    {
+        "acronym": "SLC",
+        "name": [
+            "Subceruleus nucleus"
+        ]
+    },
+    {
+        "acronym": "SLD",
+        "name": [
+            "Sublaterodorsal nucleus"
+        ]
+    },
+    {
+        "acronym": "MY",
+        "name": [
+            "Medulla"
+        ]
+    },
+    {
+        "acronym": "MY-sen",
+        "name": [
+            "Medulla, sensory related"
+        ]
+    },
+    {
+        "acronym": "AP",
+        "name": [
+            "Area postrema"
+        ]
+    },
+    {
+        "acronym": "CN",
+        "name": [
+            "Cochlear nuclei"
+        ]
+    },
+    {
+        "acronym": "CNlam",
+        "name": [
+            "Granular lamina of the cochlear nuclei"
+        ]
+    },
+    {
+        "acronym": "CNspg",
+        "name": [
+            "Cochlear nucleus, subpedunclular granular region"
+        ]
+    },
+    {
+        "acronym": "DCO",
+        "name": [
+            "Dorsal cochlear nucleus"
+        ]
+    },
+    {
+        "acronym": "VCO",
+        "name": [
+            "Ventral cochlear nucleus"
+        ]
+    },
+    {
+        "acronym": "DCN",
+        "name": [
+            "Dorsal column nuclei"
+        ]
+    },
+    {
+        "acronym": "CU",
+        "name": [
+            "Cuneate nucleus"
+        ]
+    },
+    {
+        "acronym": "GR",
+        "name": [
+            "Gracile nucleus"
+        ]
+    },
+    {
+        "acronym": "ECU",
+        "name": [
+            "External cuneate nucleus"
+        ]
+    },
+    {
+        "acronym": "NTB",
+        "name": [
+            "Nucleus of the trapezoid body"
+        ]
+    },
+    {
+        "acronym": "NTS",
+        "name": [
+            "Nucleus of the solitary tract"
+        ]
+    },
+    {
+        "acronym": "NTSce",
+        "name": [
+            "Nucleus of the solitary tract, central part"
+        ]
+    },
+    {
+        "acronym": "NTSco",
+        "name": [
+            "Nucleus of the solitary tract, commissural part"
+        ]
+    },
+    {
+        "acronym": "NTSge",
+        "name": [
+            "Nucleus of the solitary tract, gelatinous part"
+        ]
+    },
+    {
+        "acronym": "NTSl",
+        "name": [
+            "Nucleus of the solitary tract, lateral part"
+        ]
+    },
+    {
+        "acronym": "NTSm",
+        "name": [
+            "Nucleus of the solitary tract, medial part"
+        ]
+    },
+    {
+        "acronym": "SPVC",
+        "name": [
+            "Spinal nucleus of the trigeminal, caudal part"
+        ]
+    },
+    {
+        "acronym": "SPVI",
+        "name": [
+            "Spinal nucleus of the trigeminal, interpolar part"
+        ]
+    },
+    {
+        "acronym": "SPVO",
+        "name": [
+            "Spinal nucleus of the trigeminal, oral part"
+        ]
+    },
+    {
+        "acronym": "caudal",
+        "name": [
+            "Spinal nucleus of the trigeminal, oral part,"
+        ]
+    },
+    {
+        "acronym": "middle",
+        "name": [
+            "Spinal nucleus of the trigeminal, oral part,",
+            "Spinal nucleus of the trigeminal, oral part,"
+        ]
+    },
+    {
+        "acronym": "rostral",
+        "name": [
+            "Spinal nucleus of the trigeminal, oral part,"
+        ]
+    },
+    {
+        "acronym": "SPVOvl",
+        "name": [
+            "Spinal nucleus of the trigeminal, oral part, ventrolateral part"
+        ]
+    },
+    {
+        "acronym": "z",
+        "name": [
+            "Nucleus z"
+        ]
+    },
+    {
+        "acronym": "MY-mot",
+        "name": [
+            "Medulla, motor related"
+        ]
+    },
+    {
+        "acronym": "VI",
+        "name": [
+            "Abducens nucleus"
+        ]
+    },
+    {
+        "acronym": "ACVI",
+        "name": [
+            "Accessory abducens nucleus"
+        ]
+    },
+    {
+        "acronym": "VII",
+        "name": [
+            "Facial motor nucleus"
+        ]
+    },
+    {
+        "acronym": "ACVII",
+        "name": [
+            "Accessory facial motor nucleus"
+        ]
+    },
+    {
+        "acronym": "EV",
+        "name": [
+            "Efferent vestibular nucleus"
+        ]
+    },
+    {
+        "acronym": "AMB",
+        "name": [
+            "Nucleus ambiguus"
+        ]
+    },
+    {
+        "acronym": "AMBd",
+        "name": [
+            "Nucleus ambiguus, dorsal division"
+        ]
+    },
+    {
+        "acronym": "AMBv",
+        "name": [
+            "Nucleus ambiguus, ventral division"
+        ]
+    },
+    {
+        "acronym": "DMX",
+        "name": [
+            "Dorsal motor nucleus of the vagus nerve"
+        ]
+    },
+    {
+        "acronym": "ECO",
+        "name": [
+            "Efferent cochlear group"
+        ]
+    },
+    {
+        "acronym": "GRN",
+        "name": [
+            "Gigantocellular reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "ICB",
+        "name": [
+            "Infracerebellar nucleus"
+        ]
+    },
+    {
+        "acronym": "IO",
+        "name": [
+            "Inferior olivary complex"
+        ]
+    },
+    {
+        "acronym": "IRN",
+        "name": [
+            "Intermediate reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "ISN",
+        "name": [
+            "Inferior salivatory nucleus"
+        ]
+    },
+    {
+        "acronym": "LIN",
+        "name": [
+            "Linear nucleus of the medulla"
+        ]
+    },
+    {
+        "acronym": "LRN",
+        "name": [
+            "Lateral reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "LRNm",
+        "name": [
+            "Lateral reticular nucleus, magnocellular part"
+        ]
+    },
+    {
+        "acronym": "LRNp",
+        "name": [
+            "Lateral reticular nucleus, parvicellular part"
+        ]
+    },
+    {
+        "acronym": "MARN",
+        "name": [
+            "Magnocellular reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "MDRN",
+        "name": [
+            "Medullary reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "MDRNd",
+        "name": [
+            "Medullary reticular nucleus, dorsal part"
+        ]
+    },
+    {
+        "acronym": "MDRNv",
+        "name": [
+            "Medullary reticular nucleus, ventral part"
+        ]
+    },
+    {
+        "acronym": "PARN",
+        "name": [
+            "Parvicellular reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "PAS",
+        "name": [
+            "Parasolitary nucleus"
+        ]
+    },
+    {
+        "acronym": "PGRN",
+        "name": [
+            "Paragigantocellular reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "PGRNd",
+        "name": [
+            "Paragigantocellular reticular nucleus, dorsal part"
+        ]
+    },
+    {
+        "acronym": "PGRNl",
+        "name": [
+            "Paragigantocellular reticular nucleus, lateral part"
+        ]
+    },
+    {
+        "acronym": "PHY",
+        "name": [
+            "Perihypoglossal nuclei"
+        ]
+    },
+    {
+        "acronym": "NIS",
+        "name": [
+            "Nucleus intercalatus"
+        ]
+    },
+    {
+        "acronym": "NR",
+        "name": [
+            "Nucleus of Roller"
+        ]
+    },
+    {
+        "acronym": "PRP",
+        "name": [
+            "Nucleus prepositus"
+        ]
+    },
+    {
+        "acronym": "PMR",
+        "name": [
+            "Paramedian reticular nucleus"
+        ]
+    },
+    {
+        "acronym": "PPY",
+        "name": [
+            "Parapyramidal nucleus"
+        ]
+    },
+    {
+        "acronym": "PPYd",
+        "name": [
+            "Parapyramidal nucleus, deep part"
+        ]
+    },
+    {
+        "acronym": "PPYs",
+        "name": [
+            "Parapyramidal nucleus, superficial part"
+        ]
+    },
+    {
+        "acronym": "VNC",
+        "name": [
+            "Vestibular nuclei"
+        ]
+    },
+    {
+        "acronym": "LAV",
+        "name": [
+            "Lateral vestibular nucleus"
+        ]
+    },
+    {
+        "acronym": "MV",
+        "name": [
+            "Medial vestibular nucleus"
+        ]
+    },
+    {
+        "acronym": "SPIV",
+        "name": [
+            "Spinal vestibular nucleus"
+        ]
+    },
+    {
+        "acronym": "SUV",
+        "name": [
+            "Superior vestibular nucleus"
+        ]
+    },
+    {
+        "acronym": "x",
+        "name": [
+            "Nucleus x"
+        ]
+    },
+    {
+        "acronym": "XII",
+        "name": [
+            "Hypoglossal nucleus"
+        ]
+    },
+    {
+        "acronym": "y",
+        "name": [
+            "Nucleus y"
+        ]
+    },
+    {
+        "acronym": "INV",
+        "name": [
+            "Interstitial nucleus of the vestibular nerve"
+        ]
+    },
+    {
+        "acronym": "MY-sat",
+        "name": [
+            "Medulla, behavioral state related"
+        ]
+    },
+    {
+        "acronym": "RM",
+        "name": [
+            "Nucleus raphe magnus"
+        ]
+    },
+    {
+        "acronym": "RPA",
+        "name": [
+            "Nucleus raphe pallidus"
+        ]
+    },
+    {
+        "acronym": "RO",
+        "name": [
+            "Nucleus raphe obscurus"
+        ]
+    },
+    {
+        "acronym": "CB",
+        "name": [
+            "Cerebellum"
+        ]
+    },
+    {
+        "acronym": "CBX",
+        "name": [
+            "Cerebellar cortex"
+        ]
+    },
+    {
+        "acronym": "CBXmo",
+        "name": [
+            "Cerebellar cortex, molecular layer"
+        ]
+    },
+    {
+        "acronym": "CBXpu",
+        "name": [
+            "Cerebellar cortex, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "CBXgr",
+        "name": [
+            "Cerebellar cortex, granular layer"
+        ]
+    },
+    {
+        "acronym": "VERM",
+        "name": [
+            "Vermal regions"
+        ]
+    },
+    {
+        "acronym": "LING",
+        "name": [
+            "Lingula (I)"
+        ]
+    },
+    {
+        "acronym": "LINGmo",
+        "name": [
+            "Lingula (I), molecular layer"
+        ]
+    },
+    {
+        "acronym": "LINGpu",
+        "name": [
+            "Lingula (I), Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "LINGgr",
+        "name": [
+            "Lingula (I), granular layer"
+        ]
+    },
+    {
+        "acronym": "CENT",
+        "name": [
+            "Central lobule"
+        ]
+    },
+    {
+        "acronym": "CENT2",
+        "name": [
+            "Lobule II"
+        ]
+    },
+    {
+        "acronym": "CENT2mo",
+        "name": [
+            "Lobule II, molecular layer"
+        ]
+    },
+    {
+        "acronym": "CENT2pu",
+        "name": [
+            "Lobule II, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "CENT2gr",
+        "name": [
+            "Lobule II, granular layer"
+        ]
+    },
+    {
+        "acronym": "CENT3",
+        "name": [
+            "Lobule III"
+        ]
+    },
+    {
+        "acronym": "CENT3mo",
+        "name": [
+            "Lobule III, molecular layer"
+        ]
+    },
+    {
+        "acronym": "CENT3pu",
+        "name": [
+            "Lobule III, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "CENT3gr",
+        "name": [
+            "Lobule III, granular layer"
+        ]
+    },
+    {
+        "acronym": "CUL",
+        "name": [
+            "Culmen",
+            "Culminate Lobe of Cerebellum"
+        ]
+    },
+    {
+        "acronym": "CUL4mo",
+        "name": [
+            "Lobule IV, molecular layer"
+        ]
+    },
+    {
+        "acronym": "CUL4pu",
+        "name": [
+            "Lobule IV, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "CUL4gr",
+        "name": [
+            "Lobule IV, granular layer"
+        ]
+    },
+    {
+        "acronym": "CUL5mo",
+        "name": [
+            "Lobule V, molecular layer"
+        ]
+    },
+    {
+        "acronym": "CUL5pu",
+        "name": [
+            "Lobule V, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "CUL5gr",
+        "name": [
+            "Lobule V, granular layer"
+        ]
+    },
+    {
+        "acronym": "CUL4,5",
+        "name": [
+            "Lobules IV-V"
+        ]
+    },
+    {
+        "acronym": "CUL4,5mo",
+        "name": [
+            "Lobules IV-V, molecular layer"
+        ]
+    },
+    {
+        "acronym": "CUL4,5pu",
+        "name": [
+            "Lobules IV-V, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "CUL4,5gr",
+        "name": [
+            "Lobules IV-V, granular layer"
+        ]
+    },
+    {
+        "acronym": "DEC",
+        "name": [
+            "Declive (VI)"
+        ]
+    },
+    {
+        "acronym": "DECmo",
+        "name": [
+            "Declive (VI), molecular layer"
+        ]
+    },
+    {
+        "acronym": "DECpu",
+        "name": [
+            "Declive (VI), Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "DECgr",
+        "name": [
+            "Declive (VI), granular layer"
+        ]
+    },
+    {
+        "acronym": "FOTU",
+        "name": [
+            "Folium-tuber vermis (VII)"
+        ]
+    },
+    {
+        "acronym": "FOTUmo",
+        "name": [
+            "Folium-tuber vermis (VII), molecular layer"
+        ]
+    },
+    {
+        "acronym": "FOTUpu",
+        "name": [
+            "Folium-tuber vermis (VII), Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "FOTUgr",
+        "name": [
+            "Folium-tuber vermis (VII), granular layer"
+        ]
+    },
+    {
+        "acronym": "PYR",
+        "name": [
+            "Pyramus (VIII)"
+        ]
+    },
+    {
+        "acronym": "PYRmo",
+        "name": [
+            "Pyramus (VIII), molecular layer"
+        ]
+    },
+    {
+        "acronym": "PYRpu",
+        "name": [
+            "Pyramus (VIII), Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "PYRgr",
+        "name": [
+            "Pyramus (VIII), granular layer"
+        ]
+    },
+    {
+        "acronym": "UVU",
+        "name": [
+            "Uvula (IX)"
+        ]
+    },
+    {
+        "acronym": "UVUmo",
+        "name": [
+            "Uvula (IX), molecular layer"
+        ]
+    },
+    {
+        "acronym": "UVUpu",
+        "name": [
+            "Uvula (IX), Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "UVUgr",
+        "name": [
+            "Uvula (IX), granular layer"
+        ]
+    },
+    {
+        "acronym": "NOD",
+        "name": [
+            "Nodulus (X)"
+        ]
+    },
+    {
+        "acronym": "NODmo",
+        "name": [
+            "Nodulus (X), molecular layer"
+        ]
+    },
+    {
+        "acronym": "NODpu",
+        "name": [
+            "Nodulus (X), Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "NODgr",
+        "name": [
+            "Nodulus (X), granular layer"
+        ]
+    },
+    {
+        "acronym": "HEM",
+        "name": [
+            "Hemispheric regions"
+        ]
+    },
+    {
+        "acronym": "SIM",
+        "name": [
+            "Simple lobule"
+        ]
+    },
+    {
+        "acronym": "SIMmo",
+        "name": [
+            "Simple lobule, molecular layer"
+        ]
+    },
+    {
+        "acronym": "SIMpu",
+        "name": [
+            "Simple lobule, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "SIMgr",
+        "name": [
+            "Simple lobule, granular layer"
+        ]
+    },
+    {
+        "acronym": "AN",
+        "name": [
+            "Ansiform lobule"
+        ]
+    },
+    {
+        "acronym": "ANcr1",
+        "name": [
+            "Crus 1"
+        ]
+    },
+    {
+        "acronym": "ANcr1mo",
+        "name": [
+            "Crus 1, molecular layer"
+        ]
+    },
+    {
+        "acronym": "ANcr1pu",
+        "name": [
+            "Crus 1, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "ANcr1gr",
+        "name": [
+            "Crus 1, granular layer"
+        ]
+    },
+    {
+        "acronym": "ANcr2",
+        "name": [
+            "Crus 2"
+        ]
+    },
+    {
+        "acronym": "ANcr2mo",
+        "name": [
+            "Crus 2, molecular layer"
+        ]
+    },
+    {
+        "acronym": "ANcr2pu",
+        "name": [
+            "Crus 2, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "ANcr2gr",
+        "name": [
+            "Crus 2, granular layer"
+        ]
+    },
+    {
+        "acronym": "PRM",
+        "name": [
+            "Paramedian lobule"
+        ]
+    },
+    {
+        "acronym": "PRMmo",
+        "name": [
+            "Paramedian lobule, molecular layer"
+        ]
+    },
+    {
+        "acronym": "PRMpu",
+        "name": [
+            "Paramedian lobule, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "PRMgr",
+        "name": [
+            "Paramedian lobule, granular layer"
+        ]
+    },
+    {
+        "acronym": "COPY",
+        "name": [
+            "Copula pyramidis"
+        ]
+    },
+    {
+        "acronym": "COPYmo",
+        "name": [
+            "Copula pyramidis, molecular layer"
+        ]
+    },
+    {
+        "acronym": "COPYpu",
+        "name": [
+            "Copula pyramidis, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "COPYgr",
+        "name": [
+            "Copula pyramidis, granular layer"
+        ]
+    },
+    {
+        "acronym": "PFL",
+        "name": [
+            "Paraflocculus"
+        ]
+    },
+    {
+        "acronym": "PFLmo",
+        "name": [
+            "Paraflocculus, molecular layer"
+        ]
+    },
+    {
+        "acronym": "PFLpu",
+        "name": [
+            "Paraflocculus, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "PFLgr",
+        "name": [
+            "Paraflocculus, granular layer"
+        ]
+    },
+    {
+        "acronym": "FL",
+        "name": [
+            "Flocculus"
+        ]
+    },
+    {
+        "acronym": "FLmo",
+        "name": [
+            "Flocculus, molecular layer"
+        ]
+    },
+    {
+        "acronym": "FLpu",
+        "name": [
+            "Flocculus, Purkinje layer"
+        ]
+    },
+    {
+        "acronym": "FLgr",
+        "name": [
+            "Flocculus, granular layer"
+        ]
+    },
+    {
+        "acronym": "CBN",
+        "name": [
+            "Cerebellar nuclei"
+        ]
+    },
+    {
+        "acronym": "FN",
+        "name": [
+            "Fastigial nucleus"
+        ]
+    },
+    {
+        "acronym": "IP",
+        "name": [
+            "Interposed nucleus"
+        ]
+    },
+    {
+        "acronym": "DN",
+        "name": [
+            "Dentate nucleus"
+        ]
+    },
+    {
+        "acronym": "VeCB",
+        "name": [
+            "Vestibulocerebellar nucleus"
+        ]
+    },
+    {
+        "acronym": " fiber tracts",
+        "name": [
+            "fiber tracts"
+        ]
+    },
+    {
+        "acronym": "cm",
+        "name": [
+            "cranial nerves"
+        ]
+    },
+    {
+        "acronym": "tn",
+        "name": [
+            "terminal nerve"
+        ]
+    },
+    {
+        "acronym": "von",
+        "name": [
+            "vomeronasal nerve"
+        ]
+    },
+    {
+        "acronym": "In",
+        "name": [
+            "olfactory nerve"
+        ]
+    },
+    {
+        "acronym": "onl",
+        "name": [
+            "olfactory nerve layer of main olfactory bulb"
+        ]
+    },
+    {
+        "acronym": "lotg",
+        "name": [
+            "lateral olfactory tract, general"
+        ]
+    },
+    {
+        "acronym": "lot",
+        "name": [
+            "lateral olfactory tract, body"
+        ]
+    },
+    {
+        "acronym": "lotd",
+        "name": [
+            "dorsal limb"
+        ]
+    },
+    {
+        "acronym": "aolt",
+        "name": [
+            "accessory olfactory tract"
+        ]
+    },
+    {
+        "acronym": "aco",
+        "name": [
+            "anterior commissure, olfactory limb"
+        ]
+    },
+    {
+        "acronym": "IIn",
+        "name": [
+            "optic nerve"
+        ]
+    },
+    {
+        "acronym": "aot",
+        "name": [
+            "accessory optic tract"
+        ]
+    },
+    {
+        "acronym": "bsc",
+        "name": [
+            "brachium of the superior colliculus"
+        ]
+    },
+    {
+        "acronym": "csc",
+        "name": [
+            "superior colliculus commissure"
+        ]
+    },
+    {
+        "acronym": "och",
+        "name": [
+            "optic chiasm"
+        ]
+    },
+    {
+        "acronym": "opt",
+        "name": [
+            "optic tract"
+        ]
+    },
+    {
+        "acronym": "ttp",
+        "name": [
+            "tectothalamic pathway"
+        ]
+    },
+    {
+        "acronym": "IIIn",
+        "name": [
+            "oculomotor nerve"
+        ]
+    },
+    {
+        "acronym": "mlf",
+        "name": [
+            "medial longitudinal fascicle"
+        ]
+    },
+    {
+        "acronym": "pc",
+        "name": [
+            "posterior commissure"
+        ]
+    },
+    {
+        "acronym": "IVn",
+        "name": [
+            "trochlear nerve"
+        ]
+    },
+    {
+        "acronym": "IVd",
+        "name": [
+            "trochlear nerve decussation"
+        ]
+    },
+    {
+        "acronym": "VIn",
+        "name": [
+            "abducens nerve"
+        ]
+    },
+    {
+        "acronym": "Vn",
+        "name": [
+            "trigeminal nerve"
+        ]
+    },
+    {
+        "acronym": "moV",
+        "name": [
+            "motor root of the trigeminal nerve"
+        ]
+    },
+    {
+        "acronym": "sV",
+        "name": [
+            "sensory root of the trigeminal nerve"
+        ]
+    },
+    {
+        "acronym": "mtV",
+        "name": [
+            "midbrain tract of the trigeminal nerve"
+        ]
+    },
+    {
+        "acronym": "sptV",
+        "name": [
+            "spinal tract of the trigeminal nerve"
+        ]
+    },
+    {
+        "acronym": "VIIn",
+        "name": [
+            "facial nerve"
+        ]
+    },
+    {
+        "acronym": "iVIIn",
+        "name": [
+            "intermediate nerve"
+        ]
+    },
+    {
+        "acronym": "gVIIn",
+        "name": [
+            "genu of the facial nerve"
+        ]
+    },
+    {
+        "acronym": "VIIIn",
+        "name": [
+            "vestibulocochlear nerve"
+        ]
+    },
+    {
+        "acronym": "cvb",
+        "name": [
+            "efferent cochleovestibular bundle"
+        ]
+    },
+    {
+        "acronym": "vVIIIn",
+        "name": [
+            "vestibular nerve"
+        ]
+    },
+    {
+        "acronym": "cVIIIn",
+        "name": [
+            "cochlear nerve"
+        ]
+    },
+    {
+        "acronym": "tb",
+        "name": [
+            "trapezoid body"
+        ]
+    },
+    {
+        "acronym": "ias",
+        "name": [
+            "intermediate acoustic stria"
+        ]
+    },
+    {
+        "acronym": "das",
+        "name": [
+            "dorsal acoustic stria"
+        ]
+    },
+    {
+        "acronym": "ll",
+        "name": [
+            "lateral lemniscus"
+        ]
+    },
+    {
+        "acronym": "cic",
+        "name": [
+            "inferior colliculus commissure"
+        ]
+    },
+    {
+        "acronym": "bic",
+        "name": [
+            "brachium of the inferior colliculus"
+        ]
+    },
+    {
+        "acronym": "IXn",
+        "name": [
+            "glossopharyngeal nerve"
+        ]
+    },
+    {
+        "acronym": "Xn",
+        "name": [
+            "vagus nerve"
+        ]
+    },
+    {
+        "acronym": "ts",
+        "name": [
+            "solitary tract"
+        ]
+    },
+    {
+        "acronym": "XIn",
+        "name": [
+            "accessory spinal nerve"
+        ]
+    },
+    {
+        "acronym": "XIIn",
+        "name": [
+            "hypoglossal nerve"
+        ]
+    },
+    {
+        "acronym": "vrt",
+        "name": [
+            "ventral roots"
+        ]
+    },
+    {
+        "acronym": "drt",
+        "name": [
+            "dorsal roots"
+        ]
+    },
+    {
+        "acronym": "cett",
+        "name": [
+            "cervicothalamic tract"
+        ]
+    },
+    {
+        "acronym": "dl",
+        "name": [
+            "dorsolateral fascicle"
+        ]
+    },
+    {
+        "acronym": "dcm",
+        "name": [
+            "dorsal commissure of the spinal cord"
+        ]
+    },
+    {
+        "acronym": "vc",
+        "name": [
+            "ventral commissure of the spinal cord"
+        ]
+    },
+    {
+        "acronym": "fpr",
+        "name": [
+            "fasciculus proprius"
+        ]
+    },
+    {
+        "acronym": "dc",
+        "name": [
+            "dorsal column"
+        ]
+    },
+    {
+        "acronym": "cuf",
+        "name": [
+            "cuneate fascicle"
+        ]
+    },
+    {
+        "acronym": "grf",
+        "name": [
+            "gracile fascicle"
+        ]
+    },
+    {
+        "acronym": "iaf",
+        "name": [
+            "internal arcuate fibers"
+        ]
+    },
+    {
+        "acronym": "ml",
+        "name": [
+            "medial lemniscus"
+        ]
+    },
+    {
+        "acronym": "sst",
+        "name": [
+            "spinothalamic tract"
+        ]
+    },
+    {
+        "acronym": "sttl",
+        "name": [
+            "lateral spinothalamic tract"
+        ]
+    },
+    {
+        "acronym": "sttv",
+        "name": [
+            "ventral spinothalamic tract"
+        ]
+    },
+    {
+        "acronym": "scrt",
+        "name": [
+            "spinocervical tract"
+        ]
+    },
+    {
+        "acronym": "sop",
+        "name": [
+            "spino-olivary pathway"
+        ]
+    },
+    {
+        "acronym": "srp",
+        "name": [
+            "spinoreticular pathway"
+        ]
+    },
+    {
+        "acronym": "svp",
+        "name": [
+            "spinovestibular pathway"
+        ]
+    },
+    {
+        "acronym": "stp",
+        "name": [
+            "spinotectal pathway"
+        ]
+    },
+    {
+        "acronym": "shp",
+        "name": [
+            "spinohypothalamic pathway"
+        ]
+    },
+    {
+        "acronym": "step",
+        "name": [
+            "spinotelenchephalic pathway"
+        ]
+    },
+    {
+        "acronym": "hht",
+        "name": [
+            "hypothalamohypophysial tract"
+        ]
+    },
+    {
+        "acronym": "cbf",
+        "name": [
+            "cerebellum related fiber tracts"
+        ]
+    },
+    {
+        "acronym": "cbc",
+        "name": [
+            "cerebellar commissure"
+        ]
+    },
+    {
+        "acronym": "cbp",
+        "name": [
+            "cerebellar peduncles"
+        ]
+    },
+    {
+        "acronym": "scp",
+        "name": [
+            "superior cerebelar peduncles"
+        ]
+    },
+    {
+        "acronym": "dscp",
+        "name": [
+            "superior cerebellar peduncle decussation"
+        ]
+    },
+    {
+        "acronym": "sct",
+        "name": [
+            "spinocerebellar tract"
+        ]
+    },
+    {
+        "acronym": "uf",
+        "name": [
+            "uncinate fascicle"
+        ]
+    },
+    {
+        "acronym": "sctv",
+        "name": [
+            "ventral spinocerebellar tract"
+        ]
+    },
+    {
+        "acronym": "mcp",
+        "name": [
+            "middle cerebellar peduncle"
+        ]
+    },
+    {
+        "acronym": "icp",
+        "name": [
+            "inferior cerebellar peduncle"
+        ]
+    },
+    {
+        "acronym": "sctd",
+        "name": [
+            "dorsal spinocerebellar tract"
+        ]
+    },
+    {
+        "acronym": "cct",
+        "name": [
+            "cuneocerebellar tract"
+        ]
+    },
+    {
+        "acronym": "jrb",
+        "name": [
+            "juxtarestiform body"
+        ]
+    },
+    {
+        "acronym": "bct",
+        "name": [
+            "bulbocerebellar tract"
+        ]
+    },
+    {
+        "acronym": "oct",
+        "name": [
+            "olivocerebellar tract"
+        ]
+    },
+    {
+        "acronym": "rct",
+        "name": [
+            "reticulocerebellar tract"
+        ]
+    },
+    {
+        "acronym": "tct",
+        "name": [
+            "trigeminocerebellar tract"
+        ]
+    },
+    {
+        "acronym": "arb",
+        "name": [
+            "arbor vitae"
+        ]
+    },
+    {
+        "acronym": "scwm",
+        "name": [
+            "supra-callosal cerebral white matter"
+        ]
+    },
+    {
+        "acronym": "lfbs",
+        "name": [
+            "lateral forebrain bundle system"
+        ]
+    },
+    {
+        "acronym": "cc",
+        "name": [
+            "corpus callosum"
+        ]
+    },
+    {
+        "acronym": "fa",
+        "name": [
+            "corpus callosum, anterior forceps"
+        ]
+    },
+    {
+        "acronym": "ec",
+        "name": [
+            "external capsule"
+        ]
+    },
+    {
+        "acronym": "ee",
+        "name": [
+            "corpus callosum, extreme capsule"
+        ]
+    },
+    {
+        "acronym": "ccg",
+        "name": [
+            "genu of corpus callosum"
+        ]
+    },
+    {
+        "acronym": "fp",
+        "name": [
+            "corpus callosum, posterior forceps"
+        ]
+    },
+    {
+        "acronym": "ccr",
+        "name": [
+            "corpus callosum, rostrum"
+        ]
+    },
+    {
+        "acronym": "ccb",
+        "name": [
+            "corpus callosum, body"
+        ]
+    },
+    {
+        "acronym": "ccs",
+        "name": [
+            "corpus callosum, splenium"
+        ]
+    },
+    {
+        "acronym": "cst",
+        "name": [
+            "corticospinal tract"
+        ]
+    },
+    {
+        "acronym": "int",
+        "name": [
+            "internal capsule"
+        ]
+    },
+    {
+        "acronym": "cpd",
+        "name": [
+            "cerebal peduncle"
+        ]
+    },
+    {
+        "acronym": "cte",
+        "name": [
+            "corticotectal tract"
+        ]
+    },
+    {
+        "acronym": "crt",
+        "name": [
+            "corticorubral tract"
+        ]
+    },
+    {
+        "acronym": "cpt",
+        "name": [
+            "corticopontine tract"
+        ]
+    },
+    {
+        "acronym": "cbt",
+        "name": [
+            "corticobulbar tract"
+        ]
+    },
+    {
+        "acronym": "py",
+        "name": [
+            "pyramid"
+        ]
+    },
+    {
+        "acronym": "pyd",
+        "name": [
+            "pyramidal decussation"
+        ]
+    },
+    {
+        "acronym": "cstc",
+        "name": [
+            "corticospinal tract, crossed"
+        ]
+    },
+    {
+        "acronym": "cstu",
+        "name": [
+            "corticospinal tract, uncrossed"
+        ]
+    },
+    {
+        "acronym": "lfbst",
+        "name": [
+            "thalamus related"
+        ]
+    },
+    {
+        "acronym": "em",
+        "name": [
+            "external medullary lamina of the thalamus"
+        ]
+    },
+    {
+        "acronym": "im",
+        "name": [
+            "internal medullary lamina of the thalamus"
+        ]
+    },
+    {
+        "acronym": "mtc",
+        "name": [
+            "middle thalamic commissure"
+        ]
+    },
+    {
+        "acronym": "tp",
+        "name": [
+            "thalamic peduncles"
+        ]
+    },
+    {
+        "acronym": "or",
+        "name": [
+            "optic radiation"
+        ]
+    },
+    {
+        "acronym": "ar",
+        "name": [
+            "auditory radiation"
+        ]
+    },
+    {
+        "acronym": "eps",
+        "name": [
+            "extrapyramidal fiber systems"
+        ]
+    },
+    {
+        "acronym": "epsc",
+        "name": [
+            "cerebral nuclei related"
+        ]
+    },
+    {
+        "acronym": "pap",
+        "name": [
+            "pallidothalamic pathway"
+        ]
+    },
+    {
+        "acronym": "nst",
+        "name": [
+            "nigrostriatal tract"
+        ]
+    },
+    {
+        "acronym": "ntt",
+        "name": [
+            "nigrothalamic fibers"
+        ]
+    },
+    {
+        "acronym": "ptf",
+        "name": [
+            "pallidotegmental fascicle"
+        ]
+    },
+    {
+        "acronym": "snp",
+        "name": [
+            "striatonigral pathway"
+        ]
+    },
+    {
+        "acronym": "stf",
+        "name": [
+            "subthalamic fascicle"
+        ]
+    },
+    {
+        "acronym": "tsp",
+        "name": [
+            "tectospinal pathway"
+        ]
+    },
+    {
+        "acronym": "tspd",
+        "name": [
+            "direct tectospinal pathway"
+        ]
+    },
+    {
+        "acronym": "dtd",
+        "name": [
+            "doral tegmental decussation"
+        ]
+    },
+    {
+        "acronym": "tspc",
+        "name": [
+            "crossed tectospinal pathway"
+        ]
+    },
+    {
+        "acronym": "rust",
+        "name": [
+            "rubrospinal tract"
+        ]
+    },
+    {
+        "acronym": "vtd",
+        "name": [
+            "ventral tegmental decussation"
+        ]
+    },
+    {
+        "acronym": "rrt",
+        "name": [
+            "rubroreticular tract"
+        ]
+    },
+    {
+        "acronym": "ctb",
+        "name": [
+            "central tegmental bundle"
+        ]
+    },
+    {
+        "acronym": "rst",
+        "name": [
+            "retriculospinal tract"
+        ]
+    },
+    {
+        "acronym": "rstl",
+        "name": [
+            "retriculospinal tract, lateral part"
+        ]
+    },
+    {
+        "acronym": "rstm",
+        "name": [
+            "retriculospinal tract, medial part"
+        ]
+    },
+    {
+        "acronym": "vsp",
+        "name": [
+            "vestibulospinal pathway"
+        ]
+    },
+    {
+        "acronym": "mfbs",
+        "name": [
+            "medial forebrain bundle system"
+        ]
+    },
+    {
+        "acronym": "mfbc",
+        "name": [
+            "cerebrum related"
+        ]
+    },
+    {
+        "acronym": "amc",
+        "name": [
+            "amygdalar capsule"
+        ]
+    },
+    {
+        "acronym": "apd",
+        "name": [
+            "ansa peduncularis"
+        ]
+    },
+    {
+        "acronym": "act",
+        "name": [
+            "anterior commissure, temporal limb"
+        ]
+    },
+    {
+        "acronym": "cing",
+        "name": [
+            "cingulum bundle"
+        ]
+    },
+    {
+        "acronym": "fxs",
+        "name": [
+            "fornix system"
+        ]
+    },
+    {
+        "acronym": "alv",
+        "name": [
+            "alveus"
+        ]
+    },
+    {
+        "acronym": "df",
+        "name": [
+            "dorsal fornix"
+        ]
+    },
+    {
+        "acronym": "fi",
+        "name": [
+            "fimbria"
+        ]
+    },
+    {
+        "acronym": "fxprg",
+        "name": [
+            "precommissural fornix, general"
+        ]
+    },
+    {
+        "acronym": "db",
+        "name": [
+            "precommissural fornix diagonal band"
+        ]
+    },
+    {
+        "acronym": "fxpo",
+        "name": [
+            "postcommissural fornix"
+        ]
+    },
+    {
+        "acronym": "mct",
+        "name": [
+            "medial corticohypothalamic tract"
+        ]
+    },
+    {
+        "acronym": "fx",
+        "name": [
+            "columns of the fornix"
+        ]
+    },
+    {
+        "acronym": "hc",
+        "name": [
+            "hippocampal commissures"
+        ]
+    },
+    {
+        "acronym": "dhc",
+        "name": [
+            "dorsal hippocampal commissure"
+        ]
+    },
+    {
+        "acronym": "vhc",
+        "name": [
+            "ventral hippocampal commissure"
+        ]
+    },
+    {
+        "acronym": "per",
+        "name": [
+            "perforant path"
+        ]
+    },
+    {
+        "acronym": "ab",
+        "name": [
+            "angular path"
+        ]
+    },
+    {
+        "acronym": "lab",
+        "name": [
+            "longitudinal association bundle"
+        ]
+    },
+    {
+        "acronym": "st",
+        "name": [
+            "stria terminalis"
+        ]
+    },
+    {
+        "acronym": "stc",
+        "name": [
+            "commissural branch of stria terminalis"
+        ]
+    },
+    {
+        "acronym": "mfsbshy",
+        "name": [
+            "hypothalamus related"
+        ]
+    },
+    {
+        "acronym": "mfb",
+        "name": [
+            "medial forebrain bundle"
+        ]
+    },
+    {
+        "acronym": "vlt",
+        "name": [
+            "ventrolateral hypothalamic tract"
+        ]
+    },
+    {
+        "acronym": "poc",
+        "name": [
+            "preoptic commissure"
+        ]
+    },
+    {
+        "acronym": "sup",
+        "name": [
+            "supraoptic commissures"
+        ]
+    },
+    {
+        "acronym": "supa",
+        "name": [
+            "supraoptic commissures, anterior"
+        ]
+    },
+    {
+        "acronym": "supd",
+        "name": [
+            "supraoptic commissures, dorsal"
+        ]
+    },
+    {
+        "acronym": "supv",
+        "name": [
+            "supraoptic commissures, ventral"
+        ]
+    },
+    {
+        "acronym": "pmx",
+        "name": [
+            "premammillary commissure"
+        ]
+    },
+    {
+        "acronym": "smd",
+        "name": [
+            "supramammillary decussation"
+        ]
+    },
+    {
+        "acronym": "php",
+        "name": [
+            "propriohypothalamic pathways"
+        ]
+    },
+    {
+        "acronym": "phpd",
+        "name": [
+            "propriohypothalamic pathways, dorsal"
+        ]
+    },
+    {
+        "acronym": "phpl",
+        "name": [
+            "propriohypothalamic pathways, lateral"
+        ]
+    },
+    {
+        "acronym": "phpm",
+        "name": [
+            "propriohypothalamic pathways, medial"
+        ]
+    },
+    {
+        "acronym": "phpv",
+        "name": [
+            "propriohypothalamic pathways, ventral"
+        ]
+    },
+    {
+        "acronym": "pvbh",
+        "name": [
+            "periventricular bundle of the hypothalamus"
+        ]
+    },
+    {
+        "acronym": "mfbsma",
+        "name": [
+            "mammillary related"
+        ]
+    },
+    {
+        "acronym": "pm",
+        "name": [
+            "principal mammillary tract"
+        ]
+    },
+    {
+        "acronym": "mtt",
+        "name": [
+            "mammillothalamic tract"
+        ]
+    },
+    {
+        "acronym": "mtg",
+        "name": [
+            "mammillotegmental tract"
+        ]
+    },
+    {
+        "acronym": "mp",
+        "name": [
+            "mammillary peduncle"
+        ]
+    },
+    {
+        "acronym": "mfbst",
+        "name": [
+            "dorsal thalamus related"
+        ]
+    },
+    {
+        "acronym": "pvbt",
+        "name": [
+            "periventricular bundle of the thalamus"
+        ]
+    },
+    {
+        "acronym": "mfbse",
+        "name": [
+            "epithalamus related"
+        ]
+    },
+    {
+        "acronym": "sm",
+        "name": [
+            "stria medullaris"
+        ]
+    },
+    {
+        "acronym": "fr",
+        "name": [
+            "fasciculus retroflexus"
+        ]
+    },
+    {
+        "acronym": "hbc",
+        "name": [
+            "habenular commissure"
+        ]
+    },
+    {
+        "acronym": "PIS",
+        "name": [
+            "pineal stalk"
+        ]
+    },
+    {
+        "acronym": "mfbsm",
+        "name": [
+            "midbrain related"
+        ]
+    },
+    {
+        "acronym": "dlf",
+        "name": [
+            "dorsal longitudinal fascicle"
+        ]
+    },
+    {
+        "acronym": "dtt",
+        "name": [
+            "dorsal tegmental tract"
+        ]
+    },
+    {
+        "acronym": "VS",
+        "name": [
+            "ventricular systems"
+        ]
+    },
+    {
+        "acronym": "VL",
+        "name": [
+            "lateral ventricle"
+        ]
+    },
+    {
+        "acronym": "RC",
+        "name": [
+            "rhinocele"
+        ]
+    },
+    {
+        "acronym": "SEZ",
+        "name": [
+            "subependymal zone"
+        ]
+    },
+    {
+        "acronym": "chpl",
+        "name": [
+            "choroid plexus"
+        ]
+    },
+    {
+        "acronym": "chfl",
+        "name": [
+            "choroid fissure"
+        ]
+    },
+    {
+        "acronym": "IVF",
+        "name": [
+            "interventricular foramen"
+        ]
+    },
+    {
+        "acronym": "V3",
+        "name": [
+            "third ventricle"
+        ]
+    },
+    {
+        "acronym": "AQ",
+        "name": [
+            "cerebral aqueduct"
+        ]
+    },
+    {
+        "acronym": "V4r",
+        "name": [
+            "lateral recess"
+        ]
+    },
+    {
+        "acronym": "grv",
+        "name": [
+            "grooves"
+        ]
+    },
+    {
+        "acronym": "grv of CTX",
+        "name": [
+            "grooves of the cerebral cortex"
+        ]
+    },
+    {
+        "acronym": "eg",
+        "name": [
+            "endorhinal groove"
+        ]
+    },
+    {
+        "acronym": "hf",
+        "name": [
+            "hippocampal fissure"
+        ]
+    },
+    {
+        "acronym": "rf",
+        "name": [
+            "rhinal fissure"
+        ]
+    },
+    {
+        "acronym": "ri",
+        "name": [
+            "rhinal incisure"
+        ]
+    },
+    {
+        "acronym": "grv of CBX",
+        "name": [
+            "grooves of the cerebellar cortex"
+        ]
+    },
+    {
+        "acronym": "pce",
+        "name": [
+            "precentral fissure"
+        ]
+    },
+    {
+        "acronym": "pcf",
+        "name": [
+            "preculminate fissure"
+        ]
+    },
+    {
+        "acronym": "pri",
+        "name": [
+            "primary fissure"
+        ]
+    },
+    {
+        "acronym": "psf",
+        "name": [
+            "posterior superior fissure"
+        ]
+    },
+    {
+        "acronym": "ppf",
+        "name": [
+            "prepyramidal fissure"
+        ]
+    },
+    {
+        "acronym": "sec",
+        "name": [
+            "secondary fissure"
+        ]
+    },
+    {
+        "acronym": "plf",
+        "name": [
+            "posterolateral fissure"
+        ]
+    },
+    {
+        "acronym": "nf",
+        "name": [
+            "nodular fissure"
+        ]
+    },
+    {
+        "acronym": "sif",
+        "name": [
+            "simple fissure"
+        ]
+    },
+    {
+        "acronym": "icf",
+        "name": [
+            "intercrural fissure"
+        ]
+    },
+    {
+        "acronym": "apf",
+        "name": [
+            "ansoparamedian fissure"
+        ]
+    },
+    {
+        "acronym": "ipf",
+        "name": [
+            "intraparafloccular fissure"
+        ]
+    },
+    {
+        "acronym": "pms",
+        "name": [
+            "paramedian sulcus"
+        ]
+    },
+    {
+        "acronym": "pfs",
+        "name": [
+            "parafloccular sulcus"
+        ]
+    },
+    {
+        "acronym": "IPF",
+        "name": [
+            "Interpeduncular fossa"
+        ]
+    },
+    {
+        "acronym": "retina",
+        "name": [
+            "retina"
+        ]
+    }
+]

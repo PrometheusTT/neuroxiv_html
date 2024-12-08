@@ -1,0 +1,984 @@
+{
+    "AAA": [
+        "Emotion",
+        "Feeling"
+    ],
+    "ACAd": [
+        "Memory",
+        "Motion",
+        "Attention",
+        "Feeling",
+        "Emotion"
+    ],
+    "ACAv": [
+        "Cognition",
+        "Feeling"
+    ],
+    "ACB": [
+        "Learning",
+        "Memory",
+        "Motion",
+        "Behavior",
+        "Decision making"
+    ],
+    "AId": [
+        "Emotion",
+        "Feeling"
+    ],
+    "AIp": [
+        "Emotion",
+        "Motion",
+        "Cognition",
+        "Feeling",
+        "Decision making"
+    ],
+    "AIv": [
+        "Emotion",
+        "Motion",
+        "Cognition",
+        "Feeling",
+        "Decision making"
+    ],
+    "AM": [
+        "Learning",
+        "Memory"
+    ],
+    "AON": [
+        "Perception"
+    ],
+    "AUDd": [
+        "Perception"
+    ],
+    "AUDp": [
+        "Hearing"
+    ],
+    "AUDpo": [
+        "Hearing"
+    ],
+    "AUDv": [
+        "Hearing"
+    ],
+    "BLA": [
+        "Behavior",
+        "Decision making"
+    ],
+    "BST": [
+        "Behavior"
+    ],
+    "CA1": [
+        "Learning",
+        "Memory"
+    ],
+    "CA3": [
+        "Learning",
+        "Memory"
+    ],
+    "CEA": [
+        "Behavior"
+    ],
+    "CLA": [
+        "Motion",
+        "Cognition"
+    ],
+    "CM": [
+        "Emotion",
+        "Memory",
+        "Feeling"
+    ],
+    "CP": [
+        "Metabolism"
+    ],
+    "DG": [
+        "Memory"
+    ],
+    "ECT": [
+        "Smell"
+    ],
+    "ENTl": [
+        "Smell"
+    ],
+    "ENTm": [
+        "Smell"
+    ],
+    "EPd": [
+        "Emotion",
+        "Feeling"
+    ],
+    "FRP": [
+        "Cognition"
+    ],
+    "FS": [
+        "Motion"
+    ],
+    "GU": [
+        "Metabolism",
+        "Behavior"
+    ],
+    "IAD": [
+        "Feeling"
+    ],
+    "LD": [
+        "Motion",
+        "Feeling"
+    ],
+    "LGd": [
+        "Vision",
+        "Hearing"
+    ],
+    "LP": [
+        "Motion"
+    ],
+    "LSv": [
+        "Emotion",
+        "Memory"
+    ],
+    "MD": [
+        "Emotion",
+        "Memory",
+        "Feeling"
+    ],
+    "MG": [
+        "Hearing"
+    ],
+    "MOp": [
+        "Behavior"
+    ],
+    "MOs": [
+        "Motion",
+        "Decision making"
+    ],
+    "NDB": [
+        "Learning",
+        "Memory",
+        "Decision making"
+    ],
+    "ORBl": [
+        "Vision"
+    ],
+    "ORBm": [
+        "Vision"
+    ],
+    "ORBvl": [
+        "Vision",
+        "Decision making"
+    ],
+    "OT": [
+        "Emotion",
+        "Smell",
+        "Behavior"
+    ],
+    "PAA": [
+        "Emotion",
+        "Behavior"
+    ],
+    "PAR": [
+        "Learning",
+        "Memory"
+    ],
+    "PB": [
+        "Taste",
+        "Behavior"
+    ],
+    "PIR": [
+        "Behavior",
+        "Memory",
+        "Learning",
+        "Smell",
+        "Emotion"
+    ],
+    "PO": [
+        "Feeling"
+    ],
+    "POST": [
+        "Learning",
+        "Memory"
+    ],
+    "PRNr": [
+        "Motion",
+        "Feeling"
+    ],
+    "PSV": [
+        "Motion",
+        "Feeling"
+    ],
+    "PVT": [
+        "Regulation",
+        "Decision making"
+    ],
+    "PoT": [
+        "Behavior",
+        "Memory",
+        "Learning",
+        "Feeling",
+        "Motion"
+    ],
+    "ProS": [
+        "Vision"
+    ],
+    "RE": [
+        "Memory"
+    ],
+    "RSPagl": [
+        "Memory",
+        "Vision",
+        "Feeling"
+    ],
+    "RSPd": [
+        "Memory",
+        "Vision",
+        "Feeling"
+    ],
+    "RSPv": [
+        "Memory",
+        "Vision",
+        "Feeling"
+    ],
+    "RT": [
+        "Sleeping",
+        "Attention",
+        "Feeling"
+    ],
+    "SGN": [
+        "Vision"
+    ],
+    "SI": [
+        "Emotion",
+        "Behavior"
+    ],
+    "SMT": [
+        "Emotion",
+        "Memory",
+        "Feeling"
+    ],
+    "SSp-bfd": [
+        "Feeling"
+    ],
+    "SSp-ll": [
+        "Motion"
+    ],
+    "SSp-m": [
+        "Taste",
+        "Behavior"
+    ],
+    "SSp-n": [
+        "Smell",
+        "Behavior"
+    ],
+    "SSp-tr": [
+        "Supporting"
+    ],
+    "SSp-ul": [
+        "Motion",
+        "Feeling"
+    ],
+    "SSp-un": [
+        "Motion",
+        "Feeling"
+    ],
+    "SSs": [
+        "Motion",
+        "Feeling"
+    ],
+    "SUB": [
+        "Memory"
+    ],
+    "TEa": [
+        "Emotion",
+        "Memory",
+        "Cognition"
+    ],
+    "TR": [
+        "Feeling"
+    ],
+    "TRN": [
+        "Regulation"
+    ],
+    "VAL": [
+        "Feeling"
+    ],
+    "VISC": [
+        "Behavior"
+    ],
+    "VISa": [
+        "Pronunciation",
+        "Eating"
+    ],
+    "VISal": [
+        "Vision"
+    ],
+    "VISam": [
+        "Vision"
+    ],
+    "VISl": [
+        "Vision"
+    ],
+    "VISli": [
+        "Vision"
+    ],
+    "VISp": [
+        "Vision"
+    ],
+    "VISpm": [
+        "Vision"
+    ],
+    "VISpor": [
+        "Motion",
+        "Feeling"
+    ],
+    "VISrl": [
+        "Vision"
+    ],
+    "VM": [
+        "Regulation"
+    ],
+    "VPL": [
+        "Motion",
+        "Feeling"
+    ],
+    "VPLpc": [
+        "Motion",
+        "Feeling"
+    ],
+    "VPM": [
+        "Behavior",
+        "Memory",
+        "Learning",
+        "Feeling",
+        "Motion"
+    ],
+    "VPMpc": [
+        "Behavior",
+        "Memory",
+        "Learning",
+        "Feeling",
+        "Motion"
+    ],
+    "VISpl": [
+        "Vision"
+    ],
+    "PL": [
+        "Emotion",
+        "Memory",
+        "Visceral activity",
+        "Decision making"
+    ],
+    "ILA": [
+        "Learning",
+        "Visceral activity",
+        "Coordination"
+    ],
+    "PERI": [
+        "Learning",
+        "Memory",
+        "Individual survival",
+        "Racial reproduction"
+    ],
+    "MOB": [
+        "Smell"
+    ],
+    "TT": [
+        "Emotion",
+        "Memory",
+        "Visceral activity"
+    ],
+    "DP": [
+        "Emotion",
+        "Pressure"
+    ],
+    "NLOT": [
+        "Smell"
+    ],
+    "COAa": [
+        "Emotion",
+        "Memory",
+        "Learning"
+    ],
+    "COAp": [
+        "Emotion",
+        "Memory",
+        "Learning"
+    ],
+    "CA2": [
+        "Memory",
+        "Learning"
+    ],
+    "IG": [
+        "Unkown"
+    ],
+    "PRE": [
+        "Memory",
+        "Learning"
+    ],
+    "HATA": [
+        "Coordination"
+    ],
+    "APr": [
+        "Vision"
+    ],
+    "EPv": [
+        "Motion",
+        "Feeling"
+    ],
+    "LA": [
+        "Emotion",
+        "Memory",
+        "Cognition",
+        "Learning"
+    ],
+    "BMA": [
+        "Emotion",
+        "Memory",
+        "Cognition",
+        "Learning",
+        "Decision making"
+    ],
+    "PA": [
+        "Emotion",
+        "Memory",
+        "Cognition",
+        "Learning"
+    ],
+    "LSc": [
+        "Emotion",
+        "Behavior"
+    ],
+    "LSr": [
+        "Emotion",
+        "Behavior"
+    ],
+    "SF": [
+        "Emotion",
+        "Behavior"
+    ],
+    "SH": [
+        "Emotion",
+        "Behavior"
+    ],
+    "IA": [
+        "Emotion",
+        "Memory",
+        "Cognition",
+        "Learning"
+    ],
+    "MEA": [
+        "Emotion",
+        "Memory",
+        "Cognition",
+        "Learning"
+    ],
+    "GPe": [
+        "Behavior"
+    ],
+    "GPi": [
+        "Behavior"
+    ],
+    "MA": [
+        "Hearing"
+    ],
+    "MS": [
+        "Memory",
+        "Feeling"
+    ],
+    "TRS": [
+        "Emotion",
+        "Memory",
+        "Behavior"
+    ],
+    "SPFm": [
+        "Emotion",
+        "Motion"
+    ],
+    "SPFp": [
+        "Emotion",
+        "Motion"
+    ],
+    "SPA": [
+        "Emotion",
+        "Motion"
+    ],
+    "PP": [
+        "Motion"
+    ],
+    "POL": [
+        "Hearing"
+    ],
+    "AV": [
+        "Visceral activity"
+    ],
+    "IMD": [
+        "Emotion",
+        "Memory",
+        "Visceral activity"
+    ],
+    "PR": [
+        "Unkown"
+    ],
+    "PCN": [
+        "Awareness"
+    ],
+    "CL": [
+        "Motion",
+        "Emotion",
+        "Feeling"
+    ],
+    "PF": [
+        "Emotion",
+        "Motion"
+    ],
+    "PIL": [
+        "Emotion",
+        "Memory",
+        "Feeling"
+    ],
+    "IGL": [
+        "Vision"
+    ],
+    "IntG": [
+        "Vision"
+    ],
+    "LGv": [
+        "Vision"
+    ],
+    "SubG": [
+        "Vision",
+        "Hearing"
+    ],
+    "LH": [
+        "Behavior",
+        "Regulation of circadian rhythm"
+    ],
+    "PVi": [
+        "Motion",
+        "Behavior",
+        "Visceral activity"
+    ],
+    "AVP": [
+        "Vision"
+    ],
+    "DMH": [
+        "Emotion",
+        "Memory",
+        "Behavior",
+        "Visceral activity"
+    ],
+    "MPO": [
+        "Vision"
+    ],
+    "PS": [
+        "Secretion activity"
+    ],
+    "SFO": [
+        "Drinking",
+        "Water electrolyte balance"
+    ],
+    "MM": [
+        "Emotion"
+    ],
+    "SUM": [
+        "Emotion"
+    ],
+    "VMH": [
+        "Weight",
+        "Blood sugar balance",
+        "Eating"
+    ],
+    "PH": [
+        "Emotion",
+        "Visceral activity",
+        "Temperature",
+        "Cognition"
+    ],
+    "LHA": [
+        "Emotion",
+        "Behavior"
+    ],
+    "LPO": [
+        "Vision"
+    ],
+    "PST": [
+        "Visceral activity"
+    ],
+    "PSTN": [
+        "Emotion",
+        "Behavior"
+    ],
+    "STN": [
+        "Behavior"
+    ],
+    "ZI": [
+        "Memory",
+        "Behavior"
+    ],
+    "SCs": [
+        "Endocrine activity",
+        "Behavior",
+        "Eating",
+        "Sleeping",
+        "Temperature"
+    ],
+    "IC": [
+        "Emotion",
+        "Endocrine activity",
+        "Behavior",
+        "Visceral activity"
+    ],
+    "NB": [
+        "Hearing"
+    ],
+    "SAG": [
+        "Endocrine activity"
+    ],
+    "PBG": [
+        "Emotion",
+        "Memory"
+    ],
+    "MEV": [
+        "",
+        "Feeling"
+    ],
+    "SNr": [
+        "Motion",
+        "Decision making"
+    ],
+    "VTA": [
+        "Emotion",
+        "Behavior",
+        "Decision making"
+    ],
+    "PN": [
+        "Motion"
+    ],
+    "RR": [
+        "Vision"
+    ],
+    "MRN": [
+        "Vision"
+    ],
+    "SCm": [
+        "Motion"
+    ],
+    "PAG": [
+        "Emotion",
+        "Behavior"
+    ],
+    "APN": [
+        "Vision"
+    ],
+    "NPC": [
+        "Vision"
+    ],
+    "CUN": [
+        "Behavior",
+        "Feeling"
+    ],
+    "RN": [
+        "Motion",
+        "Body balance"
+    ],
+    "III": [
+        "Vision",
+        "Eye movements"
+    ],
+    "IV": [
+        "Vision",
+        "Eye movements"
+    ],
+    "Pa4": [
+        "Vision",
+        "Eye movements"
+    ],
+    "VTN": [
+        "Emotion",
+        "Behavior"
+    ],
+    "AT": [
+        "Vision",
+        "Eye movements"
+    ],
+    "DT": [
+        "Vision",
+        "Eye movements"
+    ],
+    "MT": [
+        "Vision",
+        "Eye movements"
+    ],
+    "SNc": [
+        "Motion"
+    ],
+    "PPN": [
+        "Motion",
+        "Deliver information"
+    ],
+    "IF": [
+        "Emotion",
+        "Behavior"
+    ],
+    "IPN": [
+        "Motion",
+        "Sleeping"
+    ],
+    "RL": [
+        "Sleeping",
+        "Behavior"
+    ],
+    "CLI": [
+        "Emotion",
+        "Behavior"
+    ],
+    "DR": [
+        "Emotion",
+        "Memory",
+        "Behavior",
+        "Sleeping"
+    ],
+    "NLL": [
+        "Hearing"
+    ],
+    "SOC": [
+        "Hearing"
+    ],
+    "B": [
+        "Visceral activity",
+        "Feeling"
+    ],
+    "DTN": [
+        "Sleeping",
+        "Awareness"
+    ],
+    "PDTg": [
+        "Smell"
+    ],
+    "PCG": [
+        "Motion",
+        "Endocrine activity",
+        "Behavior",
+        "Feeling"
+    ],
+    "PG": [
+        "Motion",
+        "Feeling"
+    ],
+    "PRNc": [
+        "Adjusting the core"
+    ],
+    "SG": [
+        "Vision"
+    ],
+    "SUT": [
+        "Feeling"
+    ],
+    "V": [
+        "Motion"
+    ],
+    "P5": [
+        "Facial expression",
+        "Masticatory muscle movement"
+    ],
+    "CS": [
+        "Emotion",
+        "Behavior"
+    ],
+    "LC": [
+        "Cognition",
+        "Pressure"
+    ],
+    "LDT": [
+        "Emotion",
+        "Behavior"
+    ],
+    "NI": [
+        "Body balance",
+        "Deliver information"
+    ],
+    "RPO": [
+        "Sleeping",
+        "Behavior"
+    ],
+    "SLC": [
+        "Body balance"
+    ],
+    "SLD": [
+        "Memory",
+        "Behavior"
+    ],
+    "DCO": [
+        "Hearing"
+    ],
+    "VCO": [
+        "Hearing"
+    ],
+    "CU": [
+        "Feeling"
+    ],
+    "ECU": [
+        "Feeling"
+    ],
+    "NTB": [
+        "Hearing"
+    ],
+    "NTS": [
+        "Visceral activity"
+    ],
+    "SPVC": [
+        "Feeling"
+    ],
+    "SPVI": [
+        "Feeling"
+    ],
+    "SPVO": [
+        "Eating"
+    ],
+    "Pa5": [
+        "Masticatory muscle movement"
+    ],
+    "VI": [
+        "Eye movements"
+    ],
+    "VII": [
+        "Facial expression",
+        "Taste"
+    ],
+    "AMB": [
+        "Endocrine activity",
+        "Digestion",
+        "Cardiovascular activity",
+        "Immunity",
+        "Breathing"
+    ],
+    "DMX": [
+        "Motion",
+        "Visceral activity",
+        "Feeling"
+    ],
+    "GRN": [
+        "Motion",
+        "Emotion",
+        "Feeling"
+    ],
+    "ICB": [
+        "Motion",
+        "Body balance"
+    ],
+    "IO": [
+        "Motion",
+        "Learning"
+    ],
+    "IRN": [
+        "Digestion",
+        "Visceral activity",
+        "Breathing"
+    ],
+    "ISN": [
+        "Secretion activity"
+    ],
+    "LIN": [
+        "Deliver information"
+    ],
+    "LRN": [
+        "Motion",
+        "Feeling"
+    ],
+    "MARN": [
+        "Awareness",
+        "Visceral activity"
+    ],
+    "MDRNd": [
+        "Sleeping",
+        "Awareness",
+        "Attention"
+    ],
+    "MDRNv": [
+        "Sleeping",
+        "Awareness",
+        "Attention"
+    ],
+    "PARN": [
+        "Cardiovascular activity"
+    ],
+    "PAS": [
+        "Visceral activity"
+    ],
+    "PGRNd": [
+        "Cardiovascular activity"
+    ],
+    "PGRNl": [
+        "Cardiovascular activity"
+    ],
+    "NR": [
+        "Motion",
+        "Behavior",
+        "Feeling"
+    ],
+    "PRP": [
+        "Visceral activity"
+    ],
+    "PPY": [
+        "Motion"
+    ],
+    "LAV": [
+        "Body balance",
+        "Eye movements"
+    ],
+    "MV": [
+        "Body balance"
+    ],
+    "SPIV": [
+        "Body balance"
+    ],
+    "SUV": [
+        "Hearing",
+        "Eye movements",
+        "Deliver information"
+    ],
+    "XII": [
+        "Lingual muscle movement"
+    ],
+    "y": [
+        "Unkown"
+    ],
+    "RM": [
+        "Sleeping",
+        "Behavior",
+        "Feeling"
+    ],
+    "RPA": [
+        "Sleeping",
+        "Behavior"
+    ],
+    "RO": [
+        "Sleeping",
+        "Behavior"
+    ],
+    "CENT": [
+        "Motion",
+        "Feeling"
+    ],
+    "NOD": [
+        "Unkown"
+    ],
+    "SIM": [
+        "Motion"
+    ],
+    "AN": [
+        "Motion"
+    ],
+    "PFL": [
+        "Eye movements"
+    ],
+    "FL": [
+        "Motion",
+        "Body balance"
+    ],
+    "FN": [
+        "Emotion",
+        "Motion",
+        "Behavior",
+        "Immunity"
+    ],
+    "VeCB": [
+        "Vision",
+        "Body balance",
+        "Eye movements"
+    ]
+}

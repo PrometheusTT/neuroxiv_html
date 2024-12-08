@@ -28,6 +28,7 @@
           Search by ID
         </el-button>
         <el-button
+          id="AIPOM_button"
           type="primary"
           plain
           class="action"
@@ -35,6 +36,12 @@
         >
           AIPOM
         </el-button>
+        <FloatingTag
+          title="Usage Tip"
+          message="Click here to try AI powered mining tools!"
+          target-selector="#AIPOM_button"
+          :offset="{ x: 20, y: 20 }"
+        />
         <el-upload
           action=""
           accept=".swc,.eswc"
@@ -101,12 +108,13 @@ import { Component, Prop } from 'vue-property-decorator'
 import RouterHelper from '@/mixins/RouterHelper.vue'
 import { mapState } from 'vuex'
 import NeuronLogo from '@/components/common/NeuronLogo.vue'
+import FloatingTag from '@/components/mouse/FloatingTag.vue'
 
 @Component({
   computed: {
     ...mapState(['userInfo'])
   },
-  components: { NeuronLogo }
+  components: { FloatingTag, NeuronLogo }
 })
 export default class HeaderBar extends RouterHelper {
     @Prop({ default: true }) private showVideoButton!: boolean;

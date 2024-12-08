@@ -2,7 +2,7 @@
   <div class="home">
     <section class="mouse-content">
       <NeuronLogo class="neuron-logo" />
-      <p>Beyond Static Brain Atlases: AI Powered Open Databasing and Dynamic Mining of Brain-Wide Neuron Morphometry</p>
+      <p>NeuroXiv: AI Powered Open Databasing and Dynamic Mining of Brain-Wide Neuron Morphometry</p>
       <div class="mouse-features-container">
         <img
           class="dendrite-img"
@@ -16,6 +16,9 @@
           <ul class="feature-list">
             <li class="feature-item">
               #neurons: 177,186 unique neurons
+            </li>
+            <li class="feature-item">
+              #axons: 19,406
             </li>
             <li class="feature-item">
               #reconstructions: 349,777
