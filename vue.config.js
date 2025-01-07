@@ -46,17 +46,17 @@ module.exports = {
     clientLogLevel: 'warn',
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:5000',
+        target: 'http://10.194.35.182:5000',
         pathRewrite: { '^/api': '' },
         changeOrigin: true
       },
       '/data': {
-        target: 'http://127.0.0.1:5000',
+        target: 'http://10.194.35.182:5000',
         pathRewrite: { '^/data': '' },
         changeOrigin: true
       },
       '/tmp': {
-        target: 'http://127.0.0.1:5000',
+        target: 'http://10.194.35.182:5000',
         pathRewrite: { '^/tmp': '' },
         changeOrigin: true
       },
