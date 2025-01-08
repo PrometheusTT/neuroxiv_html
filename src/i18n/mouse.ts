@@ -14,7 +14,7 @@ const i18n = new VueI18n({
   messages: {}
 })
 
-Vue.use(Element,{
+Vue.use(Element, {
   i18n: (key: string, value: VueI18n.Values | undefined) => i18n.t(key, value)
 })
 
