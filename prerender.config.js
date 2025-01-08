@@ -12,7 +12,7 @@ const plugin = new PrerenderSPAPlugin({
   staticDir: path.join(__dirname, 'dist'),
   // Required - Routes to render.
   // todo: 这里要动态生成
-  routes: [ '/', '/mouse', '/CrossSpeciesAtlas' ],
+  routes: [ '/', '/mouse', '/human', '/CrossSpeciesAtlas' ],
   postProcess (renderedRoute) {
     // Remove /index.html from the output path if the dir name ends with a .html file extension.
     // For example: /dist/dir/special.html/index.html -> /dist/dir/special.html
