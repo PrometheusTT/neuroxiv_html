@@ -55,7 +55,19 @@
                 size="large"
                 plain
               >
-                Enter
+                Enter Mouse Page
+              </el-button>
+            </a>
+            <a
+              href="/human.html"
+              class="action-item"
+            >
+              <el-button
+                type="primary"
+                size="large"
+                plain
+              >
+                Enter Human Page
               </el-button>
             </a>
             <!--                        <a-->

@@ -46,17 +46,17 @@ module.exports = {
     clientLogLevel: 'warn',
     proxy: {
       '/api': {
-        target: 'http://10.194.35.182:5000',
+        target: 'http://127.0.0.1:5000',
         pathRewrite: { '^/api': '' },
         changeOrigin: true
       },
       '/data': {
-        target: 'http://10.194.35.182:5000',
+        target: 'http://127.0.0.1:5000',
         pathRewrite: { '^/data': '' },
         changeOrigin: true
       },
       '/tmp': {
-        target: 'http://10.194.35.182:5000',
+        target: 'http://127.0.0.1:5000',
         pathRewrite: { '^/tmp': '' },
         changeOrigin: true
       },
@@ -74,6 +74,13 @@ module.exports = {
       filename: 'mouse.html',
       title: 'neuroXiv',
       chunks: ['chunk-vendors', 'chunk-common', 'mouse']
+    },
+    human: {
+      entry: 'src/pages/human.ts',
+      template: 'public/human.html',
+      filename: 'human.html',
+      title: 'neuroXiv',
+      chunks: ['chunk-vendors', 'chunk-common', 'human']
     },
     index: {
       entry: 'src/pages/index.ts',
