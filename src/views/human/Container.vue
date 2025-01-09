@@ -1382,7 +1382,7 @@ export default class Container extends Vue {
           brain_atlas: [this.$store.state.atlas]
         }
         this.searchNeurons(criteria, undefined, () => {
-          this.neuronDetail.selectedTab = 'humanhumanMultiNeuronsViewer'
+          this.neuronDetail.selectedTab = 'humanMultiNeuronsViewer'
         })
       })
     }
@@ -1569,7 +1569,7 @@ export default class Container extends Vue {
             brain_atlas: [this.$store.state.atlas]
           }
           this.searchNeurons(criteria, undefined, () => {
-            this.neuronDetail.selectedTab = 'humanhumanMultiNeuronsViewer'
+            this.neuronDetail.selectedTab = 'humanMultiNeuronsViewer'
           })
         }
       }, 2000)

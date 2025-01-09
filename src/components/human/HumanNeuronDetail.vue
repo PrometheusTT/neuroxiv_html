@@ -82,7 +82,7 @@ export default class HumanNeuronDetail extends Vue {
   @Prop({ required: true }) readonly isInitialState!: boolean;
 
   // 此处如果初始值不为neuronInfo,neuronInfo的scene不会被渲染
-  public selectedTab: string = 'multiNeuronsViewer'
+  public selectedTab: string = 'humanMultiNeuronsViewer'
 
   /**
    * 点击切换 tab (通过改变变量的方式不会触发)
